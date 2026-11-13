@@ -70,6 +70,66 @@
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.3));
       border: 1px solid rgba(245, 158, 11, 0.4);
     }
+
+    /* ===== HOTFIX 3.1: LIGHT MODE (html:not(.dark)) ===== */
+    html:not(.dark) body { background-color: #f8fafc !important; color: #0f172a; }
+    html:not(.dark) .bg-slate-950,
+    html:not(.dark) .bg-slate-950\/85,
+    html:not(.dark) .bg-slate-950\/90 { background-color: #f8fafc !important; }
+    html:not(.dark) .bg-slate-900,
+    html:not(.dark) .bg-slate-900\/40,
+    html:not(.dark) .bg-slate-900\/60,
+    html:not(.dark) .bg-slate-900\/90 { background-color: #ffffff !important; }
+    html:not(.dark) .bg-slate-800 { background-color: #e2e8f0 !important; }
+    html:not(.dark) .bg-black\/90,
+    html:not(.dark) .bg-black\/80 { background-color: #f1f5f9 !important; border: 1px solid #cbd5e1; }
+    html:not(.dark) .bg-amber-950\/30 { background-color: #fffbeb !important; }
+    html:not(.dark) .bg-cyan-950\/60 { background-color: #ecfeff !important; }
+    html:not(.dark) .bg-emerald-950\/20,
+    html:not(.dark) .bg-emerald-950\/60 { background-color: #ecfdf5 !important; }
+    html:not(.dark) .bg-rose-950\/40,
+    html:not(.dark) .bg-rose-950\/60 { background-color: #fff1f2 !important; }
+    html:not(.dark) .from-blue-900\/60,
+    html:not(.dark) .from-slate-950 {
+      --tw-gradient-from: #dbeafe var(--tw-gradient-from-position) !important;
+      --tw-gradient-to: rgba(248, 250, 252, 0) var(--tw-gradient-to-position) !important;
+      --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+    }
+    html:not(.dark) .via-slate-900,
+    html:not(.dark) .via-slate-900\/50 { --tw-gradient-stops: var(--tw-gradient-from), #ffffff var(--tw-gradient-via-position), var(--tw-gradient-to) !important; }
+    html:not(.dark) .to-indigo-950\/60,
+    html:not(.dark) .to-slate-950 { --tw-gradient-to: #e0e7ff var(--tw-gradient-to-position) !important; }
+    html:not(.dark) .border-slate-700,
+    html:not(.dark) .border-slate-800,
+    html:not(.dark) .border-slate-800\/80,
+    html:not(.dark) .divide-slate-800\/60 > * + * { border-color: #cbd5e1 !important; }
+    html:not(.dark) .hover\:border-slate-700:hover { border-color: #94a3b8 !important; }
+    html:not(.dark) .text-slate-100,
+    html:not(.dark) .text-slate-200,
+    html:not(.dark) .text-slate-300,
+    html:not(.dark) .text-slate-400,
+    html:not(.dark) .text-white { color: #0f172a !important; }
+    html:not(.dark) .text-slate-500 { color: #475569 !important; }
+    html:not(.dark) .hover\:text-white:hover { color: #0f172a !important; }
+    html:not(.dark) .hover\:bg-slate-700:hover,
+    html:not(.dark) .hover\:bg-slate-800:hover,
+    html:not(.dark) .hover\:bg-slate-800\/40:hover { background-color: #cbd5e1 !important; }
+    html:not(.dark) .text-blue-300, html:not(.dark) .text-blue-400 { color: #1d4ed8 !important; }
+    html:not(.dark) .text-cyan-300, html:not(.dark) .text-cyan-400 { color: #0e7490 !important; }
+    html:not(.dark) .text-emerald-300, html:not(.dark) .text-emerald-400 { color: #047857 !important; }
+    html:not(.dark) .text-amber-300, html:not(.dark) .text-amber-400 { color: #b45309 !important; }
+    html:not(.dark) .text-rose-300, html:not(.dark) .text-rose-400 { color: #be123c !important; }
+    html:not(.dark) .text-purple-300, html:not(.dark) .text-purple-400 { color: #7e22ce !important; }
+    html:not(.dark) .text-indigo-300, html:not(.dark) .text-indigo-400 { color: #4338ca !important; }
+    /* Giữ chữ trắng cho nút/badge nền màu đậm */
+    html:not(.dark) .bg-blue-600, html:not(.dark) .bg-cyan-600, html:not(.dark) .bg-emerald-600,
+    html:not(.dark) .bg-purple-600, html:not(.dark) .bg-rose-600, html:not(.dark) .bg-amber-600,
+    html:not(.dark) .bg-indigo-600, html:not(.dark) .from-blue-600,
+    html:not(.dark) .bg-blue-600 *, html:not(.dark) .bg-cyan-600 *, html:not(.dark) .bg-emerald-600 *,
+    html:not(.dark) .bg-purple-600 *, html:not(.dark) .bg-rose-600 *, html:not(.dark) .bg-amber-600 *,
+    html:not(.dark) .bg-indigo-600 *, html:not(.dark) .from-blue-600 .text-white { color: #ffffff !important; }
+    html:not(.dark) .from-blue-600 .bg-slate-950 { background-color: #ffffff !important; }
+    html:not(.dark) ::-webkit-scrollbar-track { background: #e2e8f0; }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-blue-600 selection:text-white transition-colors duration-200">
@@ -142,7 +202,7 @@
           <a href="#tru-cot" class="text-xs font-semibold text-slate-300 hover:text-blue-400 transition">8 Trụ Cột</a>
           <a href="#mo-duon" class="text-xs font-semibold text-slate-300 hover:text-blue-400 transition">12 Mô-đun</a>
           <a href="#ban-do-luong" class="text-xs font-semibold text-slate-300 hover:text-blue-400 transition">Bản Đồ Luồng</a>
-          <a href="#chan-doan" class="text-xs font-semibold text-slate-300 hover:text-blue-400 transition">Chẩn Đoán</a>
+          <a href="#mo-duon-05" class="text-xs font-semibold text-slate-300 hover:text-blue-400 transition">Chẩn Đoán</a>
           <button id="themeToggleBtn" onclick="toggleTheme()" class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition" title="Chuyển chế độ Sáng / Tối">
             <span id="themeIcon">🌙</span>
           </button>
@@ -195,7 +255,7 @@
           <a href="#ban-do-luong" class="px-5 py-3 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 font-bold text-sm hover:bg-slate-800 hover:text-white transition flex items-center gap-2">
             <span>🗺️</span> Bản Đồ Luồng Dữ Liệu
           </a>
-          <a href="#chan-doan" class="px-5 py-3 rounded-xl bg-rose-950/40 border border-rose-600/40 text-rose-300 font-bold text-sm hover:bg-rose-900/40 transition flex items-center gap-2">
+          <a href="#mo-duon-05" class="px-5 py-3 rounded-xl bg-rose-950/40 border border-rose-600/40 text-rose-300 font-bold text-sm hover:bg-rose-900/40 transition flex items-center gap-2">
             <span>🩺</span> Bác Sĩ Cứu Hộ Lỗi
           </a>
         </div>
@@ -359,7 +419,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
 python -m pip install --upgrade pip
 python -m pip install playwright python-dotenv requests google-genai pyTelegramBotAPI
 python -m playwright install chromium
-[System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";D:\LPN_Workspace\FFmpegfmpeg-9.0.2-essentials_buildin", "User")
+[System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";D:\LPN_Workspace\FFmpeg\ffmpeg-9.0.2-essentials_build\bin", "User")
           </div>
           <div class="p-2.5 rounded-lg bg-amber-950/30 border border-amber-500/30 text-[11px] text-amber-300">
             <strong>⚠️ Lỗi thường gặp:</strong> <code>Execution_Policies Restricted</code> -> Khắc phục: Chạy PowerShell với <code>Set-ExecutionPolicy RemoteSigned -Scope CurrentUser</code>.
@@ -563,7 +623,7 @@ Write-Output "✅ Website đã live tại: https://lephucnhat.vn/he-thong-ai/"
           </div>
           <div class="p-3 rounded-lg bg-slate-950 font-mono text-[11px] text-rose-300 overflow-x-auto relative" id="code-pillar-8">
 # Kịch bản sao lưu an toàn trước khi chỉnh sửa tệp:
-$sourceFile = "D:\LPN_Workspacei_core_brain.py"
+$sourceFile = "D:\LPN_Workspace\ai_core_brain.py"
 Copy-Item -Path $sourceFile -Destination "$sourceFile.bak" -Force
 Write-Output "✅ Đã tạo bản sao lưu an toàn .bak"
           </div>
@@ -596,7 +656,7 @@ Write-Output "✅ Đã tạo bản sao lưu an toàn .bak"
         <a href="#mo-duon-10" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500 text-slate-300 hover:text-white transition text-center">10. Quản Lý Agent</a>
         <a href="#mo-duon-11" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-500 text-slate-300 hover:text-white transition text-center">11. Bảng 25 Kênh</a>
         <a href="#mo-duon-12" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-rose-500 text-slate-300 hover:text-white transition text-center">12. Sao Lưu & Phục Hồi</a>
-        <a href="#mo-duon-03-map" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-blue-500 text-slate-300 hover:text-white transition text-center">03. Bản Đồ Hệ Thống</a>
+        <a href="#ban-do-luong" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-blue-500 text-slate-300 hover:text-white transition text-center">03. Bản Đồ Hệ Thống</a>
       </div>
 
       <!-- ================= MÔ-ĐUN 01: MÁY PHÁT SIÊU CÂU LỆNH & XUẤT FILE CÀI ĐẶT ================= -->
@@ -1160,7 +1220,7 @@ Get-ScheduledTask -TaskName "*LPN*" -ErrorAction SilentlyContinue
             </div>
             <pre id="bakScriptBox" class="p-3 rounded-lg bg-black/90 font-mono text-[11px] text-rose-300 overflow-x-auto">
 # Tự động sao lưu toàn bộ script và cấu hình sang thư mục dna_backups:
-$backupDir = "D:\LPN_Workspace\dna_backups" + (Get-Date -Format "yyyyMMdd_HHmmss")
+$backupDir = "D:\LPN_Workspace\dna_backups\" + (Get-Date -Format "yyyyMMdd_HHmmss")
 New-Item -ItemType Directory -Force -Path $backupDir
 Get-ChildItem -Path "D:\LPN_Workspace" -Filter "*.py" | ForEach-Object {
     Copy-Item $_.FullName -Destination $backupDir
@@ -1348,6 +1408,17 @@ page.locator('input[type="file"]').set_input_files(file_path)`
           card.classList.add('hidden');
         }
       });
+      // Cập nhật màu nút tab đang chọn
+      document.querySelectorAll('.pillar-tab').forEach(btn => {
+        const m = (btn.getAttribute('onclick') || '').match(/filterPillars\('([^']+)'\)/);
+        const active = !!m && m[1] === category;
+        btn.classList.remove('bg-blue-600', 'text-white', 'bg-slate-800', 'text-slate-300');
+        if (active) {
+          btn.classList.add('bg-blue-600', 'text-white');
+        } else {
+          btn.classList.add('bg-slate-800', 'text-slate-300');
+        }
+      });
     }
 
     function copySnippet(elementId) {
@@ -1360,7 +1431,7 @@ page.locator('input[type="file"]').set_input_files(file_path)`
 
     /* ================= 5. MÔ-ĐUN 01: SCRIPT & PROMPT GENERATOR ================= */
     function updateGeneratedScript() {
-      const p = document.getElementById('genPath').value || 'D:\LPN_Workspace';
+      const p = document.getElementById('genPath').value || 'D:\\LPN_Workspace';
       const pages = document.getElementById('genPages').value || '25';
       const topic = document.getElementById('genTopic').value;
       const tele = document.getElementById('genTelegram').value || 'CHUA_CAU_HINH';
@@ -1386,7 +1457,7 @@ MỤC TIÊU:
     }
 
     function downloadScript(fileName) {
-      const p = document.getElementById('genPath').value || 'D:\LPN_Workspace';
+      const p = document.getElementById('genPath').value || 'D:\\LPN_Workspace';
       let content = '';
 
       if (fileName === 'Setup_Tu_Dong.bat') {
@@ -1397,7 +1468,7 @@ echo [1/4] Kiem tra quyen Administrator...
 echo [2/4] Chuyen den thu muc lam viec: ${p}
 cd /d "${p}"
 echo [3/4] Chay script PowerShell cap quyen tu dong...
-powershell -ExecutionPolicy RemoteSigned -File "${p}\Setup_Tu_Dong.ps1"
+powershell -ExecutionPolicy RemoteSigned -File "${p}\\Setup_Tu_Dong.ps1"
 echo [4/4] Hoan tat! Chuc mung ban da khoi tao thanh cong.
 pause`;
       } else if (fileName === 'Setup_Tu_Dong.ps1') {
@@ -1633,7 +1704,7 @@ page.locator('input[type="file"]').set_input_files(video_path)`
         title: "Lỗi FFmpeg: The term 'ffmpeg' is not recognized",
         symptom: 'Script render báo lỗi không tìm thấy câu lệnh ffmpeg.',
         cause: 'FFmpeg chưa được gán đường dẫn vào biến môi trường hệ thống PATH.',
-        fix: `[System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";D:\LPN_Workspace\FFmpeg\ffmpeg-9.0.2-essentials_build\bin", "User")`
+        fix: `[System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";D:\\LPN_Workspace\\FFmpeg\\ffmpeg-9.0.2-essentials_build\\bin", "User")`
       }
     ];
 
@@ -1726,8 +1797,8 @@ Chiến lược thực thi: Agent AI tự động giám sát nguồn đầu vào
         title: '1. Xưởng Reels 25 Kênh Tự Động',
         desc: 'Quy trình giải nén B-Roll, render FFmpeg, sinh Caption 50–100 ký tự và xuất bản Playwright 25 Fanpage.',
         code: `# Kịch bản chạy toàn diện 25 kênh
-python D:\LPN_Workspace\auto_reels_producer.py
-python C:\FB_Auto_Manager\auto_browser_publisher.py`
+python D:\\LPN_Workspace\\auto_reels_producer.py
+python C:\\FB_Auto_Manager\\auto_browser_publisher.py`
       },
       {
         id: 'tmpl-2',
@@ -1750,14 +1821,14 @@ bot.send_photo(CHAT_ID, open("proof.png", "rb"), caption="Xuat ban thanh cong!")
         title: '4. Tự Động Hóa Giáo Dục & Happy Run',
         desc: 'Quản lý bài giảng truyền cảm hứng V07, lộ trình 108 ngày rèn luyện và hệ thống vinh danh học viên.',
         code: `# Dong bo bai giang Happy Run sang Web Hub
-python D:\LPN_Workspace\Web_Hub\setup_github.py`
+python D:\\LPN_Workspace\\Web_Hub\\setup_github.py`
       },
       {
         id: 'tmpl-5',
         title: '5. Tự Động Hóa HTX Lâm Nghiệp Keo Sơn',
         desc: 'Kịch bản sản xuất nội dung giới thiệu dược liệu sạch, nông sản bản địa và bảo vệ rừng đầu nguồn.',
         code: `# Chay kich ban kenh Lam Nghiep
-python D:\LPN_Workspace\generate_flawless_25_scripts.py --channel "Keo Son"`
+python D:\\LPN_Workspace\\generate_flawless_25_scripts.py --channel "Keo Son"`
       },
       {
         id: 'tmpl-6',
@@ -1778,7 +1849,7 @@ python D:\LPN_Workspace\generate_flawless_25_scripts.py --channel "Keo Son"`
           <p class="text-slate-400 text-[11px] leading-relaxed">${tmpl.desc}</p>
           <div class="pt-2 flex gap-2">
             <button onclick="viewTemplate('${tmpl.id}')" class="px-2.5 py-1 rounded bg-amber-600/20 text-amber-300 border border-amber-500/30 hover:bg-amber-600/30 font-semibold">Xem Script</button>
-            <button onclick="copySnippetText(\`${tmpl.code}\`)" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white border border-slate-700">Copy</button>
+            <button onclick="copyTemplateById('${tmpl.id}')" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white border border-slate-700">Copy</button>
           </div>
         `;
         container.appendChild(div);
@@ -1801,6 +1872,12 @@ python D:\LPN_Workspace\generate_flawless_25_scripts.py --channel "Keo Son"`
       navigator.clipboard.writeText(txt).then(() => {
         showToast('Đã copy mã script mẫu!');
       });
+    }
+
+    function copyTemplateById(id) {
+      const tmpl = templatesData.find(t => t.id === id);
+      if (!tmpl) return;
+      copySnippetText(tmpl.code);
     }
 
     /* ================= 11. MÔ-ĐUN 08: AGENT BUILDER ================= */
@@ -2040,6 +2117,7 @@ Acceptance Criteria: ${crit}`;
       initTheme();
       const savedMode = localStorage.getItem('lpn_user_mode') || 'beginner';
       switchUserMode(savedMode);
+      filterPillars('all');
       initChecklist();
       renderTroubleList('');
       initTemplates();
