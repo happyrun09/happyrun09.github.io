@@ -306,6 +306,201 @@
       .screen-light-beam { display: none !important; }
     }
   </style>
+<style id="tuantuteStyleEnhancement">
+  /* =========================================================================
+     THỪA HƯỞNG & NÂNG CẤP THEO CHUẨN TUANTUTE.LIFE
+     Bento Grid, Card Glass Shine, Live Domain Badges, Filter Bar & Pulse Dots
+     ========================================================================= */
+  :root {
+    --gold-primary: #f59e0b;
+    --gold-light: #fbbf24;
+    --gold-glow: rgba(245, 158, 11, 0.4);
+    --emerald-green: #10b981;
+    --sapphire-blue: #0284c7;
+    --ruby-heart: #e11d48;
+  }
+
+  /* Bento Card Container */
+  .bento-card-luxury {
+    position: relative;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(8, 12, 20, 0.98));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 2px solid rgba(245, 158, 11, 0.45);
+    border-radius: 28px;
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.85), 0 0 35px rgba(245, 158, 11, 0.15);
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .bento-card-luxury:hover {
+    border-color: rgba(245, 158, 11, 0.8);
+    box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.9), 0 0 45px rgba(245, 158, 11, 0.25);
+  }
+
+  /* Vệt sáng kính vát (Glass Shine) */
+  .card-glass-shine {
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+    transform: skewX(-25deg);
+    pointer-events: none;
+    transition: left 0.8s ease;
+  }
+  .bento-card-luxury:hover .card-glass-shine,
+  .eco-site-card:hover .card-glass-shine {
+    left: 200%;
+  }
+
+  /* Overhead Badge */
+  .card-overhead-badge {
+    font-size: 0.74rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Filter Navigation Bar */
+  .eco-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 22px;
+    align-items: center;
+  }
+  .eco-filter-btn {
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background: rgba(30, 41, 59, 0.7);
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .eco-filter-btn:hover {
+    background: rgba(51, 65, 85, 0.9);
+    color: #fff;
+    border-color: rgba(245, 158, 11, 0.5);
+    transform: translateY(-1.5px);
+  }
+  .eco-filter-btn.active {
+    background: linear-gradient(135deg, #d97706, #f59e0b);
+    color: #0f172a;
+    font-weight: 900;
+    border-color: #fbbf24;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+    transform: translateY(-1.5px);
+  }
+
+  /* Eco Site Card */
+  .eco-site-card {
+    position: relative;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  }
+  .eco-site-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--gold-primary);
+    background: rgba(23, 33, 56, 0.95);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(245, 158, 11, 0.2);
+  }
+
+  /* Live Domain Badge & Pulsing Green Dot */
+  .site-domain-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(2, 6, 23, 0.85);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #6ee7b7;
+    width: fit-content;
+  }
+  .pulse-dot-green {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 10px #10b981;
+    animation: pulseDot 2s infinite;
+  }
+  @keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  /* Floating Action Dock */
+  .floating-quick-dock {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(18px);
+    border: 1.5px solid rgba(245, 158, 11, 0.5);
+    border-radius: 999px;
+    padding: 6px 12px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75), 0 0 25px rgba(245, 158, 11, 0.2);
+  }
+  .dock-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 800;
+    color: #f8fafc;
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.22s ease;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .dock-btn:hover {
+    background: linear-gradient(135deg, #d97706, #f59e0b);
+    color: #0f172a;
+    border-color: #fbbf24;
+    transform: scale(1.05);
+  }
+  .dock-btn-gold {
+    background: linear-gradient(135deg, #d97706, #f59e0b);
+    color: #0f172a;
+    border-color: #fbbf24;
+    font-weight: 900;
+  }
+  .dock-btn-gold:hover {
+    filter: brightness(1.15);
+  }
+</style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-red-500 selection:text-white relative">
 <!-- =========================================================================
@@ -664,165 +859,389 @@
   <!-- =========================================================================
        KHỐI ĐẶC BIỆT: HỆ SINH THÁI CÁC TRANG CON & CHUYÊN ĐỀ SỐ (SUB-PAGES HUB)
        ========================================================================= -->
-  <div id="he-sinh-thai-trang-con" class="max-w-7xl mx-auto px-2 sm:px-6 mt-3 mb-2">
-    <div class="rounded-2xl bg-gradient-to-r from-slate-900/95 via-purple-950/50 to-slate-900/95 border-2 border-purple-500/50 p-4 sm:p-5 shadow-2xl">
-      <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2 border-b border-slate-800">
-        <div class="flex items-center gap-2">
-          <span class="text-2xl">🌐</span>
+  
+  <!-- =========================================================================
+       KHỐI ĐẶC BIỆT CHUẨN TUANTUTE.LIFE: HỆ SINH THÁI CƠ NGƠI SỐ & CỔNG CHUYÊN ĐỀ
+       Bento Grid Luxury, Filter Bar, Live Domain Badges, Pulse Dots & Instant Search
+       ========================================================================= -->
+  <section id="he-sinh-thai-trang-con" class="max-w-7xl w-full mx-auto px-2 sm:px-6 my-6">
+    <div class="bento-card-luxury p-5 sm:p-8 relative">
+      <div class="card-glass-shine"></div>
+
+      <!-- HEADER KHỐI (Chuẩn Tuấn Tử Tế) -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-800">
+        <div class="flex items-start gap-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-yellow-500 to-amber-300 flex items-center justify-center text-2xl text-slate-950 font-black shadow-xl flex-shrink-0">
+            🏛️
+          </div>
           <div>
-            <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
-              HỆ SINH THÁI CÁC TRANG CON & CHUYÊN ĐỀ SỐ
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/30 text-purple-300 font-extrabold uppercase border border-purple-400">6 Trang Con</span>
+            <div class="card-overhead-badge">
+              <span>🌟 BẢO CHỨNG THỰC CHIẾN</span>
+              <span>•</span>
+              <span class="text-amber-400">KIẾN TẠO BỞI LÊ PHÚC NHẬT xAI</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-white mt-1 tracking-tight">
+              Hệ Sinh Thái Cơ Ngơi Số & 6 Cổng Chuyên Đề Tiêu Biểu
             </h2>
-            <p class="text-xs text-slate-300">Bấm vào từng trang con bên dưới để mở cổng thông tin chuyên đề, gia phả 4D và giáo án điện tử:</p>
+            <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-3xl leading-relaxed">
+              Các cổng thông tin, tộc phả số 4D, giáo án điện tử và buồng lái xAI được thiết kế tối ưu, vận hành tự trị 24/7 trên hạ tầng GitHub Pages toàn cầu. Tích hợp âm thanh 432Hz, lật thẻ 3D và Trợ lý Trí tuệ AI đa tầng sẵn sàng phục vụ cộng đồng.
+            </p>
           </div>
         </div>
-        <span class="text-xs text-purple-300 font-bold hidden sm:inline"><i class="fa-solid fa-layer-group mr-1"></i>Hệ thống Website Con</span>
+
+        <!-- Live Status Pill & Quick Share -->
+        <div class="flex items-center gap-2 self-start md:self-center flex-shrink-0">
+          <div class="site-domain-badge">
+            <span class="pulse-dot-green"></span>
+            <span>happyrun09.github.io</span>
+          </div>
+          <button type="button" onclick="openEcosystemModal()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-amber-300 flex items-center gap-1.5 transition" title="Xem sơ đồ liên kết dạng cửa sổ">
+            <span>🗺️</span><span>Sơ Đồ 6 Cổng</span>
+          </button>
+        </div>
       </div>
 
-      <!-- Grid 6 Trang Con -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <!-- Trang con 1: Họ Lê CH Séc -->
-        <a href="/ho-le-cong-hoa-sec/" class="group p-3 rounded-xl bg-slate-950/90 border border-red-500/50 hover:border-red-400 hover:bg-red-950/40 transition flex flex-col justify-between shadow-lg">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-2xl">🏛️</span>
-            <span class="text-[9px] px-1.5 py-0.5 rounded bg-red-500/30 text-red-200 font-extrabold uppercase">Đại Lễ Séc</span>
-          </div>
-          <div class="font-black text-xs text-white group-hover:text-red-300 transition leading-snug">Họ Lê CH Séc</div>
-          <div class="text-[10px] text-slate-400 mt-1 line-clamp-1">Lễ Tri Ân 27/11/2026</div>
-        </a>
+      <!-- BỘ LỌC CHUYÊN ĐỀ & THANH TÌM KIẾM NHANH (Category Filter Bar & Search) -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mt-4 mb-2">
+        
+        <!-- Filter Tabs -->
+        <div class="eco-filter-bar !my-0" id="ecoFilterBar">
+          <button type="button" class="eco-filter-btn active" data-filter="all" onclick="filterEcoCards('all', this)">
+            <span>🔘</span><span>Tất Cả (6 Cổng)</span>
+          </button>
+          <button type="button" class="eco-filter-btn" data-filter="genealogy" onclick="filterEcoCards('genealogy', this)">
+            <span>🏛️</span><span>Dòng Tộc & Cội Nguồn (3)</span>
+          </button>
+          <button type="button" class="eco-filter-btn" data-filter="education" onclick="filterEcoCards('education', this)">
+            <span>📖</span><span>Sư Phạm & Giáo Dục (1)</span>
+          </button>
+          <button type="button" class="eco-filter-btn" data-filter="ai" onclick="filterEcoCards('ai', this)">
+            <span>🤖</span><span>Trí Tuệ xAI & Xưởng Phim (1)</span>
+          </button>
+          <button type="button" class="eco-filter-btn" data-filter="discipline" onclick="filterEcoCards('discipline', this)">
+            <span>🏃</span><span>Kỷ Luật & Triết Lý Sống (1)</span>
+          </button>
+        </div>
 
-        <!-- Trang con 2: Gia Phả 4D -->
-        <a href="/gia-pho-ho-le/" class="group p-3 rounded-xl bg-slate-950/90 border border-amber-500/50 hover:border-amber-400 hover:bg-amber-950/40 transition flex flex-col justify-between shadow-lg">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-2xl">🌳</span>
-            <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/30 text-amber-200 font-extrabold uppercase">12 Trạm</span>
-          </div>
-          <div class="font-black text-xs text-white group-hover:text-amber-300 transition leading-snug">Gia Phả 4D</div>
-          <div class="text-[10px] text-slate-400 mt-1 line-clamp-1">Gio Linh – Cam Lộ</div>
-        </a>
+        <!-- Instant Search Box -->
+        <div class="relative w-full lg:w-72">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs">
+            🔍
+          </span>
+          <input type="text" id="ecoSearchInput" oninput="searchEcoCards(this.value)" placeholder="Tìm bài giảng, giáo án, gia phả..." class="w-full pl-8 pr-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:border-amber-400 transition" />
+        </div>
 
-        <!-- Trang con 3: Gia Phả Họ Lê Văn -->
-        <a href="/gia-pho-ho-le-van/" class="group p-3 rounded-xl bg-slate-950/90 border border-yellow-500/50 hover:border-yellow-400 hover:bg-yellow-950/40 transition flex flex-col justify-between shadow-lg">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-2xl">📜</span>
-            <span class="text-[9px] px-1.5 py-0.5 rounded bg-yellow-500/30 text-yellow-200 font-extrabold uppercase">Phường An</span>
-          </div>
-          <div class="font-black text-xs text-white group-hover:text-yellow-300 transition leading-snug">Gia Phả Lê Văn</div>
-          <div class="text-[10px] text-slate-400 mt-1 line-clamp-1">Tộc Phả 8 Thế Hệ</div>
-        </a>
-
-        <!-- Trang con 4: Giáo Án Tuần 10 -->
-        <a href="/ke-hoach-tuan-10/" class="group p-3 rounded-xl bg-slate-950/90 border border-emerald-500/50 hover:border-emerald-400 hover:bg-emerald-950/40 transition flex flex-col justify-between shadow-lg">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-2xl">📖</span>
-            <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/30 text-emerald-200 font-extrabold uppercase">Giáo Án</span>
-          </div>
-          <div class="font-black text-xs text-white group-hover:text-emerald-300 transition leading-snug">Giáo Án Lớp 4B1</div>
-          <div class="text-[10px] text-slate-400 mt-1 line-clamp-1">Kế Hoạch Tuần 10</div>
-        </a>
-
-        <!-- Trang con 5: Hệ Thống AI 3.0 -->
-        <a href="/he-thong-ai/" class="group p-3 rounded-xl bg-slate-950/90 border border-cyan-500/50 hover:border-cyan-400 hover:bg-cyan-950/40 transition flex flex-col justify-between shadow-lg">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-2xl">🤖</span>
-            <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/30 text-cyan-200 font-extrabold uppercase">AI 3.0</span>
-          </div>
-          <div class="font-black text-xs text-white group-hover:text-cyan-300 transition leading-snug">Hệ Thống AI</div>
-          <div class="text-[10px] text-slate-400 mt-1 line-clamp-1">Master Command xAI</div>
-        </a>
-
-        <!-- Trang con 6: Bài Giảng V07 -->
-        <a href="1112_LPN_Happy_Run_Day_Do_Doi_Dech_De_Doi_Do_V07.html" target="_blank" class="group p-3 rounded-xl bg-slate-950/90 border border-orange-500/50 hover:border-orange-400 hover:bg-orange-950/40 transition flex flex-col justify-between shadow-lg">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-2xl">🏃</span>
-            <span class="text-[9px] px-1.5 py-0.5 rounded bg-orange-500/30 text-orange-200 font-extrabold uppercase">Bài Giảng</span>
-          </div>
-          <div class="font-black text-xs text-white group-hover:text-orange-300 transition leading-snug">Bài Giảng V07</div>
-          <div class="text-[10px] text-slate-400 mt-1 line-clamp-1">ĐÂY ĐO ĐỜI V07</div>
-        </a>
       </div>
+
+      <!-- GRID 6 CỔNG CHUYÊN ĐỀ (Chuẩn student-site-card) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mt-5" id="ecoCardsGrid">
+
+        <!-- CỔNG 1: HỌ LÊ CỘNG HÒA SÉC -->
+        <article class="eco-site-card group" data-category="genealogy" data-keywords="ho le cong hoa sec dai le gap mat 27/11/2026 praha dong ho to tien">
+          <div class="card-glass-shine"></div>
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <div class="site-domain-badge">
+                <span class="pulse-dot-green"></span>
+                <span class="domain-text">/ho-le-cong-hoa-sec/</span>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-red-500/20 text-red-300 border border-red-500/40">
+                ĐẠI LỄ 27/11/2026
+              </span>
+            </div>
+            <div class="flex items-start gap-3 my-2">
+              <span class="text-3xl p-2 rounded-2xl bg-red-950/70 border border-red-500/40">🏛️</span>
+              <div>
+                <h3 class="text-base font-black text-amber-200 group-hover:text-amber-300 transition">
+                  Cổng Thông Tin Họ Lê CH Séc
+                </h3>
+                <span class="text-[11px] font-bold text-slate-400">Đại Lễ Gặp Mặt 27/11/2026 • Praha</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-300 mt-2 line-clamp-3 leading-relaxed">
+              Cổng tri ân cội nguồn đồng hương Họ Lê tại Cộng hòa Séc: phục dựng 3 bức ảnh tư liệu lịch sử độ nét cực cao, lật thẻ 3D, đăng ký vé tham dự trực tuyến và không gian Dâng Hương Từ Đường.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-slate-800/80 text-[10px] font-bold text-slate-400">
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🖼️ 3 Ảnh Lịch Sử</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🎫 Vé RSVP Online</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🕯️ Dâng Hương Số</span>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition">Tác quyền: Lê Phúc Nhật</span>
+            <a href="https://happyrun09.github.io/ho-le-cong-hoa-sec/" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-red-700 via-amber-600 to-red-700 text-white font-black text-xs hover:brightness-110 shadow-lg shadow-red-500/30 transition">
+              <span>Khám Phá Cổng Séc</span><span>🌐</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- CỔNG 2: GIA PHẢ HỌ LÊ 4D -->
+        <article class="eco-site-card group" data-category="genealogy" data-keywords="gia pha ho le 4d gio linh cam lo quang tri mai loc phuong an toc pha">
+          <div class="card-glass-shine"></div>
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <div class="site-domain-badge">
+                <span class="pulse-dot-green"></span>
+                <span class="domain-text">/gia-pho-ho-le/</span>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                12 TRẠM 4D
+              </span>
+            </div>
+            <div class="flex items-start gap-3 my-2">
+              <span class="text-3xl p-2 rounded-2xl bg-amber-950/70 border border-amber-500/40">🌳</span>
+              <div>
+                <h3 class="text-base font-black text-amber-200 group-hover:text-amber-300 transition">
+                  Gia Phả Họ Lê 4D (Gio Linh – Cam Lộ)
+                </h3>
+                <span class="text-[11px] font-bold text-slate-400">Bản Gốc 15/9 Mậu Ngọ (1978) • Đời I – VIII</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-300 mt-2 line-clamp-3 leading-relaxed">
+              Tộc phả số 4D tương tác sống động: 12 Trạm hành trình từ Thủy Tổ Gio Linh đến định cư Cam Lộ (Quảng Trị), 165+ nhân đinh, lật 4 thẻ chi phái 3D, âm thanh Cổ cầm 432Hz và lịch giỗ kỵ âm lịch.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-slate-800/80 text-[10px] font-bold text-slate-400">
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🎵 Cổ Cầm 432Hz</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">📜 165+ Nhân Đinh</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🔄 Lật Thẻ 3D</span>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition">Tộc Phả Sống 4D</span>
+            <a href="https://happyrun09.github.io/gia-pho-ho-le/" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 text-slate-950 font-black text-xs hover:brightness-110 shadow-lg shadow-amber-500/30 transition">
+              <span>Mở Tộc Phả 4D</span><span>🌐</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- CỔNG 3: GIA PHẢ HỌ LÊ VĂN -->
+        <article class="eco-site-card group" data-category="genealogy" data-keywords="gia pha ho le van phuong an cam lo 8 the he phan he dong toc">
+          <div class="card-glass-shine"></div>
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <div class="site-domain-badge">
+                <span class="pulse-dot-green"></span>
+                <span class="domain-text">/gia-pho-ho-le-van/</span>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-blue-500/20 text-blue-300 border border-blue-500/40">
+                8 THẾ HỆ
+              </span>
+            </div>
+            <div class="flex items-start gap-3 my-2">
+              <span class="text-3xl p-2 rounded-2xl bg-blue-950/70 border border-blue-500/40">📜</span>
+              <div>
+                <h3 class="text-base font-black text-slate-100 group-hover:text-amber-300 transition">
+                  Gia Phả Họ Lê Văn (Phường An)
+                </h3>
+                <span class="text-[11px] font-bold text-slate-400">Phường An, Cam Lộ • Lưu Truyền Hậu Thế</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-300 mt-2 line-clamp-3 leading-relaxed">
+              Tộc phổ chi phái Phường An, ghi chép mạch lạc từ cụ Thủy Tổ đến đời thứ VIII. Tra cứu nhanh danh tính tiền nhân, ngày kỵ gia tiên và lưu giữ gia phong cội nguồn bền vững.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-slate-800/80 text-[10px] font-bold text-slate-400">
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🔍 Tra Cứu Ngày Kỵ</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🌲 Sổ Vàng Huyết Thống</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">📚 Bản Sắc Quảng Trị</span>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition">Chi Phái Phường An</span>
+            <a href="https://happyrun09.github.io/gia-pho-ho-le-van/" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white font-black text-xs hover:brightness-110 shadow-lg transition">
+              <span>Xem Phả Ký</span><span>🌐</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- CỔNG 4: GIÁO ÁN TUẦN 10 LỚP 4B1 -->
+        <article class="eco-site-card group" data-category="education" data-keywords="giao an tuan 10 lop 4b1 nguyen huu khanh gdpt 2018 15 tiet dao duc khoa hoc lich su dia ly">
+          <div class="card-glass-shine"></div>
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <div class="site-domain-badge">
+                <span class="pulse-dot-green"></span>
+                <span class="domain-text">/ke-hoach-tuan-10/</span>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                15 TIẾT GDPT 2018
+              </span>
+            </div>
+            <div class="flex items-start gap-3 my-2">
+              <span class="text-3xl p-2 rounded-2xl bg-emerald-950/70 border border-emerald-500/40">📖</span>
+              <div>
+                <h3 class="text-base font-black text-emerald-200 group-hover:text-emerald-300 transition">
+                  Giáo Án Tuần 10 (Lớp 4B1)
+                </h3>
+                <span class="text-[11px] font-bold text-slate-400">Trường TH Nguyễn Hữu Khánh • GV: Lê Phúc Nhật</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-300 mt-2 line-clamp-3 leading-relaxed">
+              Kế hoạch bài dạy chi tiết 15 tiết chuẩn chương trình GDPT 2018 (Đạo đức, Khoa học, Lịch sử - Địa lý, HĐTN...). Tích hợp sẵn Trợ lý AI sư phạm, tài liệu giảng dạy trực quan và phiếu đánh giá học sinh.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-slate-800/80 text-[10px] font-bold text-slate-400">
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">📝 15 Tiết Soạn Chuẩn</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🤖 Trợ Lý Sư Phạm AI</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🎯 Mục Tiêu Phẩm Chất</span>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition">Sư Phạm Hiện Đại</span>
+            <a href="https://happyrun09.github.io/ke-hoach-tuan-10/" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-600 text-slate-950 font-black text-xs hover:brightness-110 shadow-lg shadow-emerald-500/30 transition">
+              <span>Mở Giáo Án 4B1</span><span>🌐</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- CỔNG 5: HỆ THỐNG AI 3.0 -->
+        <article class="eco-site-card group" data-category="ai" data-keywords="he thong ai 3.0 master command xai xuong phim video creator pro tu dong hoa">
+          <div class="card-glass-shine"></div>
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <div class="site-domain-badge">
+                <span class="pulse-dot-green"></span>
+                <span class="domain-text">/he-thong-ai/</span>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
+                MASTER XAI 3.0
+              </span>
+            </div>
+            <div class="flex items-start gap-3 my-2">
+              <span class="text-3xl p-2 rounded-2xl bg-cyan-950/70 border border-cyan-500/40">🤖</span>
+              <div>
+                <h3 class="text-base font-black text-cyan-200 group-hover:text-cyan-300 transition">
+                  Hệ Thống AI 3.0 & Xưởng Phim LPN
+                </h3>
+                <span class="text-[11px] font-bold text-slate-400">Master Command xAI • Tự Động Hóa 24/7</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-300 mt-2 line-clamp-3 leading-relaxed">
+              Bộ công cụ điều hành siêu tự động hóa: sinh video tự động LPN Video Creator Pro kết hợp FFmpeg phần cứng RTX, kho prompt tạo website 1-lời nói, kịch bản reels V53 và hệ quản trị doanh nghiệp tự trị.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-slate-800/80 text-[10px] font-bold text-slate-400">
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🎬 Xưởng Phim Pro</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">⚡ Master Prompt xAI</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🔄 Tự Vận Hành 24/7</span>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition">Hệ Điều Hành xAI</span>
+            <a href="https://happyrun09.github.io/he-thong-ai/" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-500 text-white font-black text-xs hover:brightness-110 shadow-lg shadow-blue-500/30 transition">
+              <span>Vào Buồng Lái AI</span><span>🌐</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- CỔNG 6: BÀI GIẢNG V07: ĐÂY ĐO ĐỜI -->
+        <article class="eco-site-card group" data-category="discipline" data-keywords="bai giang v07 day do doi dech de doi do triet ly ky luat chay bo happy run 108">
+          <div class="card-glass-shine"></div>
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <div class="site-domain-badge">
+                <span class="pulse-dot-green"></span>
+                <span class="domain-text">/bai-giang-v07.html</span>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-purple-500/20 text-purple-300 border border-purple-500/40">
+                TRIẾT LÝ V07
+              </span>
+            </div>
+            <div class="flex items-start gap-3 my-2">
+              <span class="text-3xl p-2 rounded-2xl bg-purple-950/70 border border-purple-500/40">🏃</span>
+              <div>
+                <h3 class="text-base font-black text-purple-200 group-hover:text-purple-300 transition">
+                  Bài Giảng V07: ĐÂY ĐO ĐỜI
+                </h3>
+                <span class="text-[11px] font-bold text-slate-400">“Đây Đo Đời, Đếch Để Đời Đo” • Triết Lý Sống</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-300 mt-2 line-clamp-3 leading-relaxed">
+              Bài giảng triết lý sống đỉnh cao về tự chủ nội lực: Không bao giờ để hoàn cảnh hay định kiến bên ngoài định lượng giá trị bản thân. Chuyển hóa tâm thế vững chãi, tự tại trên hành trình rèn luyện 108 ngày.
+            </p>
+            <div class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-slate-800/80 text-[10px] font-bold text-slate-400">
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🔥 Nội Lực Tự Thân</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">🏆 Kỷ Luật 108 Ngày</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">💎 Chuyển Hóa Tâm Trí</span>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition">Khí Phách Bản Lĩnh</span>
+            <a href="https://happyrun09.github.io/1112_LPN_Happy_Run_Day_Do_Doi_Dech_De_Doi_Do_V07.html" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 text-white font-black text-xs hover:brightness-110 shadow-lg shadow-purple-500/30 transition">
+              <span>Xem Bài Giảng V07</span><span>🌐</span>
+            </a>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Live Search Counter / Result summary -->
+      <div id="ecoSearchResultCounter" class="hidden mt-4 text-xs font-bold text-amber-300 text-center"></div>
+
     </div>
+  </section>
+
+  <!-- THANH CÔNG CỤ NỔI THÔNG MINH (FLOATING ACTION DOCK - Chuẩn Tuấn Tử Tế) -->
+  <div class="floating-quick-dock" id="floatingQuickDock">
+    <button type="button" onclick="openEcosystemModal()" class="dock-btn dock-btn-gold" title="Mở sơ đồ hệ thống 6 cổng chuyên đề">
+      <span>🌟</span><span>6 Cổng Chuyên Đề</span>
+    </button>
+    <a href="#khung-ma-qr" class="dock-btn hidden sm:inline-flex" title="Quét mã Zalo rèn luyện Thân Tâm Trí">
+      <span>💬</span><span>Nhóm Zalo 4h30</span>
+    </a>
+    <button type="button" onclick="window.scrollTo({top:0, behavior:'smooth'})" class="dock-btn" title="Cuộn về đầu trang">
+      <span>🔝</span><span>Lên Đầu</span>
+    </button>
   </div>
 
-  <!-- BANNER ĐẶC BIỆT: HỆ ĐIỀU HÀNH TỰ ĐỘNG HÓA AI TOÀN DÂN (MASTER COMMAND 3.0) -->
-  <div class="max-w-7xl mx-auto px-2 sm:px-6 mt-3 mb-2">
-    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-950/90 via-slate-900/95 to-cyan-950/90 border border-blue-500/50 p-4 sm:p-5 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-600 to-cyan-400 flex items-center justify-center text-2xl shadow-lg shrink-0">
-          🤖
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/40 text-blue-300 text-xs font-black uppercase tracking-wider">HỆ ĐIỀU HÀNH AI 3.0</span>
-            <span class="text-xs text-slate-400">Tự động hóa toàn dân • Tự trị 100%</span>
-          </div>
-          <h3 class="text-base sm:text-lg font-black text-white mt-1">
-            MASTER COMMAND 3.0 — UNIVERSAL AI AUTOMATION WEB-OS
-          </h3>
-          <p class="text-xs text-slate-300 mt-0.5">
-            Xưởng sản xuất Video Reels tự động, xuất bản 25 Fanpage Meta, quản trị Dual-AI Router và điều khiển PC từ xa qua điện thoại.
-          </p>
-        </div>
-      </div>
-      <a href="/he-thong-ai/" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-black text-xs sm:text-sm hover:brightness-110 shadow-lg shadow-blue-500/30 flex items-center gap-2 shrink-0 transition">
-        <span>🚀</span> Khám Phá Ngay &rarr;
-      </a>
-    </div>
-  </div>
+  <script id="tuantuteInteractionsScript">
+    // Logic Lọc Card theo Chuyên đề (Category Filter)
+    function filterEcoCards(cat, btn) {
+      document.querySelectorAll('#ecoFilterBar .eco-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
 
-  <!-- BANNER NỔI BẬT: BÀI GIẢNG TRUYỀN CẢM HỨNG LPN HAPPY RUN V07 -->
-  <div class="max-w-7xl mx-auto px-2 sm:px-6 mt-3 mb-2">
-    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-950/80 via-slate-900/90 to-red-950/80 border border-amber-500/50 p-4 sm:p-5 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-red-500 flex items-center justify-center text-2xl shadow-lg shrink-0">
-          🏃
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-black uppercase tracking-wider">Phiên Bản Mới V07</span>
-            <span class="text-xs text-slate-400">18 Trang Lộc • Lê Phúc Nhật</span>
-          </div>
-          <h3 class="text-base sm:text-lg font-black text-white mt-1">ĐÂY ĐO ĐỜI, ĐẾCH ĐỂ ĐỜI ĐO • HỆ THỐNG BÀI GIẢNG TRUYỀN CẢM HỨNG LPN HAPPY RUN</h3>
-          <p class="text-xs sm:text-sm text-slate-300 mt-0.5">Khám phá 36 mặt thẻ chuyển hóa 3D Before/After, âm thanh tần số 432Hz/528Hz, đồng hồ 120s và Kệ Đúc Kết sâu sắc.</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-3 shrink-0">
-        <a href="1112_LPN_Happy_Run_Day_Do_Doi_Dech_De_Doi_Do_V07.html" target="_blank" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-white text-xs sm:text-sm font-black shadow-lg shadow-amber-500/25 transition transform hover:-translate-y-0.5 flex items-center gap-2">
-          <span>🚀 Khám Phá Ngay Bài Giảng</span>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
+      const cards = document.querySelectorAll('#ecoCardsGrid .eco-site-card');
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const cardCat = card.dataset.category;
+        const matches = (cat === 'all' || cardCat === cat);
+        card.style.display = matches ? 'flex' : 'none';
+        if (matches) visibleCount++;
+      });
 
+      const counter = document.getElementById('ecoSearchResultCounter');
+      if (counter) {
+        if (cat !== 'all') {
+          counter.textContent = `🎯 Đang hiển thị ${visibleCount} cổng chuyên đề phù hợp`;
+          counter.classList.remove('hidden');
+        } else {
+          counter.classList.add('hidden');
+        }
+      }
+    }
 
-  <!-- NGĂN ĐIỀU HƯỚNG NHANH BÊN TRÁI (MỞ KHI BẤM NÚT ◫) -->
-  <aside id="quickSideDrawer" class="fixed top-20 left-4 z-50 hidden w-72 rounded-2xl bg-slate-900/95 backdrop-blur-md border-2 theme-border shadow-2xl p-4 space-y-3 text-xs">
-    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-      <span class="font-extrabold theme-text uppercase">◫ Bố Cục & Trạm Di Chuyển Nhanh</span>
-      <button type="button" id="btnCloseQuickDrawer" class="text-slate-400 hover:text-white font-bold">✕</button>
-    </div>
-    <div class="space-y-1.5 font-semibold text-slate-200">
-      <a href="#khung-dinh-vi" class="block p-2 rounded-lg hover:bg-slate-800">1. Trạm Định Vị Happy Run 108</a>
-      <a href="#khung-ma-qr" class="block p-2 rounded-lg hover:bg-slate-800">2. Cộng Đồng Zalo & YouTube Chính Thức</a>
-      <a href="#khoa-hoc-4d" class="block p-2 rounded-lg hover:bg-slate-800">3. Sáu Học Phần Thực Chiến Chuyên Sâu</a>
-      <a href="#phong-hoc-4d" class="block p-2 rounded-lg hover:bg-slate-800">4. Phòng Học Tương Tác 4D (Giọng Nam/Nữ)</a>
-      <a href="#kien-truc-35" class="block p-2 rounded-lg hover:bg-slate-800">5. Hệ Thống 35 Lớp Học Thực Chiến</a>
-      <a href="#buong-lai" class="block p-2 rounded-lg hover:bg-slate-800">6. Buồng Lái Cá Nhân 4h30 Sáng</a>
-      <a href="#bang-vang" class="block p-2 rounded-lg hover:bg-slate-800">7. Bảng Vàng Kỷ Luật 108 Ngày</a>
-      <a href="#van-hoa-htx" class="block p-2 rounded-lg hover:bg-slate-800">8. Văn Hóa Chuyển Hóa Tổ Chức & HTX</a>
-      <a href="#bai-viet-7-buoc" class="block p-2 rounded-lg hover:bg-slate-800">9. Giáo Trình Thực Chiến 7 Bước</a>
-    </div>
-    <div class="pt-2 border-t border-slate-800 space-y-2">
-      <button type="button" id="btnToggleCompactWidth" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold theme-text border border-slate-700">
-        ↔ Đổi Độ Rộng Khung Trang (Rộng / Tập Trung)
-      </button>
-    </div>
-  </aside>
+    // Logic Tìm kiếm Thời gian thực (Real-time Instant Search)
+    function searchEcoCards(keyword) {
+      const q = (keyword || '').trim().toLowerCase();
+      const cards = document.querySelectorAll('#ecoCardsGrid .eco-site-card');
+      let visibleCount = 0;
 
-  <!-- NỘI DUNG CHÍNH -->
-  <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-6 space-y-8">
+      cards.forEach(card => {
+        const text = (card.innerText + ' ' + (card.dataset.keywords || '')).toLowerCase();
+        const matches = (!q || text.includes(q));
+        card.style.display = matches ? 'flex' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      const counter = document.getElementById('ecoSearchResultCounter');
+      if (counter) {
+        if (q) {
+          counter.textContent = `🔍 Tìm thấy ${visibleCount} cổng chuyên đề với từ khóa "${keyword}"`;
+          counter.classList.remove('hidden');
+        } else {
+          counter.classList.add('hidden');
+        }
+      }
+    }
+  </script>
+
 
     <!-- 2. KHỐI ĐỊNH VỊ HAPPY RUN 108 & CỘT 4 CHỈ SỐ ĐỊNH LƯỢNG (CÓ ẢNH ĐẠI DIỆN & LOGO ĐỘC BẢN) -->
     <section id="khung-dinh-vi" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
