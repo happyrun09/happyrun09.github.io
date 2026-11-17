@@ -1091,6 +1091,8 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
 
 .map-frame {
   position: relative;
+  z-index: 1;
+  isolation: isolate;
   width: 100%;
   min-height: 320px;
   height: 100%;
@@ -1199,9 +1201,9 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(4px);
-  z-index: 2400;
+  z-index: 9990;
   display: none;
   align-items: center;
   justify-content: center;
