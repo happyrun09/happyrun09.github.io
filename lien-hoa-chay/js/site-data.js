@@ -377,13 +377,13 @@ window.LIENHOA_DATA = {
       id: "triet-ly-an-chay",
       tag: "Dưỡng Sinh Thân Tâm",
       title: "Ăn Chay Đúng Cách: Khi Bữa Cơm Là Một Lời Chúc Bình An",
-      excerpt: "Ăn chay không chỉ là kiêng thịt cá, mà là nghệ thuật lựa chọn thực phẩm thuần khiết để cơ thể nhẹ nhàng và tâm trí sáng suốt hơn mỗi ngày.",
-      readTime: "3 phút đọc",
+      excerpt: "Ăn chay không chỉ là kiêng thịt cá, mà là nghệ thuật lựa chọn thực phẩm thuần khiết để cơ thể nhẹ nhàng, tiêu hóa êm ái và tâm trí sáng suốt hơn mỗi ngày.",
+      readTime: "4 phút đọc",
       image: "./assets/images/space/space-07.jpg",
       content: [
-        "Nhiều người khi mới bắt đầu ăn chay thường lo ngại thiếu chất hoặc dễ đói. Bí quyết của ẩm thực chay dưỡng sinh nằm ở sự đa dạng tự nhiên: kết hợp đạm thực vật từ đậu phụ, phù trúc, các loại hạt cùng chất khoáng và vitamin từ rau củ, nấm tươi theo mùa.",
-        "Tại Liên Hoa Chay, chúng tôi hạn chế tối đa đồ giả mặn công nghiệp hay gia vị hóa học. Thay vào đó, vị ngọt được chắt lọc từ củ sen, mía lau, ngô ngọt và nấm hương giúp thực khách ăn no nhẹ mà không nặng bụng.",
-        "Khi ta ăn chậm lại, cảm nhận hương thơm của lá sen, vị bùi của hạt sen hay độ giòn của ngó sen, bữa ăn trở thành một khoảnh khắc chánh niệm quý giá giữa bộn bề cuộc sống."
+        "Nhiều người khi mới bắt đầu ăn chay thường lo ngại thiếu chất hoặc dễ nhanh đói. Bí quyết của ẩm thực chay dưỡng sinh không nằm ở những món chế biến cầu kỳ giả vị mặn, mà nằm ở sự đa dạng tự nhiên: kết hợp hài hòa đạm thực vật từ đậu phụ non, phù trúc, hạt sen, hạt điều cùng vitamin và khoáng chất từ rau củ, nấm tươi theo mùa.",
+        "Tại Liên Hoa Chay, chúng tôi giữ nguyên sự khắt khe ngay từ khâu chọn nguyên liệu: hạn chế tối đa đồ giả mặn công nghiệp hay gia vị điều vị hóa học. Thay vào đó, vị ngọt sâu được chắt lọc chậm rãi từ củ sen, mía lau, ngô ngọt và nấm hương giúp thực khách ăn no nhẹ mà không nặng bụng.",
+        "Khi ta ngồi xuống bên người thân, gác lại chiếc điện thoại một lát, ăn chậm hơn để cảm nhận hương thơm thanh thoát của lá sen, vị bùi của hạt sen hay độ giòn mát của ngó sen — bữa cơm ấy tự nhiên trở thành một khoảnh khắc chánh niệm quý giá giữa nhịp sống bộn bề."
       ],
       source_status: "placeholder_editable"
     },
@@ -391,13 +391,13 @@ window.LIENHOA_DATA = {
       id: "bi-mat-noi-nuoc-dung",
       tag: "Nghệ Thuật Bếp Chay",
       title: "Hành Trình 8 Tiếng Ninh Nước Dùng Từ Củ Quả Tự Nhiên",
-      excerpt: "Không cần bột ngọt hay hạt nêm hóa học, nồi lẩu nấm Liên Hoa vẫn có vị ngọt sâu và thanh tao nhờ công thức ninh rau củ chậm rãi.",
-      readTime: "2 phút đọc",
+      excerpt: "Không cần bột ngọt hay hạt nêm hóa học, nồi lẩu nấm Liên Hoa vẫn có vị ngọt sâu và thanh tao nhờ công thức ninh rau củ chậm rãi suốt 8 giờ.",
+      readTime: "3 phút đọc",
       image: "./assets/images/food/food-05.jpg",
       content: [
-        "Linh hồn của một nồi lẩu chay ngon nằm ở nồi nước dùng. Từ sáng sớm, gian bếp Liên Hoa đã sơ chế củ cải trắng, củ sen, ngô ngọt, mía lau, cà rốt và nấm hương khô để ninh lửa nhỏ liên tục suốt 8 tiếng.",
-        "Quá trình ninh chậm giúp các enzyme và đường tự nhiên trong củ quả tiết ra từ từ, tạo nên độ ngọt hậu êm dịu nơi cổ họng mà không gây cảm giác khát nước sau khi ăn.",
-        "Kết hợp cùng đĩa nấm tươi thập cẩm và rau xanh theo mùa, đây luôn là lựa chọn được các gia đình nhiều thế hệ yêu thích nhất mỗi dịp cuối tuần."
+        "Linh hồn của một nồi lẩu chay ngon nằm ở nồi nước dùng. Từ sáng sớm tinh mơ, gian bếp Liên Hoa đã rửa sạch, sơ chế củ cải trắng, củ sen, ngô ngọt, mía lau, cà rốt và nấm hương khô để ninh nhỏ lửa liên tục suốt 8 tiếng.",
+        "Quá trình ninh chậm giúp các dưỡng chất và vị ngọt tự nhiên trong từng thớ củ quả tiết ra từ từ, hòa quyện thành thứ nước dùng trong veo, ngọt hậu êm dịu nơi cổ họng mà hoàn toàn không gây cảm giác khát nước hay khô cổ sau khi dùng bữa.",
+        "Kết hợp cùng đĩa nấm thập cẩm tươi rói và rổ rau xanh thu hoạch trong ngày, nồi lẩu nấm Liên Hoa luôn là điểm hẹn ấm áp được các gia đình nhiều thế hệ yêu thích nhất mỗi dịp cuối tuần hay ngày Rằm."
       ],
       source_status: "verified_from_local_or_web"
     },
@@ -405,13 +405,27 @@ window.LIENHOA_DATA = {
       id: "mam-co-chay-ngay-ram",
       tag: "Văn Hóa Việt",
       title: "Ý Nghĩa Mâm Cỗ Chay Trang Nghiêm Dịp Rằm & Giỗ Chạp",
-      excerpt: "Một mâm cỗ chay thanh khiết dâng lên gia tiên không chỉ thể hiện lòng thành kính mà còn gửi gắm ước nguyện bình an cho cả gia đình.",
+      excerpt: "Một mâm cỗ chay thanh khiết dâng lên gia tiên không chỉ thể hiện lòng thành kính mà còn gửi gắm ước nguyện bình an, phúc lành cho cả gia đình.",
       readTime: "3 phút đọc",
       image: "./assets/images/setco/set-650.000.jpg",
       content: [
-        "Trong nếp sống văn hóa người Việt, ngày Rằm, mùng Một hay dịp giỗ chạp, tân gia luôn là lúc con cháu hướng về cội nguồn. Xu hướng chọn mâm cỗ chay ngày càng được nhiều gia đình trân trọng bởi sự thanh tịnh, nhẹ nhàng và giàu ý nghĩa thiện lành.",
-        "Tại Liên Hoa Chay, các set cỗ từ 500.000đ đến 1.000.000đ được thiết kế cân đối đầy đủ khai vị, món chính, xào, canh và tráng miệng, đóng gói cẩn thận và giao tận nơi đúng giờ cúng lễ.",
-        "Gia chủ chỉ cần đặt trước qua Zalo hoặc Hotline 0904 184 986, đội ngũ bếp sẽ chuẩn bị chu toàn để gia đình có thêm thời gian sum vầy trọn vẹn."
+        "Trong nếp sống văn hóa người Việt, ngày Rằm, mùng Một hay dịp giỗ chạp, tân gia luôn là lúc con cháu hướng về cội nguồn bằng tất cả sự biết ơn. Xu hướng chọn mâm cỗ chay ngày càng được nhiều gia đình trân trọng bởi sự thanh tịnh, nhẹ nhàng và giàu ý nghĩa thiện lành.",
+        "Tại Liên Hoa Chay, các set cỗ từ 500.000đ đến 1.000.000đ được thiết kế cân đối đầy đủ khai vị, món kho, xào, canh dưỡng sinh và tráng miệng, bày biện trang nghiêm, đóng gói cẩn thận và giao nóng tận nơi đúng giờ cúng lễ.",
+        "Gia chủ chỉ cần nhắn trước qua Zalo hoặc gọi Hotline 0904 184 986, đội ngũ bếp Liên Hoa sẽ chuẩn bị chu toàn để cả nhà có thêm thời gian sum vầy bên nhau."
+      ],
+      source_status: "verified_from_local_or_web"
+    },
+    {
+      id: "pho-chay-thien-nguyen",
+      tag: "Hạt Giống Thiện Lành",
+      title: "Ấm Áp Phở Chay 0 Đồng & Tâm Nguyện Chia Sẻ Yêu Thương",
+      excerpt: "Mỗi bát phở nóng hổi trao đi không chỉ xua tan cái se lạnh buổi sớm, mà còn là nhịp cầu kết nối lòng nhân ái giữa Liên Hoa và cộng đồng.",
+      readTime: "3 phút đọc",
+      image: "./assets/images/moments/moment-01.jpg",
+      content: [
+        "Với Liên Hoa Chay, kinh doanh ẩm thực chay không chỉ là mang đến những bữa ăn ngon, mà còn là cơ hội gieo duyên lành và lan tỏa tinh thần tương thân tương ái ngay tại quê hương Hải Dương.",
+        "Những buổi sáng phục vụ Phở Chay 0 Đồng tuy giản dị nhưng luôn tràn đầy nụ cười của đội ngũ nhân viên và niềm hoan hỷ của bà con, cô bác ghé qua. Từng bát phở vẫn được nấu bằng chính nồi nước dùng củ quả ninh kỹ, sạch sẽ và trọn vẹn sự trân trọng.",
+        "Chính sự ủng hộ của quý thực khách mỗi ngày đã tiếp thêm động lực để Liên Hoa duy trì ngọn lửa bếp ấm và những hoạt động thiện nguyện bền bỉ theo năm tháng."
       ],
       source_status: "verified_from_local_or_web"
     }

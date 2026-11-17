@@ -33,33 +33,62 @@
   }
 
   /* ------------------------------------------------------------------
-     1. WEBAUDIO TIBETAN SINGING BOWL (THỈNH CHUÔNG AN LẠC)
+     1. WEBAUDIO TIBETAN SINGING BOWL (THỈNH CHUÔNG AN LẠC NGÂN VANG)
      ------------------------------------------------------------------ */
-  function playZenBell() {
+  let zenAudioCtx = null;
+
+  async function playZenBell() {
     const btn = $("#btnZenBell");
-    btn?.classList.add("ringing");
-    setTimeout(() => btn?.classList.remove("ringing"), 1400);
+    if (btn) {
+      btn.classList.remove("ringing");
+      void btn.offsetWidth; // trigger reflow to restart animation
+      btn.classList.add("ringing");
+      setTimeout(() => btn.classList.remove("ringing"), 3200);
+    }
 
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      const ctx = new AudioCtx();
-      const now = ctx.currentTime;
-      [432, 864, 1296].forEach((freq, idx) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
+      if (!zenAudioCtx) {
+        zenAudioCtx = new AudioCtx();
+      }
+      if (zenAudioCtx.state === "suspended") {
+        await zenAudioCtx.resume();
+      }
+
+      const now = zenAudioCtx.currentTime;
+      const master = zenAudioCtx.createGain();
+      master.gain.setValueAtTime(0.55, now);
+      master.connect(zenAudioCtx.destination);
+
+      // Rich singing bowl partials (fundamental + inharmonic overtones + gentle beating)
+      const partials = [
+        { freq: 216, gain: 0.45, dur: 5.8 },
+        { freq: 217.6, gain: 0.25, dur: 5.6 }, // subtle warm shimmer/beating
+        { freq: 596, gain: 0.22, dur: 4.2 },
+        { freq: 1166, gain: 0.12, dur: 2.8 },
+        { freq: 1928, gain: 0.06, dur: 1.8 }
+      ];
+
+      partials.forEach((p) => {
+        const osc = zenAudioCtx.createOscillator();
+        const g = zenAudioCtx.createGain();
         osc.type = "sine";
-        osc.frequency.setValueAtTime(freq, now);
-        gain.gain.setValueAtTime(0.14 / (idx + 1), now);
-        gain.gain.exponentialRampToValueAtTime(0.0005, now + 2.8 - idx * 0.4);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
+        osc.frequency.setValueAtTime(p.freq, now);
+
+        // Soft mallet attack (18ms) -> long resonant exponential decay
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.linearRampToValueAtTime(p.gain, now + 0.018);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + p.dur);
+
+        osc.connect(g);
+        g.connect(master);
         osc.start(now);
-        osc.stop(now + 3.0);
+        osc.stop(now + p.dur + 0.05);
       });
     } catch {
-      /* ignore if audio blocked */
+      /* ignore if audio blocked by browser policy */
     }
-    showToast("🪷 Tiếng chuông an lạc — Thân tâm thanh tịnh");
+    showToast("🔔 Tiếng chuông an lạc đang ngân vang — Thân tâm thanh tịnh");
   }
 
   /* ------------------------------------------------------------------

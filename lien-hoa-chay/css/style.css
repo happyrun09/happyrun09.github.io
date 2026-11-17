@@ -263,7 +263,13 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
 }
 .btn-zen-bell.ringing {
   border-color: var(--lotus-pink);
-  box-shadow: 0 0 18px var(--lotus-glow);
+  box-shadow: 0 0 22px var(--lotus-glow);
+  animation: bellPulse 1.6s ease-in-out 2;
+}
+@keyframes bellPulse {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.06); box-shadow: 0 0 28px rgba(244, 114, 182, 0.65); }
+  50% { transform: scale(1); }
 }
 
 .btn-reserve-nav {
@@ -963,9 +969,14 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
   font-size: 0.88rem;
 }
 .stars-gold { color: var(--wood-gold); }
-.reviews-grid, .blog-grid {
+.reviews-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 .review-card, .blog-card {
