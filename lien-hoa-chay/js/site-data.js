@@ -28,7 +28,11 @@ window.LIENHOA_DATA = {
       contactPerson: "Ms. Thạo",
       zaloUrl: "https://zalo.me/0904184986",
       email: "lienhoachayhd@gmail.com",
-      fanpageUrl: "", // Điền link Fanpage Facebook của quán tại đây nếu có (để trống sẽ tự ẩn)
+      fanpageUrl: "https://www.facebook.com/profile.php?id=61559156548781",
+      facebookPersonalUrl: "https://www.facebook.com/thaonguyen.825687",
+      tiktokUrl: "https://vt.tiktok.com/ZSgCF9HYp/",
+      qrZalo: "./assets/images/qr-zalo.png",
+      qrPhone: "./assets/images/qr-phone.png",
       address: "Lô 94.7 Đường Trường Chinh (Đối diện đường Hoàng Quốc Việt), P. Tứ Minh, TP. Hải Dương",
       hours: "Ca Trưa: 10:00 – 13:30 | Ca Tối: 17:00 – 21:00 (Mở cửa cả tuần)",
       mapsUrl: "https://www.google.com/maps/search/?api=1&query=Lô+94.7+Đường+Trường+Chinh+Tứ+Minh+Hải+Dương",
