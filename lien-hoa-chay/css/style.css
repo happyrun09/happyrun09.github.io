@@ -1397,8 +1397,16 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
 }
 
 @media (max-width: 640px) {
+  html, body { overflow-x: clip; }
   body { padding-bottom: 64px; }
-  .bell-text, .btn-nav-text { display: none; }
+  .header-container { padding: 10px 12px; gap: 8px; }
+  .lotus-emblem { width: 34px; height: 34px; }
+  .brand-name { font-size: 0.9rem; }
+  .brand-sub { display: none; }
+  .header-actions { gap: 5px; }
+  .bell-text, .btn-nav-text, .btn-maps-nav, .btn-reserve-nav { display: none; }
+  .btn-zen-bell, .btn-font-toggle, .btn-theme-toggle { padding: 6px 8px; font-size: 0.74rem; }
+  .btn-cart-nav { width: 34px; height: 34px; }
   .hero-metrics-grid, .pillars-grid, .form-grid { grid-template-columns: 1fr 1fr; }
   .form-grid, .qr-connect-row { grid-template-columns: 1fr; }
   .fab-stack { bottom: 76px; }
@@ -1419,7 +1427,9 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 2px;
     font-size: 0.74rem;
+    white-space: nowrap;
     color: var(--text-main);
   }
 }
