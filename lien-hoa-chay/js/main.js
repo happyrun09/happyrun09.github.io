@@ -366,6 +366,29 @@
     return galleryCat === "all" ? list : list.filter((g) => g.category === galleryCat);
   }
 
+  function updateLiveOpenStatus() {
+    const el = $("#liveOpenStatus");
+    if (!el) return;
+    const now = new Date();
+    const vnTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+    const mins = vnTime.getHours() * 60 + vnTime.getMinutes();
+    const isOpen = (mins >= 11 * 60 && mins <= 13 * 60 + 30) || (mins >= 18 * 60 && mins <= 20 * 60 + 30);
+
+    if (currentLang === "zh-CN") {
+      el.textContent = isOpen
+        ? "🟢 正在营业中 (11:00 – 13:30 & 18:00 – 20:30)"
+        : "🪷 营业时间: 11:00 – 13:30 & 18:00 – 20:30（欢迎提前预订）";
+    } else if (currentLang === "zh-TW") {
+      el.textContent = isOpen
+        ? "🟢 正在營業中 (11:00 – 13:30 & 18:00 – 20:30)"
+        : "🪷 營業時間: 11:00 – 13:30 & 18:00 – 20:30（歡迎提前預訂）";
+    } else {
+      el.textContent = isOpen
+        ? "🟢 Đang Mở Cửa Đón Khách (11:00 – 13:30 & 18:00 – 20:30)"
+        : "🪷 Giờ đón khách: 11:00 – 13:30 & 18:00 – 20:30 (Nhận đặt bàn 24/7)";
+    }
+  }
+
   function renderVideos() {
     const grid = $("#videoShowcaseGrid");
     if (!grid || !MEDIA.videos) return;
@@ -375,7 +398,7 @@
         (v) => `
         <article class="video-card">
           <div class="video-media-wrap">
-            <video id="vid-${v.id}" controls preload="metadata" playsinline poster="${v.poster}">
+            <video id="vid-${v.id}" controls preload="none" playsinline poster="${v.poster}">
               <source src="${v.src}" type="video/mp4">
             </video>
             <button type="button" class="btn-video-fullscreen" data-fullscreen-vid="vid-${v.id}" title="${fsLabel}">
@@ -1141,7 +1164,9 @@
   renderGallery();
   renderReviewsAndBlog();
   renderTray();
+  updateLiveOpenStatus();
   bindEvents();
+  $("#btnPrintMenu")?.addEventListener("click", () => window.print());
   if (currentLang !== "vi") {
     applyLanguage(currentLang);
   }
