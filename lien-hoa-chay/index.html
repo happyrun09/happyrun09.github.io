@@ -115,9 +115,9 @@
           <span class="bell-text">Thỉnh Chuông</span>
         </button>
 
-        <button class="btn-ai-key" id="btnOpenAiKeyModal" title="Trạm kết nối Khóa AI (DeepSeek + Gemini)">
+        <button class="btn-ai-key" id="btnOpenAiKeyModal" style="display:none;" title="Trạm quản trị Khóa AI (DeepSeek + Gemini)">
           <span>🔑</span>
-          <span class="bell-text" id="headerAiStatusText">AI Đã Nối</span>
+          <span class="bell-text" id="headerAiStatusText">Khóa AI</span>
         </button>
 
         <a href="https://www.google.com/maps/search/?api=1&query=Lô+94.7+Đường+Trường+Chinh+Tứ+Minh+Hải+Dương" target="_blank" rel="noopener noreferrer" id="headerMapsLink" class="btn-maps-nav" title="Mở bản đồ Google Maps">
@@ -737,16 +737,16 @@
         </select>
       </div>
       <div class="form-group" style="margin-bottom:12px;">
-        <label for="inputDeepseekKey">Khóa DeepSeek API (Đã nạp sẵn khóa hệ thống):</label>
+        <label for="inputDeepseekKey">Khóa DeepSeek API (Chỉ lưu cục bộ trên trình duyệt của bạn):</label>
         <input type="password" id="inputDeepseekKey" placeholder="sk-...">
       </div>
       <div class="form-group" style="margin-bottom:16px;">
-        <label for="inputGeminiKey">Khóa Google Gemini API (Đã nạp sẵn khóa hệ thống):</label>
+        <label for="inputGeminiKey">Khóa Google Gemini API (Chỉ lưu cục bộ trên trình duyệt của bạn):</label>
         <input type="password" id="inputGeminiKey" placeholder="AQ... hoặc AIza...">
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <button type="button" class="btn-submit-reserve" id="btnSaveAiKeys" style="flex:1;">💾 Lưu Cấu Hình AI</button>
-        <button type="button" class="btn-copy-loc" id="btnRestoreDefaultAiKeys">🔄 Khôi Phục Khóa Gốc</button>
+        <button type="button" class="btn-submit-reserve" id="btnSaveAiKeys" style="flex:1;">💾 Lưu Khóa Riêng</button>
+        <button type="button" class="btn-copy-loc" id="btnClearAiKeys">🗑️ Xóa Khóa</button>
       </div>
     </div>
   </div>
