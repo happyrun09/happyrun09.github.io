@@ -124,7 +124,14 @@ window.LIENHOA_I18N = {
       mbTray: "餐盘",
       driverTitle: "🚕 请带我去莲花素食餐厅",
       driverHint: "请将此屏幕出示给越南出租车 / Grab 司机：",
-      driverNote: "注：位于海阳市四明坊长征路 94.7 号（黄国越路正对面）"
+      driverNote: "注：位于海阳市四明坊长征路 94.7 号（黄国越路正对面）",
+      aiKeyBtn: "AI 已连接",
+      aiBadge: "🤖 莲花素食 AI 顾问 (DUAL-AI DEEPSEEK & GEMINI)",
+      aiTitle: "24/7 智能素食菜单与宴席定制顾问",
+      aiSub: "支持中文或越南语提问 —— AI 将根据您的人数与预算量身推荐素食组合。",
+      aiInputPh: "向莲花 AI 提问（例如：6人聚餐推荐哪些招牌菜和火锅？）...",
+      aiSubmitBtn: "✨ 咨询 AI 顾问",
+      aiAddComboBtn: "🛒 一键将推荐组合加入餐盘"
     },
     categories: {
       all: "全部菜品",
@@ -293,7 +300,14 @@ window.LIENHOA_I18N = {
       mbTray: "餐盤",
       driverTitle: "🚕 請帶我去蓮花素食餐廳",
       driverHint: "請將此螢幕出示給越南計程車 / Grab 司機：",
-      driverNote: "註：位於海陽市四明坊長征路 94.7 號（黃國越路正對面）"
+      driverNote: "註：位於海陽市四明坊長征路 94.7 號（黃國越路正對面）",
+      aiKeyBtn: "AI 已連接",
+      aiBadge: "🤖 蓮花素食 AI 顧問 (DUAL-AI DEEPSEEK & GEMINI)",
+      aiTitle: "24/7 智慧素食菜單與宴席客製顧問",
+      aiSub: "支援中文或越南語提問 —— AI 將根據您的人數與預算量身推薦素食組合。",
+      aiInputPh: "向蓮花 AI 提問（例如：6人聚餐推薦哪些招牌菜和火鍋？）...",
+      aiSubmitBtn: "✨ 諮詢 AI 顧問",
+      aiAddComboBtn: "🛒 一鍵將推薦組合加入餐盤"
     },
     categories: {
       all: "全部菜品",

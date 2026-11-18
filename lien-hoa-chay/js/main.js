@@ -931,6 +931,15 @@
       $("#mindfulSection .mindful-title").textContent = u.mindTitle;
       $("#mindfulSection .mindful-sub").textContent = u.mindDesc;
       $("#btnDrawCard span:last-child").textContent = u.mindDrawBtn;
+
+      if (u.aiBadge && $("#aiConsultantSection")) {
+        $("#headerAiStatusText").textContent = u.aiKeyBtn;
+        $("#aiConsultantSection .zen-flower-badge").textContent = u.aiBadge;
+        $("#aiConsultantSection .mindful-title").textContent = u.aiTitle;
+        $("#aiConsultantSection .mindful-sub").textContent = u.aiSub;
+        $("#aiChatInput").placeholder = u.aiInputPh;
+        $("#aiChatForm button[type='submit']").textContent = u.aiSubmitBtn;
+      }
       if (pack.quotes?.[0]) {
         $("#activeQuoteText").textContent = pack.quotes[0].quote;
         $("#activeQuoteAuthor").textContent = `— ${pack.quotes[0].author}`;

@@ -267,7 +267,16 @@ Quy tắc trả lời:
       if (!q || !output) return;
       output.innerHTML = `<div class="ai-loading">🪷 Trợ lý AI Liên Hoa đang suy nghĩ và phối thực đơn cho bạn...</div>`;
       const ans = await askLienHoaAI(q);
-      output.innerHTML = `<div class="ai-answer-content">${ans}</div>`;
+      const isZh = /[\u4e00-\u9fa5]/.test(q);
+      const btnText = isZh
+        ? "🛒 一键将招牌推荐组合加入餐盘"
+        : "🛒 Thêm Nhanh Combo Gợi Ý (Lẩu Nấm + Tàu Hũ + Cơm Sen) Vào Mâm";
+      output.innerHTML = `
+        <div class="ai-answer-content">${ans}</div>
+        <div style="margin-top:12px;">
+          <button type="button" class="btn-spotlight-add" data-add-dish="lau-nam-lien-hoa">${btnText}</button>
+        </div>
+      `;
     }
 
     form?.addEventListener("submit", (e) => {
