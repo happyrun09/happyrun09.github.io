@@ -899,6 +899,59 @@
       }
     });
 
+    // Smart Phone / Hotline Click (works on both Mobile dialer & Desktop PC)
+    document.addEventListener("click", async (e) => {
+      const telLink = e.target.closest('a[href^="tel:"]');
+      if (!telLink) return;
+      const num = telLink.getAttribute("href").replace("tel:", "").trim();
+      try {
+        await navigator.clipboard.writeText(num);
+      } catch {
+        /* ignore */
+      }
+
+      // On Desktop (or floating call button), also show Hotline + QR modal so user gets clear visual feedback
+      const isDesktop = window.innerWidth >= 768;
+      if (isDesktop || telLink.classList.contains("fab-call")) {
+        e.preventDefault();
+        openDetail(`
+          <span class="zen-flower-tag">📞 HOTLINE ĐẶT BÀN &amp; TƯ VẤN MÂM CỖ CHAY</span>
+          <h3 style="font-family:var(--font-heading);font-size:1.35rem;margin:6px 0 12px;">Liên Hệ Trực Tiếp Nhà Hàng Chay Liên Hoa</h3>
+          <div style="display:grid;gap:10px;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--bg-subtle);padding:12px 14px;border-radius:12px;border:1px solid var(--border-subtle);">
+              <div>
+                <div style="font-size:0.78rem;color:var(--text-muted);">Hotline chính (Ms. Thạo)</div>
+                <strong style="font-size:1.15rem;color:var(--text-gold);">0933.286.133</strong>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button type="button" class="btn-copy-loc" onclick="navigator.clipboard.writeText('0933286133');this.textContent='✓ Đã chép'">📋 Sao chép</button>
+                <a href="tel:0933286133" class="btn-spotlight-add">📞 Gọi</a>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--bg-subtle);padding:12px 14px;border-radius:12px;border:1px solid var(--border-subtle);">
+              <div>
+                <div style="font-size:0.78rem;color:var(--text-muted);">Hotline &amp; Zalo đặt bàn</div>
+                <strong style="font-size:1.15rem;color:var(--text-gold);">090.418.4986</strong>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button type="button" class="btn-copy-loc" onclick="navigator.clipboard.writeText('0904184986');this.textContent='✓ Đã chép'">📋 Sao chép</button>
+                <a href="tel:0904184986" class="btn-spotlight-add">📞 Gọi</a>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;background:var(--bg-subtle);padding:12px;border-radius:12px;">
+            <img src="./assets/images/qr-phone.png" alt="Mã QR gọi 0933.286.133" style="width:84px;height:84px;background:#fff;padding:4px;border-radius:8px;flex-shrink:0;">
+            <div style="font-size:0.84rem;color:var(--text-muted);">
+              <strong style="color:var(--text-main);display:block;margin-bottom:3px;">Đang xem trên máy tính?</strong>
+              Mở camera điện thoại quét mã QR bên cạnh để gọi ngay số <strong>0933.286.133</strong>, hoặc bấm <strong>Sao chép</strong> ở trên.
+            </div>
+          </div>
+        `);
+      } else {
+        showToast(`📞 Đang mở trình gọi & đã sao chép số ${num}`);
+      }
+    });
+
     // Copy Address
     $("#btnCopyAddress")?.addEventListener("click", async () => {
       try {
