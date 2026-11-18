@@ -456,20 +456,34 @@
       )
       .join("");
 
+    const getArticleView = (raw, lang = currentLang) => {
+      if (lang === "vi") return raw;
+      const tr = I18N[lang]?.articles?.[raw.id];
+      return tr ? { ...raw, ...tr } : raw;
+    };
+
+    const readLbl = tUI("readMore", "Đọc bài viết →");
     $("#blogGrid").innerHTML = DATA.articles
-      .map(
-        (a) => `
+      .map((raw) => {
+        const a = getArticleView(raw);
+        return `
         <article class="blog-card">
           <img src="${a.image}" alt="${a.title}" loading="lazy">
           <div class="blog-card-body">
             <div class="blog-tag">${a.tag} • ${a.readTime}</div>
             <h3>${a.title}</h3>
             <p>${a.excerpt}</p>
-            <button type="button" class="btn-read-blog" data-article-id="${a.id}">Đọc bài viết →</button>
+            <div class="blog-tts-row">
+              <button type="button" class="btn-tts" data-speak-article="${a.id}" data-speak-lang="vi" title="Nghe đọc Tiếng Việt">🔊 VI</button>
+              <button type="button" class="btn-tts" data-speak-article="${a.id}" data-speak-lang="zh-CN" title="简体中文朗读">🔊 简中</button>
+              <button type="button" class="btn-tts" data-speak-article="${a.id}" data-speak-lang="zh-TW" title="繁體中文朗讀">🔊 繁中</button>
+              <button type="button" class="btn-tts btn-tts-stop" data-speak-stop title="Dừng đọc">⏹</button>
+            </div>
+            <button type="button" class="btn-read-blog" data-article-id="${a.id}">${readLbl}</button>
           </div>
         </article>
-      `
-      )
+      `;
+      })
       .join("");
   }
 
@@ -493,6 +507,48 @@
         <button type="button" class="btn-spotlight-add" data-add-dish="${dish.id}">+ Thêm món gợi ý</button>
       `;
     }
+  }
+
+  /* ------------------------------------------------------------------
+     4B. TEXT-TO-SPEECH (ĐỌC BÀI VIẾT BẰNG 3 NGÔN NGỮ: VI / 简中 / 繁中)
+     ------------------------------------------------------------------ */
+  function stopSpeaking() {
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+    $$(".btn-tts.speaking").forEach((b) => b.classList.remove("speaking"));
+  }
+
+  function speakArticle(articleId, lang, triggerBtn) {
+    if (!("speechSynthesis" in window)) {
+      showToast("Trình duyệt chưa hỗ trợ đọc giọng nói.");
+      return;
+    }
+    const raw = DATA.articles.find((x) => x.id === articleId);
+    if (!raw) return;
+
+    const wasSpeaking = triggerBtn?.classList.contains("speaking");
+    stopSpeaking();
+    if (wasSpeaking) return;
+
+    const tr = lang === "vi" ? raw : I18N[lang]?.articles?.[raw.id] || raw;
+    const fullText = `${tr.title}. ${tr.content.join(" ")}`;
+    const utter = new SpeechSynthesisUtterance(fullText);
+    utter.lang = lang === "vi" ? "vi-VN" : lang;
+    utter.rate = 0.96;
+
+    const voices = window.speechSynthesis.getVoices();
+    const matched = voices.find((v) => v.lang.toLowerCase().startsWith(utter.lang.toLowerCase().slice(0, 5)))
+      || voices.find((v) => v.lang.toLowerCase().startsWith(utter.lang.toLowerCase().slice(0, 2)));
+    if (matched) utter.voice = matched;
+
+    if (triggerBtn) triggerBtn.classList.add("speaking");
+    utter.onend = () => triggerBtn?.classList.remove("speaking");
+    utter.onerror = () => triggerBtn?.classList.remove("speaking");
+
+    window.speechSynthesis.speak(utter);
+    const labelMap = { vi: "Tiếng Việt", "zh-CN": "简体中文", "zh-TW": "繁體中文" };
+    showToast(`🔊 Đang đọc bài viết (${labelMap[lang] || lang})`);
   }
 
   /* ------------------------------------------------------------------
@@ -529,6 +585,7 @@
     detailOverlay.setAttribute("aria-hidden", "false");
   };
   const closeDetail = () => {
+    stopSpeaking();
     detailOverlay.classList.remove("open");
     detailOverlay.setAttribute("aria-hidden", "true");
   };
@@ -653,15 +710,32 @@
       }
       const art = e.target.closest("[data-article-id]");
       if (art) {
-        const a = DATA.articles.find((x) => x.id === art.dataset.articleId);
-        if (a) {
+        const raw = DATA.articles.find((x) => x.id === art.dataset.articleId);
+        if (raw) {
+          const a = currentLang === "vi" ? raw : I18N[currentLang]?.articles?.[raw.id] ? { ...raw, ...I18N[currentLang].articles[raw.id] } : raw;
           openDetail(`
             <span class="zen-flower-tag">${a.tag} • ${a.readTime}</span>
             <h3 style="font-family:var(--font-heading);font-size:1.35rem;margin:6px 0 12px;">${a.title}</h3>
+            <div class="blog-tts-row" style="margin-bottom:14px;">
+              <button type="button" class="btn-tts" data-speak-article="${a.id}" data-speak-lang="vi">🔊 Đọc Tiếng Việt</button>
+              <button type="button" class="btn-tts" data-speak-article="${a.id}" data-speak-lang="zh-CN">🔊 简中朗读</button>
+              <button type="button" class="btn-tts" data-speak-article="${a.id}" data-speak-lang="zh-TW">🔊 繁體朗讀</button>
+              <button type="button" class="btn-tts btn-tts-stop" data-speak-stop>⏹ Dừng</button>
+            </div>
             <img src="${a.image}" alt="${a.title}" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-bottom:14px;">
             ${a.content.map((p) => `<p style="color:var(--text-muted);margin-bottom:12px;font-size:0.92rem;">${p}</p>`).join("")}
           `);
         }
+        return;
+      }
+      const speakBtn = e.target.closest("[data-speak-article]");
+      if (speakBtn) {
+        speakArticle(speakBtn.dataset.speakArticle, speakBtn.dataset.speakLang, speakBtn);
+        return;
+      }
+      if (e.target.closest("[data-speak-stop]")) {
+        stopSpeaking();
+        showToast("⏹ Đã dừng đọc");
         return;
       }
       const lbIdxEl = e.target.closest("[data-lb-index]");
@@ -1001,6 +1075,7 @@
     renderCategoryPills();
     renderMenu();
     renderCatering();
+    renderReviewsAndBlog();
     renderTray();
   }
 
