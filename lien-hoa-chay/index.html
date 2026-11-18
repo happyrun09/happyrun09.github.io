@@ -115,6 +115,11 @@
           <span class="bell-text">Thỉnh Chuông</span>
         </button>
 
+        <button class="btn-ai-key" id="btnOpenAiKeyModal" title="Trạm kết nối Khóa AI (DeepSeek + Gemini)">
+          <span>🔑</span>
+          <span class="bell-text" id="headerAiStatusText">AI Đã Nối</span>
+        </button>
+
         <a href="https://www.google.com/maps/search/?api=1&query=Lô+94.7+Đường+Trường+Chinh+Tứ+Minh+Hải+Dương" target="_blank" rel="noopener noreferrer" id="headerMapsLink" class="btn-maps-nav" title="Mở bản đồ Google Maps">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
           <span class="btn-nav-text">Chỉ Đường</span>
@@ -378,20 +383,20 @@
           </div>
         </div>
 
-        <!-- Video Reels Showcase (9 Video thực tế từ D:\Lienhoa) -->
+        <!-- Video Reels Showcase (16 Video thực tế từ D:\Lienhoa) -->
         <div class="media-subsection">
           <div class="section-header-center" style="margin-top: 48px; margin-bottom: 24px;">
             <span class="section-subtitle">THƯỚC PHIM THỰC TẾ TẠI QUÁN</span>
-            <h3 class="section-title" style="font-size:1.7rem;">Video Không Gian, Buffet &amp; Thiện Nguyện</h3>
+            <h3 class="section-title" style="font-size:1.7rem;">16 Video Không Gian, Buffet &amp; Thiện Nguyện</h3>
           </div>
           <div class="video-grid" id="videoShowcaseGrid"></div>
         </div>
 
-        <!-- Full Photo Archive (231 Ảnh thực tế từ D:\Lienhoa) -->
+        <!-- Full Photo Archive (238 Ảnh thực tế từ D:\Lienhoa) -->
         <div class="media-subsection">
           <div class="section-header-center" style="margin-top: 48px; margin-bottom: 20px;">
             <span class="section-subtitle">KHO ẢNH THỰC TẾ LIÊN HOA CHAY</span>
-            <h3 class="section-title" style="font-size:1.7rem;">Thư Viện 231+ Khoảnh Khắc &amp; Món Ngon</h3>
+            <h3 class="section-title" style="font-size:1.7rem;">Thư Viện 238+ Khoảnh Khắc &amp; Món Ngon</h3>
           </div>
           <div class="category-pills-scroll" id="galleryFilterTabs" style="justify-content:center; margin-bottom:20px;"></div>
           <div class="gallery-strip" id="galleryGrid"></div>
@@ -426,6 +431,40 @@
               <span class="draw-icon">🪷</span>
               <span>Rút Thẻ An Lạc Mới</span>
             </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7B. AI Culinary Sommelier Section (Tích hợp Khóa Dual-AI) -->
+    <section class="ai-consultant-section" id="aiConsultantSection">
+      <div class="section-container">
+        <div class="ai-card">
+          <div class="ai-card-head">
+            <div>
+              <span class="zen-flower-badge">🤖 TRỢ LÝ ẨM THỰC AI LIÊN HOA (DUAL-AI DEEPSEEK &amp; GEMINI)</span>
+              <h2 class="mindful-title">Tư Vấn Thực Đơn &amp; Mâm Cỗ Chay Thông Minh 24/7</h2>
+              <p class="mindful-sub" style="margin-bottom:0;">Hỏi bất kỳ điều gì bằng Tiếng Việt hoặc Tiếng Trung (中文) — AI sẽ phối thực đơn theo đúng ngân sách và số người của bạn.</p>
+            </div>
+          </div>
+
+          <div class="ai-quick-prompts">
+            <button type="button" class="ai-prompt-chip" data-ai-prompt="Gợi ý thực đơn chay cho gia đình 4 người khoảng 350k - 450k tại Liên Hoa Chay">👨‍👩‍👧‍👦 Combo Gia Đình 4 Người</button>
+            <button type="button" class="ai-prompt-chip" data-ai-prompt="Tư vấn Mâm Cỗ Chay cúng Rằm và giỗ chạp cho 6 đến 10 người">🪷 Tư Vấn Mâm Cỗ Cúng Rằm</button>
+            <button type="button" class="ai-prompt-chip" data-ai-prompt="Gợi ý các món chay dưỡng sinh mềm, thanh đạm cho người lớn tuổi">🌿 Món Dưỡng Sinh Người Lớn Tuổi</button>
+            <button type="button" class="ai-prompt-chip" data-ai-prompt="请用中文推荐4人素食养生火锅套餐及价格">🇨🇳 中文推荐4人素食套餐</button>
+          </div>
+
+          <form class="ai-chat-form" id="aiChatForm">
+            <input type="text" id="aiChatInput" placeholder="Nhập câu hỏi cho AI Liên Hoa (VD: Đi 6 người ăn lẩu nấm và gọi món gì ngon?)..." required>
+            <button type="submit" class="btn-zen-primary">✨ Hỏi Trợ Lý AI</button>
+          </form>
+
+          <div class="ai-response-box" id="aiChatResponseBox">
+            <div class="ai-answer-content">
+              <div class="ai-badge-source">⚡ Dual-AI Đã Kết Nối Sẵn Sàng</div>
+              Xin chào quý thực khách! Tôi là <strong>Trợ Lý AI Nhà Hàng Chay Liên Hoa</strong>. Hãy bấm vào một gợi ý phía trên hoặc nhập nhu cầu của bạn (số người, khẩu vị, ngân sách) để tôi thiết kế thực đơn ngay nhé!
+            </div>
           </div>
         </div>
       </div>
@@ -525,20 +564,20 @@
               </a>
             </div>
 
-            <!-- Mã QR theo số điện thoại 0933.286.133 -->
+            <!-- Mã QR chuẩn theo số Zalo 0904184986 & Hotline 0933286133 -->
             <div class="qr-connect-row">
               <div class="qr-box">
-                <img src="./assets/images/qr-zalo.png" alt="Mã QR Zalo 0933.286.133 Liên Hoa Chay" loading="lazy">
+                <img src="./assets/images/qr-zalo.png" alt="Mã QR Zalo 0904184986 Liên Hoa Chay" loading="lazy">
                 <div class="qr-meta">
-                  <strong>QR Zalo Đặt Bàn</strong>
-                  <span>Quét để nhắn Zalo 0933.286.133</span>
+                  <strong>QR Zalo Đặt Bàn (0904.184.986)</strong>
+                  <span>Quét mã đúng Zalo SĐT 0904184986</span>
                 </div>
               </div>
               <div class="qr-box">
                 <img src="./assets/images/qr-phone.png" alt="Mã QR Gọi Hotline 0933.286.133 Liên Hoa Chay" loading="lazy">
                 <div class="qr-meta">
-                  <strong>QR Gọi Hotline</strong>
-                  <span>Quét để gọi ngay 0933.286.133</span>
+                  <strong>QR Gọi Hotline (0933.286.133)</strong>
+                  <span>Quét để gọi ngay Ms. Thạo</span>
                 </div>
               </div>
             </div>
@@ -597,7 +636,7 @@
         <div class="cart-order-actions">
           <button class="btn-zalo-checkout" id="btnCheckoutZalo">
             <span class="zalo-tag">Zalo</span>
-            <span>Gửi Thực Đơn Qua Zalo (0933.286.133)</span>
+            <span>Gửi Thực Đơn Qua Zalo (0904.184.986)</span>
           </button>
           <button class="btn-call-checkout" id="btnDrawerToReserve">
             <span>📅 Điền Phiếu Đặt Bàn Với Mâm Này</span>
@@ -678,6 +717,40 @@
     </div>
   </div>
 
+  <!-- AI Key Config Modal -->
+  <div class="modal-overlay" id="aiKeyModalOverlay" aria-hidden="true">
+    <div class="reserve-modal-card" role="dialog" aria-modal="true" aria-labelledby="aiKeyModalTitle">
+      <div class="reserve-head">
+        <div>
+          <span class="zen-flower-tag">🔑 TRẠM KẾT NỐI TRÍ TUỆ NHÂN TẠO</span>
+          <h3 id="aiKeyModalTitle" class="reserve-title">Cấu Hình Khóa AI Liên Hoa Chay</h3>
+        </div>
+        <button class="reserve-close" id="btnCloseAiKeyModal" aria-label="Đóng">&times;</button>
+      </div>
+      <div id="aiModalStatusBanner" class="reserve-tray-preview" style="display:block;margin-bottom:14px;"></div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label for="aiProviderSelect">Bộ não AI ưu tiên:</label>
+        <select id="aiProviderSelect">
+          <option value="auto">⚡ Tự động (DeepSeek + Gemini + Tri thức nội bộ)</option>
+          <option value="deepseek">🐋 DeepSeek Chat (sk-...)</option>
+          <option value="gemini">✨ Google Gemini Flash (AQ... / AIza...)</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label for="inputDeepseekKey">Khóa DeepSeek API (Đã nạp sẵn khóa hệ thống):</label>
+        <input type="password" id="inputDeepseekKey" placeholder="sk-...">
+      </div>
+      <div class="form-group" style="margin-bottom:16px;">
+        <label for="inputGeminiKey">Khóa Google Gemini API (Đã nạp sẵn khóa hệ thống):</label>
+        <input type="password" id="inputGeminiKey" placeholder="AQ... hoặc AIza...">
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button type="button" class="btn-submit-reserve" id="btnSaveAiKeys" style="flex:1;">💾 Lưu Cấu Hình AI</button>
+        <button type="button" class="btn-copy-loc" id="btnRestoreDefaultAiKeys">🔄 Khôi Phục Khóa Gốc</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Lightbox -->
   <div class="lightbox-overlay" id="lightboxOverlay" aria-hidden="true">
     <button class="lb-close" id="lbClose" aria-label="Đóng ảnh">&times;</button>
@@ -691,8 +764,8 @@
 
   <!-- Floating Quick Stack -->
   <div class="fab-stack">
-    <a href="https://zalo.me/0933286133" target="_blank" rel="noopener noreferrer" class="fab-btn fab-zalo" title="Chat Zalo">Zalo</a>
-    <a href="tel:0933286133" class="fab-btn fab-call" title="Gọi Hotline">📞</a>
+    <a href="https://zalo.me/0904184986" target="_blank" rel="noopener noreferrer" class="fab-btn fab-zalo" title="Chat Zalo 0904184986">Zalo</a>
+    <a href="tel:0933286133" class="fab-btn fab-call" title="Gọi Hotline 0933.286.133">📞</a>
   </div>
 
   <!-- Mobile Bottom Quick Bar -->
@@ -771,5 +844,6 @@
   <script src="./js/media-data.js"></script>
   <script src="./js/i18n.js"></script>
   <script src="./js/main.js"></script>
+  <script src="./js/ai-assistant.js"></script>
 </body>
 </html>

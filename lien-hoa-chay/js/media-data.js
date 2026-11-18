@@ -63,6 +63,55 @@ window.LIENHOA_MEDIA = {
       "tag": "Đồ Uống",
       "src": "./assets/videos/video-story-tra-man.mp4",
       "poster": "./assets/images/drinks/traman-01.jpg"
+    },
+    {
+      "id": "v10",
+      "title": "Khoảnh khắc thực khách thưởng thức Buffet #01",
+      "tag": "Thực Tế Quán",
+      "src": "./assets/videos/khoanh-khac-thuc-te-01.mp4",
+      "poster": "./assets/images/buffet/buffet-10.jpg"
+    },
+    {
+      "id": "v11",
+      "title": "Quầy món nóng & nghệ thuật bày trí #02",
+      "tag": "Thực Tế Quán",
+      "src": "./assets/videos/khoanh-khac-thuc-te-02.mp4",
+      "poster": "./assets/images/buffet/buffet-15.jpg"
+    },
+    {
+      "id": "v12",
+      "title": "Không khí sum vầy ngày Rằm tại Liên Hoa #03",
+      "tag": "Thực Tế Quán",
+      "src": "./assets/videos/khoanh-khac-thuc-te-03.mp4",
+      "poster": "./assets/images/space/space-10.jpg"
+    },
+    {
+      "id": "v13",
+      "title": "Trải nghiệm ẩm thực chay thanh tịnh #04",
+      "tag": "Thực Tế Quán",
+      "src": "./assets/videos/khoanh-khac-thuc-te-04.mp4",
+      "poster": "./assets/images/food/food-10.jpg"
+    },
+    {
+      "id": "v14",
+      "title": "Góc bình yên & chu đáo tại Liên Hoa Chay #05",
+      "tag": "Thực Tế Quán",
+      "src": "./assets/videos/khoanh-khac-thuc-te-05.mp4",
+      "poster": "./assets/images/space/space-12.jpg"
+    },
+    {
+      "id": "v15",
+      "title": "Bếp chay Liên Hoa chuẩn bị món mới trong ngày #06",
+      "tag": "Thực Tế Quán",
+      "src": "./assets/videos/khoanh-khac-thuc-te-06.mp4",
+      "poster": "./assets/images/food/food-14.jpg"
+    },
+    {
+      "id": "v16",
+      "title": "Tiệc gia đình ấm áp tại Liên Hoa Chay #07",
+      "tag": "Thực Tế Quán",
+      "src": "./assets/videos/khoanh-khac-thuc-te-07.mp4",
+      "poster": "./assets/images/moments/moment-05.jpg"
     }
   ],
   "photoArchive": [
@@ -1220,6 +1269,41 @@ window.LIENHOA_MEDIA = {
       "src": "./assets/images/moments/moment-15.jpg",
       "category": "Khoảnh khắc thực khách",
       "title": "Khoảnh khắc an lạc tại Liên Hoa Chay #15"
+    },
+    {
+      "src": "./assets/images/menumau/menu-mau-01.jpg",
+      "category": "Thiết kế Menu",
+      "title": "Ấn phẩm thực đơn Liên Hoa Chay #01"
+    },
+    {
+      "src": "./assets/images/menumau/menu-mau-02.jpg",
+      "category": "Thiết kế Menu",
+      "title": "Ấn phẩm thực đơn Liên Hoa Chay #02"
+    },
+    {
+      "src": "./assets/images/menumau/menu-mau-03.jpg",
+      "category": "Thiết kế Menu",
+      "title": "Ấn phẩm thực đơn Liên Hoa Chay #03"
+    },
+    {
+      "src": "./assets/images/menumau/menu-mau-04.jpg",
+      "category": "Thiết kế Menu",
+      "title": "Ấn phẩm thực đơn Liên Hoa Chay #04"
+    },
+    {
+      "src": "./assets/images/menumau/menu-mau-05.jpg",
+      "category": "Thiết kế Menu",
+      "title": "Ấn phẩm thực đơn Liên Hoa Chay #05"
+    },
+    {
+      "src": "./assets/images/menumau/menu-mau-06.jpg",
+      "category": "Thiết kế Menu",
+      "title": "Ấn phẩm thực đơn Liên Hoa Chay #06"
+    },
+    {
+      "src": "./assets/images/menumau/menu-mau-07.jpg",
+      "category": "Thiết kế Menu",
+      "title": "Ấn phẩm thực đơn Liên Hoa Chay #07"
     }
   ]
 };

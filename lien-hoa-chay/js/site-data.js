@@ -28,7 +28,7 @@ window.LIENHOA_DATA = {
       phoneSecondary: "090.418.4986",
       phoneSecondaryRaw: "0904184986",
       contactPerson: "Ms. Thạo",
-      zaloUrl: "https://zalo.me/0933286133",
+      zaloUrl: "https://zalo.me/0904184986",
       email: "lienhoachayhd@gmail.com",
       fanpageUrl: "https://www.facebook.com/profile.php?id=61559156548781",
       facebookPersonalUrl: "https://www.facebook.com/thaonguyen.825687",

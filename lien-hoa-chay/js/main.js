@@ -369,15 +369,24 @@
   function renderVideos() {
     const grid = $("#videoShowcaseGrid");
     if (!grid || !MEDIA.videos) return;
+    const fsLabel = currentLang === "vi" ? "⛶ Xem Toàn Màn Hình" : "⛶ 全屏播放";
     grid.innerHTML = MEDIA.videos
       .map(
         (v) => `
         <article class="video-card">
-          <video controls preload="metadata" playsinline poster="${v.poster}">
-            <source src="${v.src}" type="video/mp4">
-          </video>
+          <div class="video-media-wrap">
+            <video id="vid-${v.id}" controls preload="metadata" playsinline poster="${v.poster}">
+              <source src="${v.src}" type="video/mp4">
+            </video>
+            <button type="button" class="btn-video-fullscreen" data-fullscreen-vid="vid-${v.id}" title="${fsLabel}">
+              ${fsLabel}
+            </button>
+          </div>
           <div class="video-card-body">
-            <span class="video-tag">🎬 ${v.tag}</span>
+            <div class="video-card-top">
+              <span class="video-tag">🎬 ${v.tag}</span>
+              <button type="button" class="btn-video-fs-inline" data-fullscreen-vid="vid-${v.id}">${fsLabel}</button>
+            </div>
             <h4>${v.title}</h4>
           </div>
         </article>
@@ -663,6 +672,21 @@
       const lbCustom = e.target.closest("[data-lb-src]");
       if (lbCustom) {
         openLightboxCustom(lbCustom.dataset.lbSrc, lbCustom.dataset.lbCap);
+        return;
+      }
+      const fsBtn = e.target.closest("[data-fullscreen-vid]");
+      if (fsBtn) {
+        const vid = document.getElementById(fsBtn.dataset.fullscreenVid);
+        if (vid) {
+          vid.play().catch(() => {});
+          if (vid.requestFullscreen) {
+            vid.requestFullscreen().catch(() => {});
+          } else if (vid.webkitRequestFullscreen) {
+            vid.webkitRequestFullscreen();
+          } else if (vid.webkitEnterFullscreen) {
+            vid.webkitEnterFullscreen();
+          }
+        }
       }
     });
 

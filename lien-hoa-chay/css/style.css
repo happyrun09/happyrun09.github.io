@@ -244,7 +244,7 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
 }
 .header-actions svg { width: 16px; height: 16px; }
 
-.btn-zen-bell, .btn-maps-nav, .btn-font-toggle, .btn-theme-toggle {
+.btn-zen-bell, .btn-ai-key, .btn-maps-nav, .btn-font-toggle, .btn-theme-toggle {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -257,9 +257,12 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
   font-weight: 600;
   transition: var(--transition);
 }
-.btn-zen-bell:hover, .btn-maps-nav:hover, .btn-font-toggle:hover, .btn-theme-toggle:hover {
+.btn-zen-bell:hover, .btn-ai-key:hover, .btn-maps-nav:hover, .btn-font-toggle:hover, .btn-theme-toggle:hover {
   border-color: var(--zen-leaf);
   transform: translateY(-1px);
+}
+.btn-ai-key {
+  border-color: rgba(74, 222, 128, 0.45);
 }
 .btn-zen-bell.ringing {
   border-color: var(--lotus-pink);
@@ -903,26 +906,152 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
   border-color: var(--border-card-hover);
   transform: translateY(-3px);
 }
+.video-media-wrap {
+  position: relative;
+}
 .video-card video {
   width: 100%;
   aspect-ratio: 16 / 10;
   background: #000;
   object-fit: cover;
+  display: block;
+}
+.btn-video-fullscreen {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(9, 19, 13, 0.84);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(74, 222, 128, 0.5);
+  color: #fef08a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  z-index: 2;
+  transition: var(--transition);
+}
+.btn-video-fullscreen:hover {
+  background: var(--zen-emerald);
+  color: #fff;
+  transform: scale(1.04);
 }
 .video-card-body {
   padding: 14px 16px;
+}
+.video-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.btn-video-fs-inline {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+}
+.btn-video-fs-inline:hover {
+  border-color: var(--zen-leaf);
 }
 .video-tag {
   display: inline-block;
   font-size: 0.72rem;
   font-weight: 700;
   color: var(--lotus-pink);
-  margin-bottom: 4px;
 }
 .video-card-body h4 {
   font-family: var(--font-heading);
   font-size: 0.96rem;
   font-weight: 700;
+}
+
+/* AI Consultant Section */
+.ai-consultant-section {
+  padding: 24px 0 48px;
+}
+.ai-card {
+  background: linear-gradient(135deg, rgba(16, 33, 22, 0.95), rgba(20, 48, 34, 0.9));
+  border: 1px solid var(--border-card-hover);
+  border-radius: var(--radius-lg);
+  padding: 32px 26px;
+  box-shadow: var(--shadow-lg);
+}
+[data-theme="light"] .ai-card {
+  background: linear-gradient(135deg, #f0fdf4, #eef5eb);
+}
+.ai-card-head {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.ai-quick-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.ai-prompt-chip {
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: var(--transition);
+}
+.ai-prompt-chip:hover {
+  border-color: var(--zen-leaf);
+  transform: translateY(-2px);
+}
+.ai-chat-form {
+  display: flex;
+  gap: 10px;
+  max-width: 780px;
+  margin: 0 auto 18px;
+  flex-wrap: wrap;
+}
+.ai-chat-form input {
+  flex: 1;
+  min-width: 240px;
+  padding: 13px 18px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  outline: none;
+}
+.ai-chat-form input:focus {
+  border-color: var(--zen-leaf);
+}
+.ai-response-box {
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+.ai-badge-source {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-gold);
+  background: var(--bg-subtle);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  margin-bottom: 8px;
+}
+.ai-loading {
+  color: var(--text-dim);
+  font-weight: 600;
 }
 
 /* Mindful Card */
@@ -1427,7 +1556,7 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
   .brand-sub { display: none; }
   .header-actions { gap: 5px; }
   .bell-text, .btn-nav-text, .btn-maps-nav, .btn-reserve-nav, .btn-font-toggle { display: none; }
-  .btn-zen-bell, .btn-theme-toggle { padding: 6px 8px; font-size: 0.74rem; }
+  .btn-zen-bell, .btn-ai-key, .btn-theme-toggle { padding: 6px 8px; font-size: 0.74rem; }
   .lang-btn { padding: 4px 6px; font-size: 0.7rem; }
   .btn-cart-nav { width: 34px; height: 34px; }
   .hero-metrics-grid, .pillars-grid, .form-grid { grid-template-columns: 1fr 1fr; }
