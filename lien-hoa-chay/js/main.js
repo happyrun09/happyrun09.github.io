@@ -7,6 +7,32 @@
 
   const DATA = window.LIENHOA_DATA;
   if (!DATA) return;
+  const I18N = window.LIENHOA_I18N || {};
+
+  function detectDefaultLang() {
+    const saved = localStorage.getItem("lienhoa_lang");
+    if (saved && (saved === "vi" || I18N[saved])) return saved;
+    const nav = (navigator.language || "").toLowerCase();
+    if (nav.startsWith("zh-tw") || nav.startsWith("zh-hk") || nav.startsWith("zh-hant")) return "zh-TW";
+    if (nav.startsWith("zh")) return "zh-CN";
+    return "vi";
+  }
+
+  let currentLang = detectDefaultLang();
+  const tPack = () => (currentLang !== "vi" ? I18N[currentLang] : null);
+  const tUI = (key, fallback) => tPack()?.ui?.[key] ?? fallback;
+
+  const getDishView = (m) => {
+    const tr = tPack()?.menu?.[m.id];
+    if (!tr) return m;
+    return { ...m, name: tr.name, badge: tr.badge, desc: tr.desc, healthNote: tr.health };
+  };
+
+  const getSetView = (s) => {
+    const tr = tPack()?.catering?.[s.id];
+    if (!tr) return s;
+    return { ...s, name: tr.name, guests: tr.guests, desc: tr.desc };
+  };
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -216,13 +242,15 @@
     const items = ids.map((id) => DATA.menu.find((m) => m.id === id)).filter(Boolean);
 
     $("#spotlightGrid").innerHTML = items
-      .map((m, idx) => {
+      .map((raw, idx) => {
+        const m = getDishView(raw);
         const tag = tags[idx] || tags[0];
+        const addLbl = tUI("addToTray", "+ Thêm Vào Mâm");
         return `
           <article class="spotlight-card">
             <div class="spotlight-img-wrap" data-quick-view="${m.id}">
               <img src="${m.image}" alt="${m.name}" loading="lazy">
-              <span class="spotlight-tag ${tag.cls}">${tag.label}</span>
+              <span class="spotlight-tag ${tag.cls}">${m.badge || tag.label}</span>
             </div>
             <div class="spotlight-body">
               <div class="dish-title-row">
@@ -232,7 +260,7 @@
               <p class="dish-desc">${m.desc}</p>
               <div class="spotlight-card-footer">
                 <span class="portion-info">🌿 ${m.healthNote}</span>
-                <button type="button" class="btn-spotlight-add" data-add-dish="${m.id}">+ Thêm Vào Mâm</button>
+                <button type="button" class="btn-spotlight-add" data-add-dish="${m.id}">${addLbl}</button>
               </div>
             </div>
           </article>
@@ -249,25 +277,28 @@
       id === "all" ? DATA.menu.length : DATA.menu.filter((m) => m.category === id).length;
 
     $("#categoryPills").innerHTML = DATA.categories
-      .map(
-        (c) => `
+      .map((c) => {
+        const catName = tPack()?.categories?.[c.id] || c.name;
+        return `
         <button type="button" class="cat-pill ${activeCat === c.id ? "active" : ""}" data-cat="${c.id}">
-          <span>${c.name}</span>
+          <span>${catName}</span>
           <span class="pill-badge">${countOf(c.id)}</span>
         </button>
-      `
-      )
+      `;
+      })
       .join("");
   }
 
   function renderMenu() {
     const q = stripAccents(searchQuery.trim());
-    const list = DATA.menu.filter((m) => {
-      const okCat = activeCat === "all" || m.category === activeCat;
-      if (!okCat) return false;
-      if (!q) return true;
-      return stripAccents(`${m.name} ${m.desc} ${m.healthNote}`).includes(q);
-    });
+    const list = DATA.menu
+      .map((raw) => ({ raw, view: getDishView(raw) }))
+      .filter(({ raw, view }) => {
+        const okCat = activeCat === "all" || raw.category === activeCat;
+        if (!okCat) return false;
+        if (!q) return true;
+        return stripAccents(`${raw.name} ${view.name} ${raw.desc} ${view.desc} ${view.healthNote}`).includes(q);
+      });
 
     const grid = $("#menuGrid");
     const empty = $("#menuEmptyState");
@@ -277,10 +308,11 @@
       return;
     }
 
+    const addLbl = tUI("addToTray", "+ Thêm Vào Mâm");
     empty.style.display = "none";
     grid.innerHTML = list
       .map(
-        (m) => `
+        ({ view: m }) => `
         <article class="menu-card">
           <div class="menu-card-media" data-quick-view="${m.id}">
             <img src="${m.image}" alt="${m.name}" loading="lazy">
@@ -291,7 +323,7 @@
             <p>${m.desc}</p>
             <div class="menu-card-foot">
               <span class="dish-price">${formatMoney(m.price)}</span>
-              <button type="button" class="btn-spotlight-add" data-add-dish="${m.id}">+ Thêm Vào Mâm</button>
+              <button type="button" class="btn-spotlight-add" data-add-dish="${m.id}">${addLbl}</button>
             </div>
           </div>
         </article>
@@ -301,9 +333,11 @@
   }
 
   function renderCatering() {
+    const addSetLbl = tUI("addSet", "+ Chọn Mâm Cỗ");
     $("#cateringGrid").innerHTML = DATA.cateringSets
-      .map(
-        (s) => `
+      .map((raw) => {
+        const s = getSetView(raw);
+        return `
         <article class="menu-card">
           <div class="menu-card-media" data-lb-src="${s.image}" data-lb-cap="${s.name} (${s.guests})">
             <img src="${s.image}" alt="${s.name}" loading="lazy">
@@ -314,12 +348,12 @@
             <p>${s.desc}</p>
             <div class="menu-card-foot">
               <span class="dish-price">${formatMoney(s.price)}</span>
-              <button type="button" class="btn-spotlight-add" data-add-dish="${s.id}">+ Chọn Mâm Cỗ</button>
+              <button type="button" class="btn-spotlight-add" data-add-dish="${s.id}">${addSetLbl}</button>
             </div>
           </div>
         </article>
-      `
-      )
+      `;
+      })
       .join("");
   }
 
@@ -690,11 +724,17 @@
       const trayTxt =
         entries.length > 0
           ? "\n📋 Món đã chọn:\n" +
-            entries.map((x) => `- ${x.item.name} × ${x.qty}`).join("\n") +
+            entries
+              .map((x) => {
+                const tr = tPack()?.menu?.[x.item.id] || tPack()?.catering?.[x.item.id];
+                const label = tr ? `${tr.name} (${x.item.name})` : x.item.name;
+                return `- ${label} × ${x.qty}`;
+              })
+              .join("\n") +
             `\n💰 Tạm tính: ${formatMoney(total)}`
           : "";
       const msg = [
-        "🪷 ĐẶT BÀN — LIÊN HOA CHAY HẢI DƯƠNG",
+        "🪷 ĐẶT BÀN — LIÊN HOA CHAY HẢI DƯƠNG (海阳莲花素食)",
         `• Khách hàng: ${$("#resName").value.trim()} (${$("#resPhone").value.trim()})`,
         `• Số khách: ${$("#resGuests").value} người`,
         `• Loại hình: ${$("#resType").value}`,
@@ -707,12 +747,37 @@
 
       try {
         await navigator.clipboard.writeText(msg);
-        showToast("Đã sao chép phiếu đặt bàn! Đang mở Zalo...");
+        showToast(currentLang === "vi" ? "Đã sao chép phiếu đặt bàn! Đang mở Zalo..." : "已复制双语预订单！正在打开 Zalo...");
       } catch {
-        showToast("Đang mở Zalo nhà hàng...");
+        showToast("Zalo...");
       }
       closeReserve();
       setTimeout(() => window.open(DATA.brand.contact.zaloUrl, "_blank", "noopener"), 450);
+    });
+
+    // Driver / Taxi Address Card (出示给司机看)
+    $("#btnDriverCard")?.addEventListener("click", () => {
+      openDetail(`
+        <span class="zen-flower-tag">${tUI("driverTitle", "🚕 ĐƯA TÀI XẾ TAXI / GRAB XEM")}</span>
+        <p style="color:var(--text-muted);margin:8px 0 14px;font-size:0.9rem;">${tUI("driverHint", "Quý khách đưa màn hình này cho tài xế để đến đúng nhà hàng:")}</p>
+        <div style="background:var(--bg-subtle);border:2px solid var(--zen-leaf);border-radius:14px;padding:20px;margin-bottom:14px;">
+          <div style="font-size:0.85rem;color:var(--text-dim);font-weight:700;margin-bottom:6px;">NHÀ HÀNG CHAY LIÊN HOA</div>
+          <div style="font-size:1.25rem;font-weight:800;line-height:1.45;color:var(--text-main);">
+            Lô 94.7 Đường Trường Chinh (Đối diện đường Hoàng Quốc Việt), Phường Tứ Minh, Thành phố Hải Dương
+          </div>
+          <div style="margin-top:12px;font-size:1rem;color:var(--text-gold);font-weight:700;">
+            📞 0933.286.133 (Ms. Thạo) – 090.418.4986
+          </div>
+        </div>
+        <p style="font-size:0.82rem;color:var(--text-muted);">${tUI("driverNote", "Giờ đón khách: 11:00 – 13:30 & 18:00 – 20:30")}</p>
+      `);
+    });
+
+    // Language Switcher (VI | 简 | 繁)
+    $$(".lang-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        applyLanguage(btn.dataset.lang);
+      });
     });
 
     // Detail & Lightbox
@@ -749,6 +814,163 @@
     $("#yearNow").textContent = new Date().getFullYear();
   }
 
+  function applyLanguage(lang) {
+    currentLang = lang === "zh-CN" || lang === "zh-TW" ? lang : "vi";
+    try {
+      localStorage.setItem("lienhoa_lang", currentLang);
+    } catch {
+      /* ignore */
+    }
+    document.documentElement.lang = currentLang;
+    $$(".lang-btn").forEach((b) => b.classList.toggle("active", b.dataset.lang === currentLang));
+
+    const pack = tPack();
+    const u = pack?.ui;
+    if (u) {
+      $("#liveOpenStatus").textContent = u.topHours;
+      $("#topAddress").textContent = u.topAddress;
+      $("#topPhoneLink span").textContent = u.topHotline;
+      $(".brand-name").textContent = u.brandName;
+      $(".brand-sub").textContent = u.brandSub;
+
+      const navTexts = [u.navHome, u.navSpotlight, u.navMenu, u.navCatering, u.navSpace, u.navMindful, u.navLocation];
+      $$("#navLinks .nav-item").forEach((el, i) => {
+        if (navTexts[i]) el.textContent = navTexts[i];
+      });
+      $(".bell-text").textContent = u.bellBtn;
+      $("#headerMapsLink .btn-nav-text").textContent = u.mapsBtn;
+      $("#btnOpenReserveModal .btn-nav-text").textContent = u.reserveBtn;
+
+      $(".pill-leaf").textContent = u.heroPill1;
+      $(".pill-city").textContent = u.heroPill2;
+      $(".hero-title").innerHTML = `${u.heroTitle1} <br><span class="gradient-zen">${u.heroTitle2}</span>`;
+      $("#heroDesc").innerHTML = u.heroDesc;
+      $(".btn-zen-primary span").textContent = u.heroMenuCta;
+      $("#btnHeroReserve span").textContent = u.heroBookCta;
+      $("#heroMapsBtn span").textContent = u.heroMapCta;
+
+      const mPairs = [[u.m1Num, u.m1Lbl], [u.m2Num, u.m2Lbl], [u.m3Num, u.m3Lbl], [u.m4Num, u.m4Lbl]];
+      $$(".metric-item").forEach((el, i) => {
+        if (mPairs[i]) {
+          el.querySelector(".metric-number").textContent = mPairs[i][0];
+          el.querySelector(".metric-label").textContent = mPairs[i][1];
+        }
+      });
+      $(".hero-floating-quote .quote-text").textContent = u.heroQuote;
+      $(".hero-floating-quote .quote-sign").textContent = u.heroQuoteSign;
+
+      $$("#storySection .pillar-card").forEach((el, i) => {
+        if (u.pillars[i]) {
+          el.querySelector(".pillar-title").textContent = u.pillars[i].title;
+          el.querySelector(".pillar-desc").textContent = u.pillars[i].desc;
+        }
+      });
+
+      $("#spotlightSection .section-subtitle").textContent = u.spotSub;
+      $("#spotlightSection .section-title").textContent = u.spotTitle;
+      $("#spotlightSection .section-desc").textContent = u.spotDesc;
+
+      $("#menuSection .section-subtitle").textContent = u.menuSub;
+      $("#menuSection .section-title").textContent = u.menuTitle;
+      $("#menuSearchInput").placeholder = u.searchPlaceholder;
+      $("#menuEmptyState h3").textContent = u.emptyTitle;
+      $("#menuEmptyState p").textContent = u.emptyDesc;
+      $("#btnResetMenu").textContent = u.resetMenu;
+
+      $("#cateringSection .section-subtitle").textContent = u.catSub;
+      $("#cateringSection .section-title").textContent = u.catTitle;
+      $("#cateringSection .section-desc").textContent = u.catDesc;
+
+      $("#spaceSection .section-subtitle").textContent = u.spaceSub;
+      $("#spaceSection .section-title").textContent = u.spaceTitle;
+      $(".space-text").innerHTML = u.spaceText;
+      $$(".s-feat-item").forEach((el, i) => {
+        if (u.spaceFeats[i]) {
+          el.querySelector("strong").textContent = u.spaceFeats[i].title;
+          el.querySelector("p").textContent = u.spaceFeats[i].desc;
+        }
+      });
+      $("#btnSpaceReserve span").textContent = u.spaceBookBtn;
+      $(".btn-space-call span").textContent = u.spaceCallBtn;
+
+      const mediaSubs = $$("#spaceSection .media-subsection");
+      if (mediaSubs[0]) {
+        mediaSubs[0].querySelector(".section-subtitle").textContent = u.vidSub;
+        mediaSubs[0].querySelector(".section-title").textContent = u.vidTitle;
+      }
+      if (mediaSubs[1]) {
+        mediaSubs[1].querySelector(".section-subtitle").textContent = u.galSub;
+        mediaSubs[1].querySelector(".section-title").textContent = u.galTitle;
+      }
+
+      $("#mindfulSection .zen-flower-badge").textContent = u.mindSub;
+      $("#mindfulSection .mindful-title").textContent = u.mindTitle;
+      $("#mindfulSection .mindful-sub").textContent = u.mindDesc;
+      $("#btnDrawCard span:last-child").textContent = u.mindDrawBtn;
+      if (pack.quotes?.[0]) {
+        $("#activeQuoteText").textContent = pack.quotes[0].quote;
+        $("#activeQuoteAuthor").textContent = `— ${pack.quotes[0].author}`;
+      }
+
+      $("#reviewsSection .section-subtitle").textContent = u.revSub;
+      $("#reviewsSection .section-title").textContent = u.revTitle;
+      $(".rating-badge-pill span:last-child").textContent = u.revBadge;
+      $(".blog-block .section-subtitle").textContent = u.blogSub;
+      $(".blog-block .section-title").textContent = u.blogTitle;
+
+      $("#locationSection .section-subtitle").textContent = u.locSub;
+      $("#locationSection .loc-title").textContent = u.locTitle;
+      $("#locHoursText").textContent = u.locHoursVal;
+      $(".btn-maps-action span").textContent = u.locMapBtn;
+      $("#btnCopyAddress span").textContent = u.locCopyBtn;
+      $("#btnDriverCard span").textContent = u.locDriverBtn;
+
+      const qrs = $$(".qr-box");
+      if (qrs[0]) {
+        qrs[0].querySelector("strong").textContent = u.qrZaloTitle;
+        qrs[0].querySelector("span").textContent = u.qrZaloSub;
+      }
+      if (qrs[1]) {
+        qrs[1].querySelector("strong").textContent = u.qrCallTitle;
+        qrs[1].querySelector("span").textContent = u.qrCallSub;
+      }
+
+      $("#cartDrawerTitle").textContent = u.cartTitle;
+      $(".cart-split-line label").textContent = u.cartPeopleLbl;
+      $(".cart-total-line span:first-child").textContent = u.cartTotalLbl;
+      $(".cart-per-line span").textContent = u.cartPerLbl;
+      $(".cart-zen-note").textContent = u.cartZenNote;
+      $("#btnCheckoutZalo span:last-child").textContent = u.cartZaloBtn;
+      $("#btnDrawerToReserve span").textContent = u.cartReserveBtn;
+
+      $(".zen-flower-tag").textContent = u.resTag;
+      $("#modalReserveTitle").textContent = u.resTitle;
+      $("label[for='resName']").textContent = u.resNameLbl;
+      $("label[for='resPhone']").textContent = u.resPhoneLbl;
+      $("label[for='resGuests']").textContent = u.resGuestsLbl;
+      $("label[for='resType']").textContent = u.resTypeLbl;
+      $("label[for='resTime']").textContent = u.resTimeLbl;
+      $("label[for='resNote']").textContent = u.resNoteLbl;
+      $(".btn-submit-reserve").textContent = u.resSubmitBtn;
+
+      const mb = $$(".mobile-bottom-bar a, .mobile-bottom-bar button");
+      if (mb[0]) mb[0].querySelector("span:last-child").textContent = u.mbCall;
+      if (mb[1]) mb[1].querySelector("span:last-child").textContent = u.mbMenu;
+      if (mb[2]) mb[2].querySelector("span:last-child").textContent = u.mbBook;
+    } else if (document.body.dataset.viReady === "1") {
+      // Reload clean Vietnamese defaults if switching back from Chinese
+      location.reload();
+      return;
+    }
+
+    document.body.dataset.viReady = "1";
+    renderSpotlight();
+    renderCategoryPills();
+    renderMenu();
+    renderCatering();
+    renderTray();
+  }
+
   renderSpotlight();
   renderCategoryPills();
   renderMenu();
@@ -759,4 +981,7 @@
   renderReviewsAndBlog();
   renderTray();
   bindEvents();
+  if (currentLang !== "vi") {
+    applyLanguage(currentLang);
+  }
 })();

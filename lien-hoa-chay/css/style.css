@@ -319,6 +319,28 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
   color: #fff;
 }
 
+.lang-switcher {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 2px;
+  gap: 2px;
+}
+.lang-btn {
+  padding: 5px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  transition: var(--transition);
+}
+.lang-btn.active {
+  background: var(--zen-emerald);
+  color: #fff;
+}
+
 [data-theme="dark"] .moon-icon { display: none; }
 [data-theme="light"] .sun-icon { display: none; }
 
@@ -1404,8 +1426,9 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
   .brand-name { font-size: 0.9rem; }
   .brand-sub { display: none; }
   .header-actions { gap: 5px; }
-  .bell-text, .btn-nav-text, .btn-maps-nav, .btn-reserve-nav { display: none; }
-  .btn-zen-bell, .btn-font-toggle, .btn-theme-toggle { padding: 6px 8px; font-size: 0.74rem; }
+  .bell-text, .btn-nav-text, .btn-maps-nav, .btn-reserve-nav, .btn-font-toggle { display: none; }
+  .btn-zen-bell, .btn-theme-toggle { padding: 6px 8px; font-size: 0.74rem; }
+  .lang-btn { padding: 4px 6px; font-size: 0.7rem; }
   .btn-cart-nav { width: 34px; height: 34px; }
   .hero-metrics-grid, .pillars-grid, .form-grid { grid-template-columns: 1fr 1fr; }
   .form-grid, .qr-connect-row { grid-template-columns: 1fr; }
