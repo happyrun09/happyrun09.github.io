@@ -33,60 +33,65 @@
   }
 
   /* ------------------------------------------------------------------
-     1. WEBAUDIO TIBETAN SINGING BOWL (THỈNH CHUÔNG AN LẠC NGÂN VANG)
+     1. THỈNH CHUÔNG AN LẠC (HTML5 AUDIO MP3 + WEBAUDIO FALLBACK)
      ------------------------------------------------------------------ */
   let zenAudioCtx = null;
 
-  async function playZenBell() {
-    const btn = $("#btnZenBell");
-    if (btn) {
-      btn.classList.remove("ringing");
-      void btn.offsetWidth; // trigger reflow to restart animation
-      btn.classList.add("ringing");
-      setTimeout(() => btn.classList.remove("ringing"), 3200);
-    }
-
+  function playZenBellFallback() {
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!zenAudioCtx) {
-        zenAudioCtx = new AudioCtx();
-      }
-      if (zenAudioCtx.state === "suspended") {
-        await zenAudioCtx.resume();
-      }
-
+      if (!zenAudioCtx) zenAudioCtx = new AudioCtx();
+      if (zenAudioCtx.state === "suspended") zenAudioCtx.resume();
       const now = zenAudioCtx.currentTime;
       const master = zenAudioCtx.createGain();
       master.gain.setValueAtTime(0.55, now);
       master.connect(zenAudioCtx.destination);
-
-      // Rich singing bowl partials (fundamental + inharmonic overtones + gentle beating)
-      const partials = [
+      [
         { freq: 216, gain: 0.45, dur: 5.8 },
-        { freq: 217.6, gain: 0.25, dur: 5.6 }, // subtle warm shimmer/beating
-        { freq: 596, gain: 0.22, dur: 4.2 },
-        { freq: 1166, gain: 0.12, dur: 2.8 },
-        { freq: 1928, gain: 0.06, dur: 1.8 }
-      ];
-
-      partials.forEach((p) => {
+        { freq: 217.5, gain: 0.25, dur: 5.6 },
+        { freq: 598, gain: 0.2, dur: 4.0 }
+      ].forEach((p) => {
         const osc = zenAudioCtx.createOscillator();
         const g = zenAudioCtx.createGain();
         osc.type = "sine";
         osc.frequency.setValueAtTime(p.freq, now);
-
-        // Soft mallet attack (18ms) -> long resonant exponential decay
         g.gain.setValueAtTime(0.0001, now);
-        g.gain.linearRampToValueAtTime(p.gain, now + 0.018);
+        g.gain.linearRampToValueAtTime(p.gain, now + 0.02);
         g.gain.exponentialRampToValueAtTime(0.0001, now + p.dur);
-
         osc.connect(g);
         g.connect(master);
         osc.start(now);
         osc.stop(now + p.dur + 0.05);
       });
     } catch {
-      /* ignore if audio blocked by browser policy */
+      /* ignore */
+    }
+  }
+
+  function playZenBell() {
+    const btn = $("#btnZenBell");
+    if (btn) {
+      btn.classList.remove("ringing");
+      void btn.offsetWidth;
+      btn.classList.add("ringing");
+      setTimeout(() => btn.classList.remove("ringing"), 3200);
+    }
+
+    const audio = $("#zenBellAudio");
+    if (audio) {
+      try {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.volume = 0.9;
+        const p = audio.play();
+        if (p && typeof p.catch === "function") {
+          p.catch(() => playZenBellFallback());
+        }
+      } catch {
+        playZenBellFallback();
+      }
+    } else {
+      playZenBellFallback();
     }
     showToast("🔔 Tiếng chuông an lạc đang ngân vang — Thân tâm thanh tịnh");
   }
