@@ -112,6 +112,13 @@ window.LIENHOA_MEDIA = {
       "tag": "Thực Tế Quán",
       "src": "./assets/videos/khoanh-khac-thuc-te-07.mp4",
       "poster": "./assets/images/moments/moment-05.jpg"
+    },
+    {
+      "id": "v17",
+      "title": "Khoảnh khắc yên tĩnh thư thái tại Liên Hoa Chay",
+      "tag": "Không Gian Yên Tĩnh",
+      "src": "./assets/videos/khong-gian-yen-tinh.mp4",
+      "poster": "./assets/images/space/space-15.jpg"
     }
   ],
   "photoArchive": [

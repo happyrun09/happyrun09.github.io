@@ -392,7 +392,7 @@
   function renderVideos() {
     const grid = $("#videoShowcaseGrid");
     if (!grid || !MEDIA.videos) return;
-    const fsLabel = currentLang === "vi" ? "⛶ Xem Toàn Màn Hình" : "⛶ 全屏播放";
+    const fsLabel = currentLang === "vi" ? "⛶ Toàn Màn Hình" : "⛶ 全屏";
     grid.innerHTML = MEDIA.videos
       .map(
         (v) => `
@@ -401,6 +401,7 @@
             <video id="vid-${v.id}" controls preload="none" playsinline poster="${v.poster}">
               <source src="${v.src}" type="video/mp4">
             </video>
+            <button type="button" class="btn-video-play-center" data-play-vid="vid-${v.id}" aria-label="Phát video ${v.title}">▶</button>
             <button type="button" class="btn-video-fullscreen" data-fullscreen-vid="vid-${v.id}" title="${fsLabel}">
               ${fsLabel}
             </button>
@@ -416,6 +417,16 @@
       `
       )
       .join("");
+
+    // Hide center play overlay once video plays
+    $$("video", grid).forEach((vid) => {
+      vid.addEventListener("play", () => {
+        vid.parentElement?.classList.add("playing");
+      });
+      vid.addEventListener("pause", () => {
+        if (vid.currentTime === 0) vid.parentElement?.classList.remove("playing");
+      });
+    });
   }
 
   function renderGalleryTabs() {
@@ -771,6 +782,12 @@
         openLightboxCustom(lbCustom.dataset.lbSrc, lbCustom.dataset.lbCap);
         return;
       }
+      const playBtn = e.target.closest("[data-play-vid]");
+      if (playBtn) {
+        const vid = document.getElementById(playBtn.dataset.playVid);
+        if (vid) vid.play().catch(() => {});
+        return;
+      }
       const fsBtn = e.target.closest("[data-fullscreen-vid]");
       if (fsBtn) {
         const vid = document.getElementById(fsBtn.dataset.fullscreenVid);
@@ -988,7 +1005,154 @@
     $("#yearNow").textContent = new Date().getFullYear();
   }
 
+  // Snapshot original Vietnamese UI once so switching back to VI is instant (no page reload!)
+  const viSnapshot = {};
+  function captureViSnapshot() {
+    if (viSnapshot.ready) return;
+    viSnapshot.ready = true;
+    viSnapshot.topAddress = $("#topAddress")?.textContent;
+    viSnapshot.topHotline = $("#topPhoneLink span")?.textContent;
+    viSnapshot.brandName = $(".brand-name")?.textContent;
+    viSnapshot.brandSub = $(".brand-sub")?.textContent;
+    viSnapshot.navTexts = $$("#navLinks .nav-item").map((el) => el.textContent);
+    viSnapshot.bellBtn = $(".bell-text")?.textContent;
+    viSnapshot.mapsBtn = $("#headerMapsLink .btn-nav-text")?.textContent;
+    viSnapshot.reserveBtn = $("#btnOpenReserveModal .btn-nav-text")?.textContent;
+    viSnapshot.pill1 = $(".pill-leaf")?.textContent;
+    viSnapshot.pill2 = $(".pill-city")?.textContent;
+    viSnapshot.heroTitle = $(".hero-title")?.innerHTML;
+    viSnapshot.heroDesc = $("#heroDesc")?.innerHTML;
+    viSnapshot.heroMenuCta = $(".btn-zen-primary span")?.textContent;
+    viSnapshot.heroBookCta = $("#btnHeroReserve span")?.textContent;
+    viSnapshot.heroMapCta = $("#heroMapsBtn span")?.textContent;
+    viSnapshot.metrics = $$(".metric-item").map((el) => [
+      el.querySelector(".metric-number")?.textContent,
+      el.querySelector(".metric-label")?.textContent
+    ]);
+    viSnapshot.heroQuote = $(".hero-floating-quote .quote-text")?.textContent;
+    viSnapshot.heroQuoteSign = $(".hero-floating-quote .quote-sign")?.textContent;
+    viSnapshot.pillars = $$("#storySection .pillar-card").map((el) => ({
+      title: el.querySelector(".pillar-title")?.textContent,
+      desc: el.querySelector(".pillar-desc")?.textContent
+    }));
+    viSnapshot.spotSub = $("#spotlightSection .section-subtitle")?.textContent;
+    viSnapshot.spotTitle = $("#spotlightSection .section-title")?.textContent;
+    viSnapshot.spotDesc = $("#spotlightSection .section-desc")?.textContent;
+    viSnapshot.menuSub = $("#menuSection .section-subtitle")?.textContent;
+    viSnapshot.menuTitle = $("#menuSection .section-title")?.textContent;
+    viSnapshot.searchPh = $("#menuSearchInput")?.placeholder;
+    viSnapshot.catSub = $("#cateringSection .section-subtitle")?.textContent;
+    viSnapshot.catTitle = $("#cateringSection .section-title")?.textContent;
+    viSnapshot.catDesc = $("#cateringSection .section-desc")?.textContent;
+    viSnapshot.spaceSub = $("#spaceSection .section-subtitle")?.textContent;
+    viSnapshot.spaceTitle = $("#spaceSection .section-title")?.textContent;
+    viSnapshot.spaceText = $(".space-text")?.innerHTML;
+    viSnapshot.spaceFeats = $$(".s-feat-item").map((el) => ({
+      title: el.querySelector("strong")?.textContent,
+      desc: el.querySelector("p")?.textContent
+    }));
+    viSnapshot.spaceBook = $("#btnSpaceReserve span")?.textContent;
+    viSnapshot.spaceCall = $(".btn-space-call span")?.textContent;
+    viSnapshot.mindSub = $("#mindfulSection .zen-flower-badge")?.textContent;
+    viSnapshot.mindTitle = $("#mindfulSection .mindful-title")?.textContent;
+    viSnapshot.mindDesc = $("#mindfulSection .mindful-sub")?.textContent;
+    viSnapshot.mindBtn = $("#btnDrawCard span:last-child")?.textContent;
+    viSnapshot.revSub = $("#reviewsSection .section-subtitle")?.textContent;
+    viSnapshot.revTitle = $("#reviewsSection .section-title")?.textContent;
+    viSnapshot.revBadge = $(".rating-badge-pill span:last-child")?.innerHTML;
+    viSnapshot.blogSub = $(".blog-block .section-subtitle")?.textContent;
+    viSnapshot.blogTitle = $(".blog-block .section-title")?.textContent;
+    viSnapshot.locSub = $("#locationSection .section-subtitle")?.textContent;
+    viSnapshot.locTitle = $("#locationSection .loc-title")?.textContent;
+    viSnapshot.locHours = $("#locHoursText")?.textContent;
+    viSnapshot.locMap = $(".btn-maps-action span")?.textContent;
+    viSnapshot.locCopy = $("#btnCopyAddress span")?.textContent;
+    viSnapshot.locDriver = $("#btnDriverCard span")?.textContent;
+    viSnapshot.aiBadge = $("#aiConsultantSection .zen-flower-badge")?.textContent;
+    viSnapshot.aiTitle = $("#aiConsultantSection .mindful-title")?.textContent;
+    viSnapshot.aiSub = $("#aiConsultantSection .mindful-sub")?.textContent;
+    viSnapshot.aiPh = $("#aiChatInput")?.placeholder;
+    viSnapshot.aiBtn = $("#aiChatForm button[type='submit']")?.textContent;
+  }
+
+  function restoreViSnapshot() {
+    const s = viSnapshot;
+    if (!s.ready) return;
+    $("#topAddress").textContent = s.topAddress;
+    $("#topPhoneLink span").textContent = s.topHotline;
+    $(".brand-name").textContent = s.brandName;
+    $(".brand-sub").textContent = s.brandSub;
+    $$("#navLinks .nav-item").forEach((el, i) => { if (s.navTexts[i]) el.textContent = s.navTexts[i]; });
+    $(".bell-text").textContent = s.bellBtn;
+    $("#headerMapsLink .btn-nav-text").textContent = s.mapsBtn;
+    $("#btnOpenReserveModal .btn-nav-text").textContent = s.reserveBtn;
+    $(".pill-leaf").textContent = s.pill1;
+    $(".pill-city").textContent = s.pill2;
+    $(".hero-title").innerHTML = s.heroTitle;
+    $("#heroDesc").innerHTML = s.heroDesc;
+    $(".btn-zen-primary span").textContent = s.heroMenuCta;
+    $("#btnHeroReserve span").textContent = s.heroBookCta;
+    $("#heroMapsBtn span").textContent = s.heroMapCta;
+    $$(".metric-item").forEach((el, i) => {
+      if (s.metrics[i]) {
+        el.querySelector(".metric-number").textContent = s.metrics[i][0];
+        el.querySelector(".metric-label").textContent = s.metrics[i][1];
+      }
+    });
+    $(".hero-floating-quote .quote-text").textContent = s.heroQuote;
+    $(".hero-floating-quote .quote-sign").textContent = s.heroQuoteSign;
+    $$("#storySection .pillar-card").forEach((el, i) => {
+      if (s.pillars[i]) {
+        el.querySelector(".pillar-title").textContent = s.pillars[i].title;
+        el.querySelector(".pillar-desc").textContent = s.pillars[i].desc;
+      }
+    });
+    $("#spotlightSection .section-subtitle").textContent = s.spotSub;
+    $("#spotlightSection .section-title").textContent = s.spotTitle;
+    $("#spotlightSection .section-desc").textContent = s.spotDesc;
+    $("#menuSection .section-subtitle").textContent = s.menuSub;
+    $("#menuSection .section-title").textContent = s.menuTitle;
+    $("#menuSearchInput").placeholder = s.searchPh;
+    $("#cateringSection .section-subtitle").textContent = s.catSub;
+    $("#cateringSection .section-title").textContent = s.catTitle;
+    $("#cateringSection .section-desc").textContent = s.catDesc;
+    $("#spaceSection .section-subtitle").textContent = s.spaceSub;
+    $("#spaceSection .section-title").textContent = s.spaceTitle;
+    $(".space-text").innerHTML = s.spaceText;
+    $$(".s-feat-item").forEach((el, i) => {
+      if (s.spaceFeats[i]) {
+        el.querySelector("strong").textContent = s.spaceFeats[i].title;
+        el.querySelector("p").textContent = s.spaceFeats[i].desc;
+      }
+    });
+    $("#btnSpaceReserve span").textContent = s.spaceBook;
+    $(".btn-space-call span").textContent = s.spaceCall;
+    $("#mindfulSection .zen-flower-badge").textContent = s.mindSub;
+    $("#mindfulSection .mindful-title").textContent = s.mindTitle;
+    $("#mindfulSection .mindful-sub").textContent = s.mindDesc;
+    $("#btnDrawCard span:last-child").textContent = s.mindBtn;
+    $("#reviewsSection .section-subtitle").textContent = s.revSub;
+    $("#reviewsSection .section-title").textContent = s.revTitle;
+    $(".rating-badge-pill span:last-child").innerHTML = s.revBadge;
+    $(".blog-block .section-subtitle").textContent = s.blogSub;
+    $(".blog-block .section-title").textContent = s.blogTitle;
+    $("#locationSection .section-subtitle").textContent = s.locSub;
+    $("#locationSection .loc-title").textContent = s.locTitle;
+    $("#locHoursText").textContent = s.locHours;
+    $(".btn-maps-action span").textContent = s.locMap;
+    $("#btnCopyAddress span").textContent = s.locCopy;
+    $("#btnDriverCard span").textContent = s.locDriver;
+    if ($("#aiConsultantSection")) {
+      $("#aiConsultantSection .zen-flower-badge").textContent = s.aiBadge;
+      $("#aiConsultantSection .mindful-title").textContent = s.aiTitle;
+      $("#aiConsultantSection .mindful-sub").textContent = s.aiSub;
+      $("#aiChatInput").placeholder = s.aiPh;
+      $("#aiChatForm button[type='submit']").textContent = s.aiBtn;
+    }
+  }
+
   function applyLanguage(lang) {
+    captureViSnapshot();
     currentLang = lang === "zh-CN" || lang === "zh-TW" ? lang : "vi";
     try {
       localStorage.setItem("lienhoa_lang", currentLang);
@@ -1140,17 +1304,16 @@
       if (mb[0]) mb[0].querySelector("span:last-child").textContent = u.mbCall;
       if (mb[1]) mb[1].querySelector("span:last-child").textContent = u.mbMenu;
       if (mb[2]) mb[2].querySelector("span:last-child").textContent = u.mbBook;
-    } else if (document.body.dataset.viReady === "1") {
-      // Reload clean Vietnamese defaults if switching back from Chinese
-      location.reload();
-      return;
+    } else {
+      restoreViSnapshot();
     }
 
-    document.body.dataset.viReady = "1";
+    updateLiveOpenStatus();
     renderSpotlight();
     renderCategoryPills();
     renderMenu();
     renderCatering();
+    renderVideos();
     renderReviewsAndBlog();
     renderTray();
   }

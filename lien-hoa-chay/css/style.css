@@ -909,6 +909,32 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
 .video-media-wrap {
   position: relative;
 }
+.btn-video-play-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(21, 128, 61, 0.88);
+  border: 2px solid rgba(254, 240, 138, 0.85);
+  color: #fff;
+  font-size: 1.25rem;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  z-index: 2;
+  transition: var(--transition);
+}
+.btn-video-play-center:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  background: var(--lotus-deep);
+}
+.video-media-wrap.playing .btn-video-play-center {
+  opacity: 0;
+  pointer-events: none;
+}
 .video-card video {
   width: 100%;
   aspect-ratio: 16 / 10;
@@ -1577,15 +1603,15 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
 @media (max-width: 640px) {
   html, body { overflow-x: clip; }
   body { padding-bottom: 64px; }
-  .header-container { padding: 10px 12px; gap: 8px; }
-  .lotus-emblem { width: 34px; height: 34px; }
-  .brand-name { font-size: 0.9rem; }
+  .header-container { padding: 8px 10px; gap: 6px; }
+  .lotus-emblem { width: 32px; height: 32px; }
+  .brand-name { font-size: 0.86rem; }
   .brand-sub { display: none; }
-  .header-actions { gap: 5px; }
+  .header-actions { gap: 4px; }
   .bell-text, .btn-nav-text, .btn-maps-nav, .btn-reserve-nav, .btn-font-toggle { display: none; }
-  .btn-zen-bell, .btn-ai-key, .btn-theme-toggle { padding: 6px 8px; font-size: 0.74rem; }
-  .lang-btn { padding: 4px 6px; font-size: 0.7rem; }
-  .btn-cart-nav { width: 34px; height: 34px; }
+  .btn-zen-bell, .btn-ai-key, .btn-theme-toggle { padding: 5px 7px; font-size: 0.72rem; }
+  .lang-btn { padding: 3px 5px; font-size: 0.68rem; }
+  .btn-cart-nav { width: 32px; height: 32px; }
   .hero-metrics-grid, .pillars-grid, .form-grid { grid-template-columns: 1fr 1fr; }
   .form-grid, .qr-connect-row { grid-template-columns: 1fr; }
   .fab-stack { bottom: 76px; }
