@@ -309,11 +309,18 @@
     }
 
     const getDishTags = (raw, view) => {
-      const catTag = tPack()?.categories?.[raw.category] || DATA.categories.find((c) => c.id === raw.category)?.name || "";
       const pureTag = currentLang === "vi" ? "#Thuần_chay" : "#纯素";
       const tags = [pureTag];
-      if (view.badge) tags.push(`#${view.badge.replace(/\s+/g, "_")}`);
-      else if (catTag) tags.push(`#${catTag.split(" ")[0]}`);
+      if (view.badge) {
+        tags.push(`#${view.badge.replace(/\s+/g, "_")}`);
+      } else if (raw.id.includes("mi-")) {
+        tags.push(currentLang === "vi" ? "#Mì_chay" : "#素炒面");
+      } else if (raw.category === "rice") {
+        tags.push(currentLang === "vi" ? "#Cơm_chay" : "#素炒饭");
+      } else {
+        const catTag = tPack()?.categories?.[raw.category] || DATA.categories.find((c) => c.id === raw.category)?.name || "";
+        if (catTag) tags.push(`#${catTag.split(" ")[0]}`);
+      }
       if (raw.id === "lau-nam-lien-hoa") tags.push(currentLang === "vi" ? "#Nước_dùng_8h" : "#8小时高汤");
       return tags.slice(0, 3);
     };
@@ -424,7 +431,6 @@
           <div class="video-card-body">
             <div class="video-card-top">
               <span class="video-tag">🎬 ${v.tag}</span>
-              <button type="button" class="btn-video-fs-inline" data-fullscreen-vid="vid-${v.id}">${fsLabel}</button>
             </div>
             <h4>${v.title}</h4>
           </div>
@@ -1145,7 +1151,18 @@
     viSnapshot.footerCol2 = $(".footer-contact-col h4")?.textContent;
     viSnapshot.footerCopy = $(".footer-bottom p:first-child")?.innerHTML;
     viSnapshot.footerSub = $(".footer-subtext")?.textContent;
+    viSnapshot.footerBadges = $$(".footer-badges-list .f-pill").map((el) => el.textContent);
     viSnapshot.locInfoStrongs = $$("#locationSection .loc-info-row strong").map((el) => el.textContent);
+    viSnapshot.mediaSubs = $$("#spaceSection .media-subsection").map((el) => [
+      el.querySelector(".section-subtitle")?.textContent,
+      el.querySelector(".section-title")?.textContent
+    ]);
+    viSnapshot.quoteText = $("#activeQuoteText")?.textContent;
+    viSnapshot.quoteAuthor = $("#activeQuoteAuthor")?.textContent;
+    viSnapshot.qrBoxes = $$(".qr-box").map((el) => [
+      el.querySelector("strong")?.textContent,
+      el.querySelector("span")?.textContent
+    ]);
   }
 
   function restoreViSnapshot() {
@@ -1228,7 +1245,26 @@
     if ($(".footer-contact-col h4")) $(".footer-contact-col h4").textContent = s.footerCol2;
     if ($(".footer-bottom p:first-child")) $(".footer-bottom p:first-child").innerHTML = s.footerCopy;
     if ($(".footer-subtext")) $(".footer-subtext").textContent = s.footerSub;
+    $$(".footer-badges-list .f-pill").forEach((el, i) => { if (s.footerBadges?.[i]) el.textContent = s.footerBadges[i]; });
     $$("#locationSection .loc-info-row strong").forEach((el, i) => { if (s.locInfoStrongs[i]) el.textContent = s.locInfoStrongs[i]; });
+    $$("#spaceSection .media-subsection").forEach((el, i) => {
+      if (s.mediaSubs?.[i]) {
+        const sub = el.querySelector(".section-subtitle");
+        const tit = el.querySelector(".section-title");
+        if (sub) sub.textContent = s.mediaSubs[i][0];
+        if (tit) tit.textContent = s.mediaSubs[i][1];
+      }
+    });
+    if ($("#activeQuoteText") && s.quoteText) $("#activeQuoteText").textContent = s.quoteText;
+    if ($("#activeQuoteAuthor") && s.quoteAuthor) $("#activeQuoteAuthor").textContent = s.quoteAuthor;
+    $$(".qr-box").forEach((el, i) => {
+      if (s.qrBoxes?.[i]) {
+        const st = el.querySelector("strong");
+        const sp = el.querySelector("span");
+        if (st) st.textContent = s.qrBoxes[i][0];
+        if (sp) sp.textContent = s.qrBoxes[i][1];
+      }
+    });
   }
 
   function applyLanguage(lang) {
@@ -1391,6 +1427,7 @@
       if (u.footerCol2 && $(".footer-contact-col h4")) $(".footer-contact-col h4").textContent = u.footerCol2;
       if (u.footerCopy && $(".footer-bottom p:first-child")) $(".footer-bottom p:first-child").textContent = u.footerCopy;
       if (u.footerSub && $(".footer-subtext")) $(".footer-subtext").textContent = u.footerSub;
+      if (u.footerBadges) $$(".footer-badges-list .f-pill").forEach((el, i) => { if (u.footerBadges[i]) el.textContent = u.footerBadges[i]; });
       const locStrongs = [u.locHoursLbl, u.locPhoneLbl, u.locEmailLbl];
       $$("#locationSection .loc-info-row strong").forEach((el, i) => { if (locStrongs[i]) el.textContent = locStrongs[i]; });
     } else {

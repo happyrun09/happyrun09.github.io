@@ -244,6 +244,10 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
 }
 .header-actions svg { width: 16px; height: 16px; }
 
+.btn-zen-bell, .btn-ai-key, .btn-maps-nav, .btn-reserve-nav, .btn-font-toggle, .btn-theme-toggle {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 .btn-zen-bell, .btn-ai-key, .btn-maps-nav, .btn-font-toggle, .btn-theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -1594,13 +1598,14 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
 }
 
 /* Responsive */
-@media (max-width: 1340px) {
-  .nav-links { gap: 12px; }
-  .nav-item { font-size: 0.82rem; }
-  .btn-zen-bell, .btn-maps-nav, .btn-reserve-nav { padding: 7px 10px; font-size: 0.78rem; }
+@media (max-width: 1400px) {
+  .nav-links { gap: 11px; }
+  .nav-item { font-size: 0.8rem; }
+  .btn-zen-bell, .btn-maps-nav, .btn-reserve-nav { padding: 7px 10px; font-size: 0.76rem; }
+  .brand-sub { display: none; }
 }
 
-@media (max-width: 1180px) {
+@media (max-width: 1290px) {
   .nav-links {
     display: none;
     position: absolute;

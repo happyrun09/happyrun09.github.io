@@ -143,6 +143,7 @@ window.LIENHOA_I18N = {
         "梅子茶 & 雪燕养颜甜汤"
       ],
       footerCol2: "门店联系信息",
+      footerBadges: ["🌱 100% 纯素", "🍄 珍菌养生", "🪷 心安万事安"],
       footerCopy: "© 2026 海阳莲花素食餐厅 · 版权所有。",
       footerSub: "清净素食滋养身心 · 与绿色正念生活方式同行。"
     },
@@ -378,6 +379,7 @@ window.LIENHOA_I18N = {
         "梅子茶 & 雪燕養顏甜湯"
       ],
       footerCol2: "門市聯繫資訊",
+      footerBadges: ["🌱 100% 純素", "🍄 珍菌養生", "🪷 心安萬事安"],
       footerCopy: "© 2026 海陽蓮花素食餐廳 · 版權所有。",
       footerSub: "清淨素食滋養身心 · 與綠色正念生活方式同行。"
     },
