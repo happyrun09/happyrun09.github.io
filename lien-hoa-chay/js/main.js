@@ -1204,7 +1204,7 @@
     $("#heroDesc").innerHTML = s.heroDesc;
     $(".btn-zen-primary span").textContent = s.heroMenuCta;
     $("#btnHeroReserve span").textContent = s.heroBookCta;
-    $("#heroMapsBtn span").textContent = s.heroMapCta;
+    if ($("#heroMapsBtn span")) $("#heroMapsBtn span").textContent = s.heroMapCta;
     $$(".metric-item").forEach((el, i) => {
       if (s.metrics[i]) {
         el.querySelector(".metric-number").textContent = s.metrics[i][0];
@@ -1323,7 +1323,7 @@
       $("#heroDesc").innerHTML = u.heroDesc;
       $(".btn-zen-primary span").textContent = u.heroMenuCta;
       $("#btnHeroReserve span").textContent = u.heroBookCta;
-      $("#heroMapsBtn span").textContent = u.heroMapCta;
+      if ($("#heroMapsBtn span")) $("#heroMapsBtn span").textContent = u.heroMapCta;
 
       const mPairs = [[u.m1Num, u.m1Lbl], [u.m2Num, u.m2Lbl], [u.m3Num, u.m3Lbl], [u.m4Num, u.m4Lbl]];
       $$(".metric-item").forEach((el, i) => {
