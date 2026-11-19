@@ -118,8 +118,8 @@ window.LIENHOA_DATA = {
       name: "Tàu Hũ Liên Hoa Sốt Nấm Tuyết",
       price: 65000,
       badge: "Món ký danh",
-      image: "./assets/images/food/food-01.jpg",
-      desc: "Đậu hũ non mềm mịn tạo hình hoa sen thanh tao, rưới sốt nấm tuyết sánh nhẹ thơm dịu.",
+      image: "./assets/images/food/food-55.jpg",
+      desc: "Đậu hũ non mềm mịn tạo hình thanh tao, rưới sốt nấm tuyết sánh nhẹ thơm dịu.",
       healthNote: "Đạm thực vật lành mạnh, nấm tuyết giúp thanh nhiệt và dưỡng ẩm.",
       source_status: "verified_from_local_or_web"
     },
@@ -129,7 +129,7 @@ window.LIENHOA_DATA = {
       name: "Cơm Cuộn Ngũ Sắc & Sushi Chay",
       price: 75000,
       badge: "Thực dưỡng",
-      image: "./assets/images/food/food-02.jpg",
+      image: "./assets/images/food/food-15.jpg",
       desc: "Cuộn thủ công từ rau củ ngũ sắc giòn ngọt tự nhiên, dùng kèm sốt mè rang béo bùi.",
       healthNote: "Ngũ sắc rau củ bổ sung vitamin và chất chống oxy hóa tự nhiên.",
       source_status: "verified_from_local_or_web"
@@ -140,7 +140,7 @@ window.LIENHOA_DATA = {
       name: "Chả Giò Nấm Liên Hoa Giòn Rụm",
       price: 60000,
       badge: "",
-      image: "./assets/images/food/food-03.jpg",
+      image: "./assets/images/food/food-20.jpg",
       desc: "Chả giò nhân nấm hương và khoai môn dẻo bùi, chiên vàng giòn rụm, chấm sốt mè rang.",
       healthNote: "Khoai môn cung cấp tinh bột chậm và vị bùi tự nhiên.",
       source_status: "verified_from_local_or_web"
@@ -151,7 +151,7 @@ window.LIENHOA_DATA = {
       name: "Gỏi Ngó Sen Hoa Chuối Phù Trúc",
       price: 69000,
       badge: "Thanh mát",
-      image: "./assets/images/food/food-04.jpg",
+      image: "./assets/images/food/food-17.jpg",
       desc: "Ngó sen giòn mát trộn cùng hoa chuối, phù trúc và nước sốt chua ngọt thanh dịu.",
       healthNote: "Ngó sen thanh nhiệt, hoa chuối giàu chất xơ tốt cho tiêu hóa.",
       source_status: "verified_from_local_or_web"
@@ -162,7 +162,7 @@ window.LIENHOA_DATA = {
       name: "Lẩu Nấm Liên Hoa Thập Cẩm Quý",
       price: 249000,
       badge: "Best Seller",
-      image: "./assets/images/food/food-05.jpg",
+      image: "./assets/images/food/food-54.jpg",
       desc: "Nồi lẩu cho 3–4 người với nước dùng ninh 8 tiếng từ củ sen, ngô ngọt, mía lau cùng nhiều loại nấm quý.",
       healthNote: "Các loại nấm tự nhiên giúp tăng cường đề kháng, nước dùng thanh nhẹ.",
       source_status: "verified_from_local_or_web"
@@ -173,7 +173,7 @@ window.LIENHOA_DATA = {
       name: "Lẩu Thái Chay Chua Cay Bách Thảo",
       price: 229000,
       badge: "Ấm bụng",
-      image: "./assets/images/food/food-06.jpg",
+      image: "./assets/images/food/food-09.jpg",
       desc: "Hương vị chua cay hài hòa từ sả, lá chanh Thái, đậu hũ ky và đĩa rau nấm bách thảo tươi xanh.",
       healthNote: "Sả và thảo mộc giúp làm ấm cơ thể và kích thích vị giác.",
       source_status: "verified_from_local_or_web"
@@ -184,7 +184,7 @@ window.LIENHOA_DATA = {
       name: "Cơm Hạt Sen Gói Lá Sen Tươi",
       price: 85000,
       badge: "Thực dưỡng",
-      image: "./assets/images/food/food-07.jpg",
+      image: "./assets/images/food/food-01.jpg",
       desc: "Cơm hấp thơm ngát hương lá sen tươi cùng hạt sen bùi béo, nấm đông cô và rau củ.",
       healthNote: "Hạt sen giúp an thần, ngủ ngon; lá sen hỗ trợ thanh lọc nhẹ nhàng.",
       source_status: "verified_from_local_or_web"
@@ -195,7 +195,7 @@ window.LIENHOA_DATA = {
       name: "Cơm Chiên Trái Thơm Hạt Điều",
       price: 79000,
       badge: "",
-      image: "./assets/images/food/food-08.jpg",
+      image: "./assets/images/food/food-35.jpg",
       desc: "Hạt cơm tơi vàng chiên cùng dứa tươi chua ngọt dịu và hạt điều rang giòn bùi.",
       healthNote: "Hạt điều giàu chất béo tốt; dứa hỗ trợ tiêu hóa tự nhiên.",
       source_status: "verified_from_local_or_web"
@@ -206,7 +206,7 @@ window.LIENHOA_DATA = {
       name: "Mì Xào Giòn Nấm Hoàng Kim",
       price: 75000,
       badge: "",
-      image: "./assets/images/food/food-09.jpg",
+      image: "./assets/images/food/food-33.jpg",
       desc: "Sợi mì chiên giòn tan rưới sốt nấm sệt đậm đà cùng cải xanh và cà rốt tươi.",
       healthNote: "Bổ sung năng lượng lành mạnh từ ngũ cốc và rau nấm.",
       source_status: "verified_from_local_or_web"
@@ -217,7 +217,7 @@ window.LIENHOA_DATA = {
       name: "Nấm Đùi Gà Kho Tiêu Xanh Nồi Đất",
       price: 75000,
       badge: "Đưa cơm",
-      image: "./assets/images/food/food-10.jpg",
+      image: "./assets/images/food/food-53.jpg",
       desc: "Nấm đùi gà săn chắc kho tộ trong nồi đất cùng tiêu xanh cay nồng nhẹ, ăn kèm cơm trắng rất bắt vị.",
       healthNote: "Giàu đạm thực vật, ít chất béo bão hòa.",
       source_status: "verified_from_local_or_web"
@@ -236,12 +236,12 @@ window.LIENHOA_DATA = {
     {
       id: "ca-tim-nuong-mo-hanh",
       category: "main",
-      name: "Cà Tím Nướng Mỡ Hành Boa-rô & Đậu Phộng",
+      name: "Nấm & Rau Củ Chiên Giòn Sốt Mè",
       price: 55000,
       badge: "Dân dã",
-      image: "./assets/images/food/food-12.jpg",
-      desc: "Cà tím nướng mềm ngọt phủ mỡ hành boa-rô thơm nức và đậu phộng rang giã dập.",
-      healthNote: "Cà tím giàu chất chống oxy hóa tự nhiên, ít calo.",
+      image: "./assets/images/food/food-14.jpg",
+      desc: "Nấm tươi và rau củ áo bột mỏng chiên vàng giòn rụm, chấm cùng sốt mè rang và tương ớt.",
+      healthNote: "Giòn thơm tự nhiên, ít dầu mỡ.",
       source_status: "verified_from_local_or_web"
     },
     {
@@ -250,7 +250,7 @@ window.LIENHOA_DATA = {
       name: "Canh Dưỡng Sinh Củ Sen & Nấm Tươi",
       price: 65000,
       badge: "Thực dưỡng",
-      image: "./assets/images/food/food-13.jpg",
+      image: "./assets/images/food/food-41.jpg",
       desc: "Nước canh trong vắt, ngọt thanh từ củ sen, táo đỏ và nấm tươi giúp bồi bổ khí huyết.",
       healthNote: "Thanh nhiệt, nhẹ bụng, phù hợp bữa cơm gia đình.",
       source_status: "placeholder_editable"
@@ -261,7 +261,7 @@ window.LIENHOA_DATA = {
       name: "Trà Mận Thảo Mộc Liên Hoa",
       price: 39000,
       badge: "Món mới",
-      image: "./assets/images/drinks/traman-01.jpg",
+      image: "./assets/images/drinks/traman-02.jpg",
       desc: "Thức uống giải nhiệt chua ngọt thanh mát từ mận tự nhiên kết hợp hương trà nhẹ dịu.",
       healthNote: "Giải nhiệt, giàu vitamin C tự nhiên.",
       source_status: "verified_from_local_or_web"
@@ -272,7 +272,7 @@ window.LIENHOA_DATA = {
       name: "Chè Dưỡng Nhan Tuyết Yến Hạt Sen",
       price: 35000,
       badge: "Thanh mát",
-      image: "./assets/images/drinks/drink-01.jpg",
+      image: "./assets/images/drinks/drink-02.jpg",
       desc: "Tuyết yến, hạt sen, táo đỏ và kỷ tử hầm vừa độ, vị ngọt thanh nhẹ nhàng dễ chịu.",
       healthNote: "Tuyết yến, táo đỏ và kỷ tử giúp dưỡng nhan, bồi bổ nhẹ nhàng.",
       source_status: "verified_from_local_or_web"
@@ -283,7 +283,7 @@ window.LIENHOA_DATA = {
       name: "Ấm Trà Hoa Cúc Mật Ong Thảo Mộc (2–4 Người)",
       price: 45000,
       badge: "Thư giãn",
-      image: "./assets/images/drinks/drink-02.jpg",
+      image: "./assets/images/drinks/drink-08.jpg",
       desc: "Ấm trà hoa cúc vàng ấm áp thoảng hương thảo mộc, thích hợp nhâm nhi chuyện trò sau bữa ăn.",
       healthNote: "Hoa cúc giúp thư giãn tinh thần, làm dịu cổ họng.",
       source_status: "verified_from_local_or_web"
@@ -395,7 +395,7 @@ window.LIENHOA_DATA = {
       title: "Hành Trình 8 Tiếng Ninh Nước Dùng Từ Củ Quả Tự Nhiên",
       excerpt: "Không cần bột ngọt hay hạt nêm hóa học, nồi lẩu nấm Liên Hoa vẫn có vị ngọt sâu và thanh tao nhờ công thức ninh rau củ chậm rãi suốt 8 giờ.",
       readTime: "3 phút đọc",
-      image: "./assets/images/food/food-05.jpg",
+      image: "./assets/images/food/food-54.jpg",
       content: [
         "Linh hồn của một nồi lẩu chay ngon nằm ở nồi nước dùng. Từ sáng sớm tinh mơ, gian bếp Liên Hoa đã rửa sạch, sơ chế củ cải trắng, củ sen, ngô ngọt, mía lau, cà rốt và nấm hương khô để ninh nhỏ lửa liên tục suốt 8 tiếng.",
         "Quá trình ninh chậm giúp các dưỡng chất và vị ngọt tự nhiên trong từng thớ củ quả tiết ra từ từ, hòa quyện thành thứ nước dùng trong veo, ngọt hậu êm dịu nơi cổ họng mà hoàn toàn không gây cảm giác khát nước hay khô cổ sau khi dùng bữa.",
