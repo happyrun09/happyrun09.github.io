@@ -60,6 +60,7 @@
   </script>
 </head>
 <body>
+  <canvas id="zenParticleCanvas"></canvas>
 
   <!-- Background Ambient Glow -->
   <div class="ambient-glow glow-forest"></div>
@@ -114,6 +115,19 @@
           </svg>
           <span class="bell-text">Thỉnh Chuông</span>
         </button>
+
+        <button class="btn-zen-bell" id="btnHealing432" title="Nhạc thiền 432Hz thư giãn">
+          <span>🎵</span>
+          <span class="bell-text">432Hz</span>
+        </button>
+
+        <select id="artStyleSelect" class="style-select-pill" aria-label="Phong cách nghệ thuật">
+          <option value="default">🎨 Zen Đêm</option>
+          <option value="light">☀️ Ban Mai</option>
+          <option value="cinema">🎬 Điện Ảnh</option>
+          <option value="rose">🌸 Thủy Mặc</option>
+          <option value="sketch">🪵 Thư Pháp</option>
+        </select>
 
         <button class="btn-ai-key" id="btnOpenAiKeyModal" style="display:none;" title="Trạm quản trị Khóa AI (DeepSeek + Gemini)">
           <span>🔑</span>
@@ -218,6 +232,9 @@
         <div class="hero-image-wrapper">
           <div class="hero-image-card">
             <img src="./assets/images/space/space-01.jpg" alt="Không gian Nhà hàng Chay Liên Hoa Hải Dương" id="heroMainImg" class="hero-main-img">
+            <canvas class="fx-ripple-canvas" id="heroRippleCanvas"></canvas>
+            <div class="magnifier-lens" id="heroMagLens"></div>
+            <button type="button" class="hero-lens-btn" id="btnHeroLens" title="Bật/tắt kính lúp soi chi tiết 2.2x">🔍 Soi 2.2x</button>
             <div class="hero-floating-quote">
               <p class="quote-text">&ldquo;Mỗi bữa ăn thuần chay là một hạt giống thiện lành gieo vào tâm hồn.&rdquo;</p>
               <span class="quote-sign">— Liên Hoa Chay Hải Dương</span>
@@ -255,6 +272,19 @@
             <p class="pillar-desc">Phục vụ Buffet chay tất cả các ngày trong tuần, cơm gia đình đầm ấm, mâm cỗ cúng gia tiên trang nghiêm ngày Rằm và tiệc sinh nhật chay.</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- 2.5 Interactive 3D Flip Cards Deck (Chuyển Hóa Tâm Thức Ẩm Thực) -->
+    <section class="flip-deck-section" id="flipDeckSection">
+      <div class="section-container">
+        <div class="section-header-center">
+          <span class="section-subtitle">CHUYỂN HÓA TỪNG BỮA ĂN</span>
+          <h2 class="section-title">Chạm Để Lật Mở Giá Trị Ẩm Thực Chánh Niệm</h2>
+          <p class="section-desc">Khám phá sự khác biệt giữa bữa ăn vội vã thường nhật và trải nghiệm thanh tịnh tại Liên Hoa Chay</p>
+          <button type="button" class="btn-zen-bell" id="btnFlipAll4d" style="margin: 14px auto 0; display: inline-flex;">🔄 Lật 4 Thẻ</button>
+        </div>
+        <div class="flip-4d-grid" id="flip4dGrid"></div>
       </div>
     </section>
 
@@ -315,6 +345,37 @@
         </div>
 
         <div class="catering-grid" id="cateringGrid"></div>
+
+        <!-- Interactive Banquet & Buffet Budget Simulator -->
+        <div class="sim-card" id="banquetSimulator">
+          <div class="sim-grid">
+            <div class="sim-controls">
+              <span class="section-subtitle">DỰ TOÁN TIỆC &amp; BUFFET THÔNG MINH</span>
+              <h3 style="margin: 6px 0 14px; font-size: 1.35rem;">Tính Nhanh Chi Phí Theo Số Khách</h3>
+              <div style="margin-bottom: 16px;">
+                <label for="simGuestsRange" style="display:flex; justify-content:space-between; font-weight:600; margin-bottom:8px;">
+                  <span>Số lượng thực khách:</span>
+                  <span id="simGuestsLabel" style="color:var(--gold-light);">8 khách</span>
+                </label>
+                <input type="range" id="simGuestsRange" min="2" max="50" value="8" style="width:100%; accent-color:var(--gold-primary);">
+              </div>
+              <div>
+                <label for="simServiceSelect" style="display:block; font-weight:600; margin-bottom:8px;">Hình thức phục vụ:</label>
+                <select id="simServiceSelect" class="style-select-pill" style="width:100%; padding:10px 14px; font-size:0.95rem;">
+                  <option value="buffet">Buffet Chay Liên Hoa (119.000đ / người)</option>
+                  <option value="alacarte">Gọi Món Gia Đình (~135.000đ / người)</option>
+                  <option value="catering">Set Cỗ Chay Trọn Gói (500k - 1.000k / mâm 6 người)</option>
+                </select>
+              </div>
+            </div>
+            <div class="sim-result-box">
+              <div style="font-size:0.85rem; text-transform:uppercase; letter-spacing:1px; opacity:0.8;">Dự Toán Chi Phí</div>
+              <div class="sim-total-price" id="simTotalAmount">952.000đ</div>
+              <p id="simRecommendText" style="font-size:0.92rem; line-height:1.5; margin: 8px 0 16px; opacity:0.9;">Gợi ý: 8 vé Buffet Chay Trọn Gói, thoải mái thưởng thức hơn 30 món thanh đạm.</p>
+              <button type="button" class="btn-primary-glow" id="btnSimAddToTray" style="width:100%;">➕ Thêm Dự Toán Vào Mâm</button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 

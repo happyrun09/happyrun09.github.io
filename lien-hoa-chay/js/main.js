@@ -1466,6 +1466,418 @@
     renderTray();
   }
 
+  /* ==================== 4D CINEMA INTERACTIVE UPGRADES ==================== */
+  function playSoftChime(freq = 528, duration = 0.25) {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      if (!window.__lhcAudioCtx) window.__lhcAudioCtx = new Ctx();
+      const ctx = window.__lhcAudioCtx;
+      if (ctx.state === "suspended") ctx.resume();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + duration + 0.02);
+    } catch {
+      /* ignore audio errors */
+    }
+  }
+
+  function initZenParticles() {
+    const canvas = $("#zenParticleCanvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+    window.addEventListener("resize", () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const particles = Array.from({ length: 34 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: 1.2 + Math.random() * 2.4,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: -0.18 - Math.random() * 0.35,
+      alpha: 0.2 + Math.random() * 0.45,
+      gold: Math.random() > 0.35
+    }));
+
+    function tick() {
+      if (!document.hidden) {
+        ctx.clearRect(0, 0, width, height);
+        for (const p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.y < -10) {
+            p.y = height + 10;
+            p.x = Math.random() * width;
+          }
+          if (p.x < -10) p.x = width + 10;
+          if (p.x > width + 10) p.x = -10;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.gold
+            ? `rgba(212, 168, 83, ${p.alpha})`
+            : `rgba(110, 196, 150, ${p.alpha})`;
+          ctx.fill();
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  let healing432Nodes = null;
+  function toggleHealing432() {
+    const btn = $("#btnHealing432");
+    if (!btn) return;
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) {
+        showToast("Trình duyệt không hỗ trợ âm thanh WebAudio 432Hz");
+        return;
+      }
+      if (!window.__lhcAudioCtx) window.__lhcAudioCtx = new Ctx();
+      const ctx = window.__lhcAudioCtx;
+      if (ctx.state === "suspended") ctx.resume();
+
+      if (healing432Nodes) {
+        const { master, osc1, osc2, lfo } = healing432Nodes;
+        master.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+        setTimeout(() => {
+          try {
+            osc1.stop();
+            osc2.stop();
+            lfo.stop();
+          } catch {
+            /* ignore */
+          }
+        }, 550);
+        healing432Nodes = null;
+        btn.classList.remove("playing");
+        showToast("🔇 Đã tạm dừng nhạc thiền 432Hz");
+        return;
+      }
+
+      const master = ctx.createGain();
+      master.gain.setValueAtTime(0.0001, ctx.currentTime);
+      master.gain.exponentialRampToValueAtTime(0.045, ctx.currentTime + 1.2);
+      master.connect(ctx.destination);
+
+      const osc1 = ctx.createOscillator();
+      osc1.type = "sine";
+      osc1.frequency.setValueAtTime(432, ctx.currentTime);
+
+      const osc2 = ctx.createOscillator();
+      osc2.type = "sine";
+      osc2.frequency.setValueAtTime(216, ctx.currentTime);
+
+      const lfo = ctx.createOscillator();
+      lfo.type = "sine";
+      lfo.frequency.setValueAtTime(0.18, ctx.currentTime);
+      const lfoGain = ctx.createGain();
+      lfoGain.gain.setValueAtTime(0.015, ctx.currentTime);
+      lfo.connect(lfoGain);
+      lfoGain.connect(master.gain);
+
+      osc1.connect(master);
+      osc2.connect(master);
+      osc1.start();
+      osc2.start();
+      lfo.start();
+
+      healing432Nodes = { master, osc1, osc2, lfo };
+      btn.classList.add("playing");
+      showToast("🎵 Đang phát âm tần thiền định 432Hz thư giãn");
+    } catch {
+      showToast("Không thể khởi tạo âm thanh 432Hz");
+    }
+  }
+
+  function setArtStyle(val) {
+    const style = val || "default";
+    document.body.classList.remove("art-cinema", "art-rose", "art-sketch");
+    if (style === "light") {
+      document.documentElement.setAttribute("data-theme", "light");
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+      if (style === "cinema") document.body.classList.add("art-cinema");
+      if (style === "rose") document.body.classList.add("art-rose");
+      if (style === "sketch") document.body.classList.add("art-sketch");
+    }
+    const sel = $("#artStyleSelect");
+    if (sel && sel.value !== style) sel.value = style;
+    try {
+      localStorage.setItem("lhc_art_style", style);
+    } catch {
+      /* ignore */
+    }
+  }
+
+  function initArtStyleSwitcher() {
+    const sel = $("#artStyleSelect");
+    if (!sel) return;
+    let saved = "default";
+    try {
+      saved = localStorage.getItem("lhc_art_style") || "default";
+    } catch {
+      /* ignore */
+    }
+    setArtStyle(saved);
+    sel.addEventListener("change", (e) => {
+      setArtStyle(e.target.value);
+      playSoftChime(587.33, 0.22);
+      showToast(`🎨 Đã chuyển phong cách: ${sel.options[sel.selectedIndex].text}`);
+    });
+  }
+
+  function initHero4dLensAndRipple() {
+    const card = $(".hero-image-card");
+    const img = $("#heroMainImg");
+    const lens = $("#heroMagLens");
+    const btn = $("#btnHeroLens");
+    const rCanvas = $("#heroRippleCanvas");
+    if (!card || !img || !lens || !btn) return;
+
+    let magActive = false;
+    const ZOOM = 2.2;
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      magActive = !magActive;
+      btn.classList.toggle("active", magActive);
+      btn.textContent = magActive ? "🔍 Tắt Kính Lúp" : "🔍 Soi 2.2x";
+      if (!magActive) lens.style.display = "none";
+      playSoftChime(magActive ? 659.25 : 440, 0.2);
+    });
+
+    card.addEventListener("mousemove", (e) => {
+      if (!magActive) return;
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
+        lens.style.display = "none";
+        return;
+      }
+      lens.style.display = "block";
+      const half = lens.offsetWidth / 2 || 70;
+      lens.style.left = `${x - half}px`;
+      lens.style.top = `${y - half}px`;
+      lens.style.backgroundImage = `url('${img.src}')`;
+      lens.style.backgroundSize = `${rect.width * ZOOM}px ${rect.height * ZOOM}px`;
+      lens.style.backgroundPosition = `-${x * ZOOM - half}px -${y * ZOOM - half}px`;
+    });
+
+    card.addEventListener("mouseleave", () => {
+      lens.style.display = "none";
+    });
+
+    if (rCanvas) {
+      const ctx = rCanvas.getContext("2d");
+      const ripples = [];
+      let animating = false;
+
+      const resizeRipple = () => {
+        rCanvas.width = card.clientWidth || 500;
+        rCanvas.height = card.clientHeight || 400;
+      };
+      resizeRipple();
+      window.addEventListener("resize", resizeRipple);
+
+      const drawRipples = () => {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, rCanvas.width, rCanvas.height);
+        for (let i = ripples.length - 1; i >= 0; i--) {
+          const rp = ripples[i];
+          rp.r += 4.2;
+          rp.a *= 0.94;
+          ctx.beginPath();
+          ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(212, 168, 83, ${rp.a.toFixed(3)})`;
+          ctx.lineWidth = 2.2;
+          ctx.stroke();
+          if (rp.a < 0.03) ripples.splice(i, 1);
+        }
+        if (ripples.length > 0) {
+          requestAnimationFrame(drawRipples);
+        } else {
+          animating = false;
+        }
+      };
+
+      card.addEventListener("click", (e) => {
+        if (e.target === btn) return;
+        const rect = card.getBoundingClientRect();
+        ripples.push({
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top,
+          r: 8,
+          a: 0.92
+        });
+        playSoftChime(783.99, 0.25);
+        if (!animating) {
+          animating = true;
+          requestAnimationFrame(drawRipples);
+        }
+      });
+    }
+  }
+
+  function renderFlipDeck4d() {
+    const grid = $("#flip4dGrid");
+    if (!grid) return;
+    const cards = [
+      {
+        iconBefore: "⏳",
+        beforeTitle: "TRƯỚC: Bữa Ăn Vội Vã",
+        beforeDesc: "Ăn nhanh giữa bộn bề công việc, ít để tâm đến hương vị tự nhiên và nhịp thở của chính mình.",
+        iconAfter: "🪷",
+        afterTitle: "TRỞ THÀNH: Thưởng Thức Chánh Niệm",
+        afterDesc: "Chậm lại bên tiếng chuông an lạc, cảm nhận vị ngọt thanh khiết từ đất mẹ trong từng đũa chay."
+      },
+      {
+        iconBefore: "🥫",
+        beforeTitle: "TRƯỚC: Gia Vị Công Nghiệp",
+        beforeDesc: "Lo ngại phụ gia, dầu chiên lại và vị ngọt gắt từ hóa chất khiến cơ thể nặng nề sau bữa ăn.",
+        iconAfter: "🍄",
+        afterTitle: "TRỞ THÀNH: Thanh Thuần 8 Tiếng Ninh",
+        afterDesc: "Nước dùng ngọt sâu hoàn toàn từ củ sen, ngô ngọt, mía lau và hơn 8 loại nấm quý tươi mỗi ngày."
+      },
+      {
+        iconBefore: "📱",
+        beforeTitle: "TRƯỚC: Khoảng Cách Bữa Cơm",
+        beforeDesc: "Mỗi người một màn hình điện thoại, bữa cơm gia đình thiếu đi sự kết nối ấm áp thân tình.",
+        iconAfter: "🍲",
+        afterTitle: "TRỞ THÀNH: Sum Vầy Đậm Đà",
+        afterDesc: "Nồi lẩu nấm bốc khói nghi ngút gắn kết ông bà, cha mẹ và con cháu trong tiếng cười an vui."
+      },
+      {
+        iconBefore: "⚡",
+        beforeTitle: "TRƯỚC: Tâm Trí Bất An",
+        beforeDesc: "Áp lực phố thị và tiếng ồn khiến tinh thần căng thẳng, khó tìm được khoảnh khắc tĩnh tại.",
+        iconAfter: "🎋",
+        afterTitle: "TRỞ THÀNH: Chốn Về Thanh Lương",
+        afterDesc: "Ánh đèn lồng dịu mắt, sắc gỗ trầm ấm và âm tần 432Hz đưa tâm hồn trở về miền bình yên."
+      }
+    ];
+
+    grid.innerHTML = cards
+      .map(
+        (c) => `
+      <div class="flip-4d-card" tabindex="0" role="button" aria-label="${c.beforeTitle}">
+        <div class="flip-4d-inner">
+          <div class="flip-4d-front">
+            <span class="flip-badge">TRƯỚC • CHẠM ĐỂ LẬT</span>
+            <div class="flip-icon">${c.iconBefore}</div>
+            <h4>${c.beforeTitle}</h4>
+            <p>${c.beforeDesc}</p>
+          </div>
+          <div class="flip-4d-back">
+            <span class="flip-badge">TRỞ THÀNH • LIÊN HOA CHAY</span>
+            <div class="flip-icon">${c.iconAfter}</div>
+            <h4>${c.afterTitle}</h4>
+            <p>${c.afterDesc}</p>
+          </div>
+        </div>
+      </div>`
+      )
+      .join("");
+
+    grid.querySelectorAll(".flip-4d-card").forEach((card) => {
+      const toggleFlip = () => {
+        card.classList.toggle("is-flipped");
+        playSoftChime(card.classList.contains("is-flipped") ? 659.25 : 493.88, 0.22);
+      };
+      card.addEventListener("click", toggleFlip);
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggleFlip();
+        }
+      });
+    });
+
+    const btnAll = $("#btnFlipAll4d");
+    if (btnAll) {
+      btnAll.addEventListener("click", () => {
+        const allCards = [...grid.querySelectorAll(".flip-4d-card")];
+        const anyUnflipped = allCards.some((c) => !c.classList.contains("is-flipped"));
+        allCards.forEach((c) => c.classList.toggle("is-flipped", anyUnflipped));
+        playSoftChime(anyUnflipped ? 698.46 : 440, 0.28);
+      });
+    }
+  }
+
+  function initBanquetSimulator() {
+    const range = $("#simGuestsRange");
+    const label = $("#simGuestsLabel");
+    const serviceSel = $("#simServiceSelect");
+    const totalEl = $("#simTotalAmount");
+    const recEl = $("#simRecommendText");
+    const btnAdd = $("#btnSimAddToTray");
+    if (!range || !label || !serviceSel || !totalEl || !recEl || !btnAdd) return;
+
+    const updateSim = () => {
+      const guests = parseInt(range.value, 10) || 8;
+      const mode = serviceSel.value;
+      label.textContent = `${guests} khách`;
+      let total = 0;
+      let rec = "";
+
+      if (mode === "buffet") {
+        total = guests * 119000;
+        rec = `Gợi ý: ${guests} vé Buffet Chay Trọn Gói (119.000đ/người), thưởng thức hơn 30 món thanh đạm.`;
+      } else if (mode === "alacarte") {
+        total = guests * 135000;
+        const pots = Math.max(1, Math.ceil(guests / 4));
+        rec = `Gợi ý: ${pots} nồi Lẩu Nấm Liên Hoa + Tàu hũ ký danh + Cơm hạt sen lá sen cho ${guests} người.`;
+      } else {
+        const trays = Math.max(1, Math.ceil(guests / 6));
+        const unitPrice = guests <= 6 ? 500000 : 700000;
+        total = trays * unitPrice;
+        rec = `Gợi ý: ${trays} mâm ${guests <= 6 ? "Cỗ Chay An Lạc (500k)" : "Cỗ Chay Thanh Tịnh (700k)"} đủ đầy cho ${guests} thực khách.`;
+      }
+
+      totalEl.textContent = `${total.toLocaleString("vi-VN")}đ`;
+      recEl.textContent = rec;
+    };
+
+    range.addEventListener("input", updateSim);
+    serviceSel.addEventListener("change", updateSim);
+    btnAdd.addEventListener("click", () => {
+      const guests = parseInt(range.value, 10) || 8;
+      const mode = serviceSel.value;
+      if (mode === "buffet") {
+        tray["buffet-hang-ngay"] = (tray["buffet-hang-ngay"] || 0) + guests;
+      } else if (mode === "catering") {
+        const trays = Math.max(1, Math.ceil(guests / 6));
+        const setId = guests <= 6 ? "set-500" : "set-700";
+        tray[setId] = (tray[setId] || 0) + trays;
+      } else {
+        const pots = Math.max(1, Math.ceil(guests / 4));
+        tray["lau-nam-lien-hoa"] = (tray["lau-nam-lien-hoa"] || 0) + pots;
+        tray["tau-hu-lien-hoa"] = (tray["tau-hu-lien-hoa"] || 0) + pots;
+        tray["com-hat-sen-la-sen"] = (tray["com-hat-sen-la-sen"] || 0) + pots;
+      }
+      saveTray();
+      playSoftChime(659.25, 0.25);
+      showToast(`Đã thêm dự toán cho ${guests} khách vào Mâm Của Bạn!`);
+    });
+    updateSim();
+  }
+
   renderSpotlight();
   renderCategoryPills();
   renderMenu();
@@ -1476,6 +1888,12 @@
   renderReviewsAndBlog();
   renderTray();
   updateLiveOpenStatus();
+  initZenParticles();
+  initArtStyleSwitcher();
+  initHero4dLensAndRipple();
+  renderFlipDeck4d();
+  initBanquetSimulator();
+  $("#btnHealing432")?.addEventListener("click", toggleHealing432);
   bindEvents();
   $("#btnPrintMenu")?.addEventListener("click", () => window.print());
   if (currentLang !== "vi") {
