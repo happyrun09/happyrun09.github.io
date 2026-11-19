@@ -1735,91 +1735,6 @@
     }
   }
 
-  function renderFlipDeck4d() {
-    const grid = $("#flip4dGrid");
-    if (!grid) return;
-    const cards = [
-      {
-        iconBefore: "⏳",
-        beforeTitle: "TRƯỚC: Bữa Ăn Vội Vã",
-        beforeDesc: "Ăn nhanh giữa bộn bề công việc, ít để tâm đến hương vị tự nhiên và nhịp thở của chính mình.",
-        iconAfter: "🪷",
-        afterTitle: "TRỞ THÀNH: Thưởng Thức Chánh Niệm",
-        afterDesc: "Chậm lại bên tiếng chuông an lạc, cảm nhận vị ngọt thanh khiết từ đất mẹ trong từng đũa chay."
-      },
-      {
-        iconBefore: "🥫",
-        beforeTitle: "TRƯỚC: Gia Vị Công Nghiệp",
-        beforeDesc: "Lo ngại phụ gia, dầu chiên lại và vị ngọt gắt từ hóa chất khiến cơ thể nặng nề sau bữa ăn.",
-        iconAfter: "🍄",
-        afterTitle: "TRỞ THÀNH: Thanh Thuần 8 Tiếng Ninh",
-        afterDesc: "Nước dùng ngọt sâu hoàn toàn từ củ sen, ngô ngọt, mía lau và hơn 8 loại nấm quý tươi mỗi ngày."
-      },
-      {
-        iconBefore: "📱",
-        beforeTitle: "TRƯỚC: Khoảng Cách Bữa Cơm",
-        beforeDesc: "Mỗi người một màn hình điện thoại, bữa cơm gia đình thiếu đi sự kết nối ấm áp thân tình.",
-        iconAfter: "🍲",
-        afterTitle: "TRỞ THÀNH: Sum Vầy Đậm Đà",
-        afterDesc: "Nồi lẩu nấm bốc khói nghi ngút gắn kết ông bà, cha mẹ và con cháu trong tiếng cười an vui."
-      },
-      {
-        iconBefore: "⚡",
-        beforeTitle: "TRƯỚC: Tâm Trí Bất An",
-        beforeDesc: "Áp lực phố thị và tiếng ồn khiến tinh thần căng thẳng, khó tìm được khoảnh khắc tĩnh tại.",
-        iconAfter: "🎋",
-        afterTitle: "TRỞ THÀNH: Chốn Về Thanh Lương",
-        afterDesc: "Ánh đèn lồng dịu mắt, sắc gỗ trầm ấm và âm tần 432Hz đưa tâm hồn trở về miền bình yên."
-      }
-    ];
-
-    grid.innerHTML = cards
-      .map(
-        (c) => `
-      <div class="flip-4d-card" tabindex="0" role="button" aria-label="${c.beforeTitle}">
-        <div class="flip-4d-inner">
-          <div class="flip-4d-front">
-            <span class="flip-badge">TRƯỚC • CHẠM ĐỂ LẬT</span>
-            <div class="flip-icon">${c.iconBefore}</div>
-            <h4>${c.beforeTitle}</h4>
-            <p>${c.beforeDesc}</p>
-          </div>
-          <div class="flip-4d-back">
-            <span class="flip-badge">TRỞ THÀNH • LIÊN HOA CHAY</span>
-            <div class="flip-icon">${c.iconAfter}</div>
-            <h4>${c.afterTitle}</h4>
-            <p>${c.afterDesc}</p>
-          </div>
-        </div>
-      </div>`
-      )
-      .join("");
-
-    grid.querySelectorAll(".flip-4d-card").forEach((card) => {
-      const toggleFlip = () => {
-        card.classList.toggle("is-flipped");
-        playSoftChime(card.classList.contains("is-flipped") ? 659.25 : 493.88, 0.22);
-      };
-      card.addEventListener("click", toggleFlip);
-      card.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          toggleFlip();
-        }
-      });
-    });
-
-    const btnAll = $("#btnFlipAll4d");
-    if (btnAll) {
-      btnAll.addEventListener("click", () => {
-        const allCards = [...grid.querySelectorAll(".flip-4d-card")];
-        const anyUnflipped = allCards.some((c) => !c.classList.contains("is-flipped"));
-        allCards.forEach((c) => c.classList.toggle("is-flipped", anyUnflipped));
-        playSoftChime(anyUnflipped ? 698.46 : 440, 0.28);
-      });
-    }
-  }
-
   function initBanquetSimulator() {
     const range = $("#simGuestsRange");
     const label = $("#simGuestsLabel");
@@ -1919,7 +1834,6 @@
   initZenParticles();
   initArtStyleSwitcher();
   initHero4dLensAndRipple();
-  renderFlipDeck4d();
   initBanquetSimulator();
   initZenControlsPopover();
   $("#btnHealing432")?.addEventListener("click", toggleHealing432);
