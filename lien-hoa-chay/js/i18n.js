@@ -131,7 +131,20 @@ window.LIENHOA_I18N = {
       aiSub: "支持中文或越南语提问 —— AI 将根据您的人数与预算量身推荐素食组合。",
       aiInputPh: "向莲花 AI 提问（例如：6人聚餐推荐哪些招牌菜和火锅？）...",
       aiSubmitBtn: "✨ 咨询 AI 顾问",
-      aiAddComboBtn: "🛒 一键将推荐组合加入餐盘"
+      aiAddComboBtn: "🛒 一键将推荐组合加入餐盘",
+      loadMoreVid: "🎬 查看更多视频",
+      footerBio: "汇聚养生素食的纯净本味。每一道菜品都是献给您与家人的一份平安、健康与喜悦祝福。",
+      footerCol1: "精选推荐菜单",
+      footerLinks: [
+        "每日35+道素食自助餐",
+        "莲花雪耳嫩豆腐",
+        "莲花珍菌养生火锅",
+        "初一十五 & 祭祖素席套餐",
+        "梅子茶 & 雪燕养颜甜汤"
+      ],
+      footerCol2: "门店联系信息",
+      footerCopy: "© 2026 海阳莲花素食餐厅 · 版权所有。",
+      footerSub: "清净素食滋养身心 · 与绿色正念生活方式同行。"
     },
     categories: {
       all: "全部菜品",
@@ -353,7 +366,20 @@ window.LIENHOA_I18N = {
       aiSub: "支援中文或越南語提問 —— AI 將根據您的人數與預算量身推薦素食組合。",
       aiInputPh: "向蓮花 AI 提問（例如：6人聚餐推薦哪些招牌菜和火鍋？）...",
       aiSubmitBtn: "✨ 諮詢 AI 顧問",
-      aiAddComboBtn: "🛒 一鍵將推薦組合加入餐盤"
+      aiAddComboBtn: "🛒 一鍵將推薦組合加入餐盤",
+      loadMoreVid: "🎬 查看更多影片",
+      footerBio: "匯聚養生素食的純淨本味。每一道菜品都是獻給您與家人的一份平安、健康與喜悅祝福。",
+      footerCol1: "精選推薦菜單",
+      footerLinks: [
+        "每日35+道素食自助餐",
+        "蓮花雪耳嫩豆腐",
+        "蓮花珍菌養生火鍋",
+        "初一十五 & 祭祖素席套餐",
+        "梅子茶 & 雪燕養顏甜湯"
+      ],
+      footerCol2: "門市聯繫資訊",
+      footerCopy: "© 2026 海陽蓮花素食餐廳 · 版權所有。",
+      footerSub: "清淨素食滋養身心 · 與綠色正念生活方式同行。"
     },
     categories: {
       all: "全部菜品",

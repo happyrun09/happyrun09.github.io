@@ -785,8 +785,23 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
 .menu-card-body p {
   font-size: 0.84rem;
   color: var(--text-muted);
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   flex: 1;
+}
+.dish-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.dish-tag-chip {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 8px;
+  border-radius: 999px;
 }
 .menu-card-foot {
   display: flex;

@@ -308,11 +308,21 @@
       return;
     }
 
+    const getDishTags = (raw, view) => {
+      const catTag = tPack()?.categories?.[raw.category] || DATA.categories.find((c) => c.id === raw.category)?.name || "";
+      const pureTag = currentLang === "vi" ? "#Thuần_chay" : "#纯素";
+      const tags = [pureTag];
+      if (view.badge) tags.push(`#${view.badge.replace(/\s+/g, "_")}`);
+      else if (catTag) tags.push(`#${catTag.split(" ")[0]}`);
+      if (raw.id === "lau-nam-lien-hoa") tags.push(currentLang === "vi" ? "#Nước_dùng_8h" : "#8小时高汤");
+      return tags.slice(0, 3);
+    };
+
     const addLbl = tUI("addToTray", "+ Thêm Vào Mâm");
     empty.style.display = "none";
     grid.innerHTML = list
       .map(
-        ({ view: m }) => `
+        ({ raw, view: m }) => `
         <article class="menu-card">
           <div class="menu-card-media" data-quick-view="${m.id}">
             <img src="${m.image}" alt="${m.name}" loading="lazy">
@@ -321,6 +331,9 @@
           <div class="menu-card-body">
             <h3 data-quick-view="${m.id}">${m.name}</h3>
             <p>${m.desc}</p>
+            <div class="dish-tags">
+              ${getDishTags(raw, m).map((tg) => `<span class="dish-tag-chip">${tg}</span>`).join("")}
+            </div>
             <div class="menu-card-foot">
               <span class="dish-price">${formatMoney(m.price)}</span>
               <button type="button" class="btn-spotlight-add" data-add-dish="${m.id}">${addLbl}</button>
@@ -360,6 +373,7 @@
   const MEDIA = window.LIENHOA_MEDIA || { videos: [], photoArchive: DATA.gallery };
   let galleryCat = "all";
   let galleryLimit = 12;
+  let videoLimit = 6;
 
   function getFilteredGallery() {
     const list = MEDIA.photoArchive || DATA.gallery;
@@ -393,7 +407,8 @@
     const grid = $("#videoShowcaseGrid");
     if (!grid || !MEDIA.videos) return;
     const fsLabel = currentLang === "vi" ? "⛶ Toàn Màn Hình" : "⛶ 全屏";
-    grid.innerHTML = MEDIA.videos
+    const visibleVids = MEDIA.videos.slice(0, videoLimit);
+    grid.innerHTML = visibleVids
       .map(
         (v) => `
         <article class="video-card">
@@ -442,6 +457,18 @@
         vid.closest(".video-card")?.classList.remove("is-playing");
       });
     });
+
+    const vidMoreBtn = $("#btnLoadMoreVideos");
+    if (vidMoreBtn) {
+      const rem = MEDIA.videos.length - visibleVids.length;
+      if (rem > 0) {
+        vidMoreBtn.style.display = "inline-flex";
+        const baseLbl = tUI("loadMoreVid", "🎬 Xem Thêm Video");
+        vidMoreBtn.textContent = `${baseLbl} (${rem})`;
+      } else {
+        vidMoreBtn.style.display = "none";
+      }
+    }
   }
 
   function renderGalleryTabs() {
@@ -728,6 +755,28 @@
       galleryLimit += 18;
       renderGallery();
     });
+    $("#btnLoadMoreVideos")?.addEventListener("click", () => {
+      videoLimit += 6;
+      renderVideos();
+    });
+
+    // Smooth ScrollSpy on Header Nav
+    const navItems = $$("#navLinks .nav-item");
+    const sections = navItems.map((a) => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+    if ("IntersectionObserver" in window && sections.length > 0) {
+      const spy = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const id = "#" + entry.target.id;
+              navItems.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === id));
+            }
+          });
+        },
+        { rootMargin: "-35% 0px -55% 0px", threshold: 0 }
+      );
+      sections.forEach((sec) => spy.observe(sec));
+    }
 
     // Mindful Quote
     $("#btnDrawCard")?.addEventListener("click", drawMindfulQuote);
@@ -1090,6 +1139,13 @@
     viSnapshot.aiSub = $("#aiConsultantSection .mindful-sub")?.textContent;
     viSnapshot.aiPh = $("#aiChatInput")?.placeholder;
     viSnapshot.aiBtn = $("#aiChatForm button[type='submit']")?.textContent;
+    viSnapshot.footerBio = $(".footer-bio")?.textContent;
+    viSnapshot.footerCol1 = $(".footer-links-col h4")?.textContent;
+    viSnapshot.footerLinks = $$(".footer-links-col li a").map((el) => el.textContent);
+    viSnapshot.footerCol2 = $(".footer-contact-col h4")?.textContent;
+    viSnapshot.footerCopy = $(".footer-bottom p:first-child")?.innerHTML;
+    viSnapshot.footerSub = $(".footer-subtext")?.textContent;
+    viSnapshot.locInfoStrongs = $$("#locationSection .loc-info-row strong").map((el) => el.textContent);
   }
 
   function restoreViSnapshot() {
@@ -1166,6 +1222,13 @@
       $("#aiChatInput").placeholder = s.aiPh;
       $("#aiChatForm button[type='submit']").textContent = s.aiBtn;
     }
+    if ($(".footer-bio")) $(".footer-bio").textContent = s.footerBio;
+    if ($(".footer-links-col h4")) $(".footer-links-col h4").textContent = s.footerCol1;
+    $$(".footer-links-col li a").forEach((el, i) => { if (s.footerLinks[i]) el.textContent = s.footerLinks[i]; });
+    if ($(".footer-contact-col h4")) $(".footer-contact-col h4").textContent = s.footerCol2;
+    if ($(".footer-bottom p:first-child")) $(".footer-bottom p:first-child").innerHTML = s.footerCopy;
+    if ($(".footer-subtext")) $(".footer-subtext").textContent = s.footerSub;
+    $$("#locationSection .loc-info-row strong").forEach((el, i) => { if (s.locInfoStrongs[i]) el.textContent = s.locInfoStrongs[i]; });
   }
 
   function applyLanguage(lang) {
@@ -1321,6 +1384,15 @@
       if (mb[0]) mb[0].querySelector("span:last-child").textContent = u.mbCall;
       if (mb[1]) mb[1].querySelector("span:last-child").textContent = u.mbMenu;
       if (mb[2]) mb[2].querySelector("span:last-child").textContent = u.mbBook;
+
+      if (u.footerBio && $(".footer-bio")) $(".footer-bio").textContent = u.footerBio;
+      if (u.footerCol1 && $(".footer-links-col h4")) $(".footer-links-col h4").textContent = u.footerCol1;
+      if (u.footerLinks) $$(".footer-links-col li a").forEach((el, i) => { if (u.footerLinks[i]) el.textContent = u.footerLinks[i]; });
+      if (u.footerCol2 && $(".footer-contact-col h4")) $(".footer-contact-col h4").textContent = u.footerCol2;
+      if (u.footerCopy && $(".footer-bottom p:first-child")) $(".footer-bottom p:first-child").textContent = u.footerCopy;
+      if (u.footerSub && $(".footer-subtext")) $(".footer-subtext").textContent = u.footerSub;
+      const locStrongs = [u.locHoursLbl, u.locPhoneLbl, u.locEmailLbl];
+      $$("#locationSection .loc-info-row strong").forEach((el, i) => { if (locStrongs[i]) el.textContent = locStrongs[i]; });
     } else {
       restoreViSnapshot();
     }
