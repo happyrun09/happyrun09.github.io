@@ -1916,3 +1916,71 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
   body { background: #fff !important; color: #111 !important; }
   .menu-card, .spotlight-card { break-inside: avoid; border: 1px solid #ccc !important; }
 }
+
+/* Header Compact Zen Controls Popover */
+.zen-controls-wrap {
+  position: relative;
+}
+.btn-zen-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: var(--radius-full);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-zen-controls:hover,
+.btn-zen-controls.active {
+  border-color: var(--gold-primary);
+  color: var(--gold-light);
+}
+.zen-controls-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 270px;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-gold);
+  box-shadow: var(--shadow-lg);
+  z-index: 2200;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+.zen-controls-popover.open {
+  display: flex;
+}
+.zen-pop-title {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-gold);
+}
+.zen-pop-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.zen-pop-row > * {
+  flex: 1;
+  justify-content: center;
+}
+.zen-pop-row .style-select-pill {
+  width: 100%;
+}
+@media (max-width: 640px) {
+  .controls-text { display: none; }
+  .zen-controls-popover .bell-text,
+  .zen-controls-popover .btn-font-toggle {
+    display: inline-flex;
+  }
+}

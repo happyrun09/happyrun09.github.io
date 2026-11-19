@@ -1878,6 +1878,34 @@
     updateSim();
   }
 
+  function initZenControlsPopover() {
+    const wrap = $("#zenControlsWrap");
+    const btn = $("#btnZenControls");
+    const pop = $("#zenControlsPopover");
+    if (!wrap || !btn || !pop) return;
+
+    const closePop = () => {
+      pop.classList.remove("open");
+      btn.classList.remove("active");
+      btn.setAttribute("aria-expanded", "false");
+    };
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const willOpen = !pop.classList.contains("open");
+      pop.classList.toggle("open", willOpen);
+      btn.classList.toggle("active", willOpen);
+      btn.setAttribute("aria-expanded", String(willOpen));
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!wrap.contains(e.target)) closePop();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closePop();
+    });
+  }
+
   renderSpotlight();
   renderCategoryPills();
   renderMenu();
@@ -1893,6 +1921,7 @@
   initHero4dLensAndRipple();
   renderFlipDeck4d();
   initBanquetSimulator();
+  initZenControlsPopover();
   $("#btnHealing432")?.addEventListener("click", toggleHealing432);
   bindEvents();
   $("#btnPrintMenu")?.addEventListener("click", () => window.print());
