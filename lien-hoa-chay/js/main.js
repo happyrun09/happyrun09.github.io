@@ -418,13 +418,28 @@
       )
       .join("");
 
-    // Hide center play overlay once video plays
+    // Single-channel media controller: playing one video pauses all other videos, bell & TTS
     $$("video", grid).forEach((vid) => {
       vid.addEventListener("play", () => {
+        $$("video", grid).forEach((other) => {
+          if (other !== vid && !other.paused) {
+            other.pause();
+          }
+        });
+        const bell = $("#zenBellAudio");
+        if (bell && !bell.paused) bell.pause();
+        stopSpeaking();
+
         vid.parentElement?.classList.add("playing");
+        vid.closest(".video-card")?.classList.add("is-playing");
       });
       vid.addEventListener("pause", () => {
-        if (vid.currentTime === 0) vid.parentElement?.classList.remove("playing");
+        vid.parentElement?.classList.remove("playing");
+        vid.closest(".video-card")?.classList.remove("is-playing");
+      });
+      vid.addEventListener("ended", () => {
+        vid.parentElement?.classList.remove("playing");
+        vid.closest(".video-card")?.classList.remove("is-playing");
       });
     });
   }
@@ -558,6 +573,8 @@
       showToast("Trình duyệt chưa hỗ trợ đọc giọng nói.");
       return;
     }
+    // Pause any playing video before reading aloud
+    $$("video").forEach((v) => { if (!v.paused) v.pause(); });
     const raw = DATA.articles.find((x) => x.id === articleId);
     if (!raw) return;
 

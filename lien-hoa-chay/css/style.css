@@ -906,6 +906,10 @@ button { cursor: pointer; border: none; background: none; color: inherit; }
   border-color: var(--border-card-hover);
   transform: translateY(-3px);
 }
+.video-card.is-playing {
+  border-color: var(--zen-leaf);
+  box-shadow: 0 0 24px rgba(74, 222, 128, 0.25);
+}
 .video-media-wrap {
   position: relative;
 }
