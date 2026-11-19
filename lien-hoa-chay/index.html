@@ -384,9 +384,15 @@
           </div>
         </div>
 
-        <!-- Video Reels Showcase (16 Video thực tế từ D:\Lienhoa) -->
-        <div class="media-subsection">
-          <div class="section-header-center" style="margin-top: 48px; margin-bottom: 24px;">
+        <!-- Unified Media Hub Tabs (Video Thực Tế | Kho 240+ Ảnh) -->
+        <div class="media-hub-tabs" role="tablist" aria-label="Kho tư liệu Liên Hoa Chay">
+          <button type="button" class="media-tab-btn active" data-media-tab="videos" role="tab" aria-selected="true">🎬 17 Video Thực Tế</button>
+          <button type="button" class="media-tab-btn" data-media-tab="photos" role="tab" aria-selected="false">📸 Kho 240+ Ảnh Thực Tế</button>
+        </div>
+
+        <!-- Video Reels Showcase (17 Video thực tế từ D:\Lienhoa) -->
+        <div class="media-subsection" id="mediaTabVideos">
+          <div class="section-header-center" style="margin-top: 24px; margin-bottom: 24px;">
             <span class="section-subtitle">THƯỚC PHIM THỰC TẾ TẠI QUÁN</span>
             <h3 class="section-title" style="font-size:1.7rem;">17 Video Không Gian, Buffet &amp; Thiện Nguyện</h3>
           </div>
@@ -396,11 +402,11 @@
           </div>
         </div>
 
-        <!-- Full Photo Archive (238 Ảnh thực tế từ D:\Lienhoa) -->
-        <div class="media-subsection">
-          <div class="section-header-center" style="margin-top: 48px; margin-bottom: 20px;">
+        <!-- Full Photo Archive (240 Ảnh thực tế từ D:\Lienhoa) -->
+        <div class="media-subsection" id="mediaTabPhotos" style="display:none;">
+          <div class="section-header-center" style="margin-top: 24px; margin-bottom: 20px;">
             <span class="section-subtitle">KHO ẢNH THỰC TẾ LIÊN HOA CHAY</span>
-            <h3 class="section-title" style="font-size:1.7rem;">Thư Viện 238+ Khoảnh Khắc &amp; Món Ngon</h3>
+            <h3 class="section-title" style="font-size:1.7rem;">Thư Viện 240+ Khoảnh Khắc &amp; Món Ngon</h3>
           </div>
           <div class="category-pills-scroll" id="galleryFilterTabs" style="justify-content:center; margin-bottom:20px;"></div>
           <div class="gallery-strip" id="galleryGrid"></div>
@@ -568,22 +574,22 @@
               </a>
             </div>
 
-            <!-- Mã QR chuẩn theo số Zalo 0904184986 & Hotline 0933286133 -->
+            <!-- Mã QR chuẩn theo số Zalo 0904184986 & Hotline 0933286133 (bấm trực tiếp hoặc quét) -->
             <div class="qr-connect-row">
-              <div class="qr-box">
+              <a href="https://zalo.me/0904184986" target="_blank" rel="noopener noreferrer" class="qr-box">
                 <img src="./assets/images/qr-zalo.png" alt="Mã QR Zalo 0904184986 Liên Hoa Chay" loading="lazy">
                 <div class="qr-meta">
                   <strong>QR Zalo Đặt Bàn (0904.184.986)</strong>
-                  <span>Quét mã đúng Zalo SĐT 0904184986</span>
+                  <span>Quét bằng app Zalo hoặc chạm để mở</span>
                 </div>
-              </div>
-              <div class="qr-box">
+              </a>
+              <a href="tel:0933286133" class="qr-box">
                 <img src="./assets/images/qr-phone.png" alt="Mã QR Gọi Hotline 0933.286.133 Liên Hoa Chay" loading="lazy">
                 <div class="qr-meta">
                   <strong>QR Gọi Hotline (0933.286.133)</strong>
-                  <span>Quét để gọi ngay Ms. Thạo</span>
+                  <span>Quét bằng Camera hoặc chạm để gọi Ms. Thạo</span>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
 
@@ -748,9 +754,14 @@
         <label for="inputGeminiKey">Khóa Google Gemini API (Chỉ lưu cục bộ trên trình duyệt của bạn):</label>
         <input type="password" id="inputGeminiKey" placeholder="AQ... hoặc AIza...">
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
         <button type="button" class="btn-submit-reserve" id="btnSaveAiKeys" style="flex:1;">💾 Lưu Khóa Riêng</button>
         <button type="button" class="btn-copy-loc" id="btnClearAiKeys">🗑️ Xóa Khóa</button>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:0.78rem;color:var(--text-muted);justify-content:center;">
+        <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener noreferrer" class="maps-link-footer">🔑 Quản lý / Thu hồi khóa DeepSeek</a>
+        <span>•</span>
+        <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" class="maps-link-footer">✨ Quản lý / Thu hồi khóa Gemini</a>
       </div>
     </div>
   </div>

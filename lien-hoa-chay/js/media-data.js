@@ -1278,6 +1278,16 @@ window.LIENHOA_MEDIA = {
       "title": "Khoảnh khắc an lạc tại Liên Hoa Chay #15"
     },
     {
+      "src": "./assets/images/moments/moment-16.jpg",
+      "category": "Khoảnh khắc thực khách",
+      "title": "Khoảnh khắc an lạc tại Liên Hoa Chay #16"
+    },
+    {
+      "src": "./assets/images/moments/moment-17.jpg",
+      "category": "Khoảnh khắc thực khách",
+      "title": "Khoảnh khắc an lạc tại Liên Hoa Chay #17"
+    },
+    {
       "src": "./assets/images/menumau/menu-mau-01.jpg",
       "category": "Thiết kế Menu",
       "title": "Ấn phẩm thực đơn Liên Hoa Chay #01"

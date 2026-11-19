@@ -757,6 +757,28 @@
       renderGalleryTabs();
       renderGallery();
     });
+    // Unified Media Hub Tabs (Video | Kho 240+ Ảnh)
+    $$("[data-media-tab]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const target = btn.dataset.mediaTab;
+        $$("[data-media-tab]").forEach((b) => {
+          const active = b.dataset.mediaTab === target;
+          b.classList.toggle("active", active);
+          b.setAttribute("aria-selected", String(active));
+        });
+        const vTab = $("#mediaTabVideos");
+        const pTab = $("#mediaTabPhotos");
+        if (target === "videos") {
+          if (vTab) vTab.style.display = "block";
+          if (pTab) pTab.style.display = "none";
+        } else {
+          if (vTab) vTab.style.display = "none";
+          if (pTab) pTab.style.display = "block";
+          $$("video").forEach((v) => { if (!v.paused) v.pause(); });
+        }
+      });
+    });
+
     $("#btnLoadMoreGallery")?.addEventListener("click", () => {
       galleryLimit += 18;
       renderGallery();
