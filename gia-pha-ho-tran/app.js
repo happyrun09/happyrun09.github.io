@@ -212,11 +212,14 @@
       const cards = list.map(m => {
         const spText = m.spouses && m.spouses.length
           ? `<div style="font-size:0.82rem;color:#6e1414;margin-top:4px;">Phối ngẫu: ${m.spouses.map(s => esc(s.name) + (s.death ? ` (Mất: ${esc(s.death)})` : "")).join("; ")}</div>` : "";
+        const srcText = m.sources && m.sources.length
+          ? `<div style="font-size:0.74rem;color:#7c5a2b;margin-top:4px;">📚 Nguồn: ${m.sources.map(esc).join(" • ")}</div>` : "";
         const badge = m.userAdded ? `<span style="font-size:10px;background:#059669;color:#fff;padding:1px 6px;border-radius:99px;margin-left:6px;">${m.isPending ? "Chờ duyệt" : "Mới bổ sung"}</span>` : "";
         return `<div class="book-person ${m.isMainLine ? "main-line" : ""} ${m.userAdded ? "user-added" : ""}" onclick="openMemberModal('${esc(m.id)}')">
           <div style="font-weight:700;font-size:0.95rem;color:#241c15;">${esc(m.name)}${badge}</div>
           <div style="font-size:0.8rem;color:#6b5b4b;">${esc(m.branch || "Chi Lãng Nam")}${m.birth ? " • Sinh: " + esc(m.birth) : ""}${m.death ? " • Mất: " + esc(m.death) : ""}</div>
           ${spText}
+          ${srcText}
         </div>`;
       }).join("");
       return `<div class="book-gen-group" id="gen-group-${gNum}">
@@ -284,6 +287,17 @@
         </h2>
         <p class="book-p" style="font-size:0.86rem;opacity:0.82;">Nhấp vào tên từng vị để xem Bia Ký chi tiết hoặc chỉnh sửa/bổ sung thông tin còn thiếu (ngày sinh, ngày giỗ, vợ/chồng, con cháu).</p>
         ${genHtml}
+      </div>
+
+      <div class="book-section">
+        <h2 class="book-h2">Phần 4: Thư Mục Nguồn Sử Liệu & Tài Liệu Đối Chiếu</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;">
+          ${(window.HISTORICAL_SOURCES || []).map(s => `<div class="book-person" style="cursor:default;background:#fffaf0;">
+            <div style="font-weight:700;color:#7c1212;font-size:0.9rem;">📚 ${esc(s.name)}</div>
+            <div style="font-size:0.78rem;color:#6b5b4b;margin:2px 0 4px;">${esc(s.author)}</div>
+            <div style="font-size:0.82rem;color:#332920;line-height:1.5;">${esc(s.note)}</div>
+          </div>`).join("")}
+        </div>
       </div>
     </div>`;
   }
@@ -1125,7 +1139,8 @@
         <div class="meta-lbl">Phối ngẫu (Vợ / Chồng)</div>
         <div style="font-size:13px;line-height:1.6;margin-top:4px;">${spousesHtml}</div>
       </div>
-      ${m.note ? `<div class="meta-box" style="margin-bottom:12px;"><div class="meta-lbl">Ghi chú phả ký</div><div style="font-size:13px;line-height:1.6;margin-top:4px;">${esc(m.note)}</div></div>` : ""}
+      ${m.note ? `<div class="meta-box" style="margin-bottom:12px;"><div class="meta-lbl">Ghi chú phả ký & Sử liệu</div><div style="font-size:13px;line-height:1.6;margin-top:4px;">${esc(m.note)}</div></div>` : ""}
+      ${m.sources && m.sources.length ? `<div class="meta-box" style="margin-bottom:12px;border-color:rgba(251,191,36,0.35);"><div class="meta-lbl">📚 Nguồn sử liệu tham khảo</div><div style="font-size:12.5px;line-height:1.6;margin-top:4px;color:#fcd34d;">${m.sources.map(s => `• ${esc(s)}`).join("<br/>")}</div></div>` : ""}
       <div style="margin-top:12px;">
         <div class="meta-lbl">Thân phụ / Thân mẫu:</div>
         <div class="lineage-chips">
