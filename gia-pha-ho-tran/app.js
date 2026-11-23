@@ -3,6 +3,8 @@
   const LS_SUBMISSIONS = "tran_gia_pha_submissions_v1";
   const LS_APPROVED = "tran_gia_pha_approved_v1";
   const LS_FONTSCALE = "tran_gia_pha_fontscale_v1";
+  const LS_BOOKDARK = "tran_gia_pha_bookdark_v1";
+  const LS_PRIVACY = "tran_gia_pha_privacy_v1";
 
   let membersById = {};
   let childrenById = {};
@@ -11,6 +13,38 @@
   let renderedStyles = {};
   let s3CurrentRawId = "d20_chi_hoa";
   let toastTimer = null;
+  let bookDark = localStorage.getItem(LS_BOOKDARK) === "1";
+  let privacyMask = localStorage.getItem(LS_PRIVACY) === "1";
+
+  function formatBirth(m) {
+    if (!m || !m.birth) return "";
+    if (privacyMask && !m.death && m.gen >= 23 && !isAdminUnlocked()) {
+      const yr = String(m.birth).match(/\b(19\d\d|20\d\d)\b/);
+      return yr ? `${yr[1]} (Ẩn ngày/tháng)` : m.birth;
+    }
+    return m.birth;
+  }
+
+  window.toggleBookDarkMode = function () {
+    bookDark = !bookDark;
+    localStorage.setItem(LS_BOOKDARK, bookDark ? "1" : "0");
+    document.body.classList.toggle("book-dark", bookDark);
+    const b1 = document.getElementById("bookDarkBtn");
+    const b2 = document.getElementById("darkBtnMenu");
+    const txt = bookDark ? "☀️ Chế độ Giấy Dó Sáng" : "🌙 Chế độ Đọc Ban Đêm";
+    if (b1) b1.textContent = txt;
+    if (b2) b2.textContent = txt;
+    showToast(bookDark ? "🌙 Đã bật chế độ đọc ban đêm dịu mắt." : "☀️ Đã chuyển về nền giấy dó truyền thống.");
+  };
+
+  window.togglePrivacyMode = function () {
+    privacyMask = !privacyMask;
+    localStorage.setItem(LS_PRIVACY, privacyMask ? "1" : "0");
+    const b = document.getElementById("privBtnMenu");
+    if (b) b.textContent = privacyMask ? "👁 Hiện đầy đủ ngày sinh Đời 23+" : "🛡️ Bảo mật ngày sinh Đời 23+";
+    refreshAllViews();
+    showToast(privacyMask ? "🛡️ Đã bật ẩn ngày/tháng sinh chi tiết của Đời 23–25+." : "👁 Đã hiển thị đầy đủ ngày tháng sinh.");
+  };
 
   function esc(str) {
     return String(str ?? "")
@@ -226,9 +260,10 @@
         const srcText = m.sources && m.sources.length
           ? `<div style="font-size:0.74rem;color:#7c5a2b;margin-top:4px;">📚 Nguồn: ${m.sources.map(esc).join(" • ")}</div>` : "";
         const badge = m.userAdded ? `<span style="font-size:10px;background:#059669;color:#fff;padding:1px 6px;border-radius:99px;margin-left:6px;">${m.isPending ? "Chờ duyệt" : "Mới bổ sung"}</span>` : "";
+        const bStr = formatBirth(m);
         return `<div class="book-person ${m.isMainLine ? "main-line" : ""} ${m.userAdded ? "user-added" : ""}" onclick="openMemberModal('${esc(m.id)}')">
-          <div style="font-weight:700;font-size:0.95rem;color:#241c15;">${esc(m.name)}${badge}</div>
-          <div style="font-size:0.8rem;color:#6b5b4b;">${esc(m.branch || "Chi Lãng Nam")}${m.birth ? " • Sinh: " + esc(m.birth) : ""}${m.death ? " • Mất: " + esc(m.death) : ""}</div>
+          <div style="font-weight:700;font-size:0.95rem;">${esc(m.name)}${badge}</div>
+          <div style="font-size:0.8rem;opacity:0.82;">${esc(m.branch || "Chi Lãng Nam")}${bStr ? " • Sinh: " + esc(bStr) : ""}${m.death ? " • Mất: " + esc(m.death) : ""}</div>
           ${spText}
           ${srcText}
         </div>`;
@@ -247,10 +282,11 @@
 
     el.innerHTML = `<div class="book-container">
       <div class="book-toolbar">
-        <button class="book-tool-btn" style="background:#9e1b1b;color:#fef3c7;border-color:#9e1b1b;" onclick="openTamThuModal()">💌 Tâm Thư Đời 23 (24/11/2026)</button>
+        <button class="book-tool-btn" style="background:#8B1E1E;color:#fef3c7;border-color:#D4AF37;" onclick="openTamThuModal()">💌 Tâm Thư Đời 23 (24/11/2026)</button>
         <button id="ttsBtn" class="book-tool-btn" onclick="toggleReadAloud()">🔊 Nghe Đọc Phả Ký</button>
+        <button id="bookDarkBtn" class="book-tool-btn" onclick="toggleBookDarkMode()">${bookDark ? "☀️ Chế độ Giấy Dó Sáng" : "🌙 Chế độ Đọc Ban Đêm"}</button>
         <button class="book-tool-btn" onclick="window.print()">🖨️ In Sách Gia Phả (A4)</button>
-        <button class="book-tool-btn" onclick="openContributeModal()">✍️ Chi/Phái Đóng Góp Thông Tin</button>
+        <button class="book-tool-btn" onclick="openContributeModal()">✍️ Chi/Phái Đóng Góp</button>
         <button class="book-tool-btn" onclick="switchStyle(2)">🏮 Xem Cây Phả Đồ</button>
       </div>
 
@@ -294,11 +330,17 @@
 
       <div class="book-section">
         <h2 class="book-h2">
-          <span>Phần 3: Phả Đồ Truyền Thừa (Đời 1 – Đời ${Math.max(...allMembers.map(m => m.gen))})</span>
-          <button class="book-add-inline" onclick="openContributeModal()">+ Thêm Con / Cháu / Nhánh Mới</button>
+          <span>Phần 3: Phả Đồ Truyền Thừa (Đời 1 – Đời 25+)</span>
+          <button class="book-add-inline" onclick="openContributeModal({gen:25})">+ Ghi Danh Thế Hệ Đời 25+</button>
         </h2>
-        <p class="book-p" style="font-size:0.86rem;opacity:0.82;">Nhấp vào tên từng vị để xem Bia Ký chi tiết hoặc chỉnh sửa/bổ sung thông tin còn thiếu (ngày sinh, ngày giỗ, vợ/chồng, con cháu).</p>
+        <p class="book-p" style="font-size:0.86rem;opacity:0.82;">Nhấp vào tên từng vị để xem Bia Ký chi tiết, nguồn sử liệu đối chiếu hoặc bổ sung thông tin còn thiếu (ngày sinh, ngày giỗ, vợ/chồng, con cháu Đời 24–25+).</p>
         ${genHtml}
+        <div class="book-gen-group" id="gen-group-25">
+          <div class="book-gen-head">
+            <span>Đời thứ 25+ (Thế hệ Hậu duệ tương lai tiếp nối)</span>
+            <button class="book-add-inline" onclick="openContributeModal({gen:25})">+ Bổ sung Hậu duệ Đời 25+</button>
+          </div>
+        </div>
       </div>
 
       <div class="book-section">
@@ -407,6 +449,33 @@
       expandAll: () => {
         root.each(d => { if (d._children) { d.children = d._children; d._children = null; } });
         update();
+      },
+      focusId: (targetId) => {
+        root.each(d => { if (d._children) { d.children = d._children; d._children = null; } });
+        update();
+        const found = root.descendants().find(d => d.data.id === targetId);
+        if (found) {
+          const isVert = s2Orientation === "vertical";
+          const tx = width / 2 - (isVert ? found.x : found.y) * 1.05;
+          const ty = height / 2 - (isVert ? found.y : found.x) * 1.05;
+          svg.transition().duration(600).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(1.05));
+        }
+      },
+      applyFilter: (mode) => {
+        root.each(d => { if (d._children) { d.children = d._children; d._children = null; } });
+        if (mode !== "ALL") {
+          root.each(d => {
+            const br = d.data.branch || "";
+            if (mode === "MAIN" && !d.data.isMainLine && d.children) { d._children = d.children; d.children = null; }
+            if (mode === "ROYAL" && d.depth >= 3 && !br.includes("Vua") && !br.includes("Hoàng") && d.children) { d._children = d.children; d.children = null; }
+            if (mode === "HUNGDAO" && d.depth >= 4 && !br.includes("Trần Liễu") && !br.includes("Trần Trí") && d.children) { d._children = d.children; d.children = null; }
+          });
+        }
+        update();
+        if (mode === "CHIHOA") s2TreeFn.focusId("d20_chi_hoa");
+        else if (mode === "HUNGDAO") s2TreeFn.focusId("d5_tran_lieu");
+        else if (mode === "ROYAL") s2TreeFn.focusId("d5_tran_canh");
+        else s2TreeFn.resetZoom();
       }
     };
     update();
@@ -420,6 +489,15 @@
   };
   window.s2Reset = () => s2TreeFn && s2TreeFn.resetZoom();
   window.s2ExpandAll = () => s2TreeFn && s2TreeFn.expandAll();
+  window.s2ApplyFilter = () => {
+    const val = document.getElementById("s2BranchFilter")?.value || "ALL";
+    if (s2TreeFn) s2TreeFn.applyFilter(val);
+  };
+  window.focusOnTree = function (id) {
+    closeModal();
+    switchStyle(2);
+    setTimeout(() => s2TreeFn && s2TreeFn.focusId(id), 120);
+  };
 
   // ----------------- PHONG CÁCH 3: CÂY GIA ĐÌNH (DONATSO/FAMILY-CHART) -----------------
   let f3ChartInstance = null;
@@ -614,6 +692,23 @@
         <div class="bento-card"><div class="kpi-val">${Math.max(...allMembers.map(m => m.gen))} Đời</div><div class="kpi-lbl">Từ Đức Thượng Tổ (1009) đến 2026</div></div>
         <div class="bento-card"><div class="kpi-val">${getSubmissions().length} Hồ Sơ</div><div class="kpi-lbl">Đóng góp mới từ các chi/phái chờ Admin tổng hợp</div></div>
         <div class="bento-card"><div class="kpi-val">3 Tỉnh/TP</div><div class="kpi-lbl">Ninh Bình • Hà Nội • Bảo Lộc (Lâm Đồng)</div></div>
+      </div>
+
+      <div class="bento-card" style="border-color:rgba(212,175,55,0.45);background:linear-gradient(145deg,rgba(139,30,30,0.22),rgba(15,23,42,0.75));">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+          <h3 style="font-size:16.5px;color:#fcd34d;">👑 Bảng Vàng Danh Dự Hoàng Tộc & Danh Tướng Nhà Trần (Hall of Fame)</h3>
+          <span style="font-size:12px;opacity:0.8;">Nhấp vào từng thẻ để xem Bia Ký & Nguồn sử liệu</span>
+        </div>
+        <div class="hof-grid">
+          ${(window.HALL_OF_FAME || []).map(item => {
+            const m = membersById[item.memberId];
+            return `<div class="hof-card" onclick="openMemberModal('${esc(item.memberId)}')">
+              <span class="hof-badge">${esc(item.category)} • ${esc(item.badge)}</span>
+              <div style="font-family:var(--font-serif);font-weight:700;font-size:15px;color:#fff;margin-bottom:4px;">${esc(m ? m.name : item.badge)}</div>
+              <div style="font-size:12.5px;opacity:0.86;line-height:1.5;">${esc(item.highlight)}</div>
+            </div>`;
+          }).join("")}
+        </div>
       </div>
 
       <div class="bento-grid-2">
@@ -1206,8 +1301,8 @@
         <strong style="color:#fcd34d;margin-right:4px;">🌿 Mạch truyền thừa:</strong> ${chainHtml}
       </div>
       <div class="modal-meta">
-        <div class="meta-box"><div class="meta-lbl">Năm sinh / Năm mất</div><div class="meta-val">${m.birth ? "Sinh: " + esc(m.birth) : "—"} ${m.death ? "• Mất: " + esc(m.death) : ""} ${m.age ? "(" + esc(m.age) + ")" : ""}</div></div>
-        <div class="meta-box"><div class="meta-lbl">Địa bàn / An táng</div><div class="meta-val">${esc(m.location || "Làng Lãng Nam (Đồng Thái, Ninh Cường)")}</div></div>
+        <div class="meta-box"><div class="meta-lbl">Năm sinh / Năm mất</div><div class="meta-val">${formatBirth(m) ? "Sinh: " + esc(formatBirth(m)) : "—"} ${m.death ? "• Mất: " + esc(m.death) : ""} ${m.age ? "(" + esc(m.age) + ")" : ""}</div></div>
+        <div class="meta-box"><div class="meta-lbl">Địa bàn / Lăng tẩm</div><div class="meta-val">${esc(m.location || "Làng Lãng Nam (Đồng Thái, Ninh Cường)")}</div></div>
       </div>
       <div class="meta-box" style="margin-bottom:12px;">
         <div class="meta-lbl">Phối ngẫu (Vợ / Chồng)</div>
@@ -1226,8 +1321,9 @@
         <div class="lineage-chips">${kids.map(k => `<span class="lineage-chip" onclick="openMemberModal('${esc(k.id)}')">↓ ${esc(k.name)}</span>`).join("")}</div>
       </div>` : ""}
       <div class="btn-row" style="border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;">
-        <button class="btn-primary" onclick="openContributeModal({editId:'${esc(m.id)}'})">✏️ Bổ sung / Sửa thông tin cụ này</button>
+        <button class="btn-primary" onclick="openContributeModal({editId:'${esc(m.id)}'})">✏️ Bổ sung / Sửa thông tin</button>
         <button class="btn-secondary" onclick="openContributeModal({parentId:'${esc(m.id)}', gen:${m.gen + 1}})">+ Thêm con (Đời ${m.gen + 1})</button>
+        <button class="btn-secondary" onclick="focusOnTree('${esc(m.id)}')">🎯 Định vị trên Cây Phả Đồ</button>
         <button class="btn-secondary" onclick="shareMember('${esc(m.id)}')">🔗 Chia sẻ</button>
       </div>
     `;
@@ -1370,6 +1466,23 @@
     document.getElementById("globalModal").classList.add("open");
   };
 
+  window.openChangelogModal = function () {
+    document.getElementById("modalContent").innerHTML = `
+      <span class="modal-tag">NHẬT KÝ HỆ THỐNG & KIỂM CHỨNG SỬ LIỆU</span>
+      <h2 class="modal-title">📋 Nhật Ký Nâng Cấp (Changelog)</h2>
+      <p style="font-size:13px;opacity:0.85;margin-bottom:14px;">Mọi dữ liệu lịch sử và cải tiến giao diện đều được lưu vết minh bạch và đối chiếu chéo từ tối thiểu 2–3 nguồn chính sử:</p>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        ${(window.CHANGELOG_HISTORY || []).map(c => `<div class="meta-box">
+          <div style="font-weight:700;color:#fcd34d;font-size:14px;margin-bottom:6px;">${esc(c.version)}</div>
+          <ul style="padding-left:18px;font-size:12.5px;line-height:1.6;opacity:0.9;">
+            ${c.items.map(it => `<li>${esc(it)}</li>`).join("")}
+          </ul>
+        </div>`).join("")}
+      </div>
+    `;
+    document.getElementById("globalModal").classList.add("open");
+  };
+
   window.openOpenSourceModal = function () {
     document.getElementById("modalContent").innerHTML = `
       <span class="modal-tag">MÃ NGUỒN MỞ GITHUB TÍCH HỢP</span>
@@ -1402,6 +1515,7 @@
   const initialHash = window.location.hash;
   const styleMatch = initialHash.match(/style=(\d)/);
   const memberMatch = initialHash.match(/member=([^&]+)/);
+  document.body.classList.toggle("book-dark", bookDark);
   applyFontScale();
   syncTopbarHeight();
   rebuildIndexes();

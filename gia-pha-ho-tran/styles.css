@@ -134,16 +134,41 @@ html, body { height: 100%; overflow: hidden; font-family: var(--font-sans); tran
 .style-badge-info strong { display: block; font-size: 13px; margin-bottom: 2px; }
 
 /* ==========================================================================
-   PHONG CÁCH 1 (MẶC ĐỊNH): SÁCH GIA PHẢ & THƯ TỊCH PHẢ KÝ
+   PHONG CÁCH 1 (MẶC ĐỊNH): SÁCH GIA PHẢ & THƯ TỊCH PHẢ KÝ (CUNG ĐÌNH & DARK MODE)
    ========================================================================== */
-body[data-style="1"] { background: #f5efe2; color: #241c15; }
-body[data-style="1"] .topbar { background: rgba(245, 239, 226, 0.95); border-bottom-color: rgba(158, 27, 27, 0.22); color: #241c15; }
-body[data-style="1"] .brand-seal { background: #9e1b1b; color: #fdf6e3; border-color: #7c1212; }
-body[data-style="1"] .style-switcher { background: rgba(120, 90, 60, 0.12); border-color: rgba(120, 90, 60, 0.24); }
-body[data-style="1"] .style-btn.active { background: #9e1b1b; color: #fff8eb; }
-body[data-style="1"] .search-input { background: rgba(255,255,255,0.78); border-color: rgba(120, 90, 60, 0.35); color: #241c15; }
-body[data-style="1"] .search-results { background: #fffdf7; border: 1px solid #c5a880; color: #241c15; }
-body[data-style="1"] .icon-btn { background: rgba(158, 27, 27, 0.08); border-color: rgba(158, 27, 27, 0.25); color: #7c1212; }
+body[data-style="1"] { background: #FAF6F0; color: #1F1A17; }
+body[data-style="1"] .topbar { background: rgba(250, 246, 240, 0.96); border-bottom-color: rgba(139, 30, 30, 0.24); color: #1F1A17; }
+body[data-style="1"] .brand-seal { background: #8B1E1E; color: #FAF6F0; border-color: #D4AF37; }
+body[data-style="1"] .style-switcher { background: rgba(139, 30, 30, 0.08); border-color: rgba(139, 30, 30, 0.22); }
+body[data-style="1"] .style-btn.active { background: #8B1E1E; color: #FAF6F0; }
+body[data-style="1"] .search-input { background: rgba(255,255,255,0.85); border-color: rgba(139, 30, 30, 0.3); color: #1F1A17; }
+body[data-style="1"] .search-results { background: #FAF6F0; border: 1px solid #D4AF37; color: #1F1A17; }
+body[data-style="1"] .icon-btn { background: rgba(139, 30, 30, 0.08); border-color: rgba(139, 30, 30, 0.25); color: #8B1E1E; }
+
+/* Chế độ Đọc Ban Đêm (Dark Mode) cho Sách Gia Phả */
+body[data-style="1"].book-dark { background: #14100E; color: #EDE4D7; }
+body[data-style="1"].book-dark .topbar { background: rgba(20, 16, 14, 0.95); color: #EDE4D7; border-bottom-color: rgba(212, 175, 55, 0.28); }
+body[data-style="1"].book-dark .book-container { background: #1D1714; border-color: #3D2E24; box-shadow: 0 14px 44px rgba(0,0,0,0.55); }
+body[data-style="1"].book-dark .book-title, body[data-style="1"].book-dark .book-h2 { color: #F3C65F; }
+body[data-style="1"].book-dark .book-sub, body[data-style="1"].book-dark .book-p { color: #E2D6C5; }
+body[data-style="1"].book-dark .book-couplet, body[data-style="1"].book-dark .book-poem, body[data-style="1"].book-dark .book-jump-bar {
+  background: #261E1A; border-color: #5C4328; color: #F5DEB3;
+}
+body[data-style="1"].book-dark .book-gen-group { border-color: #3D2E24; }
+body[data-style="1"].book-dark .book-gen-head { background: #2A201B; color: #F3C65F; }
+body[data-style="1"].book-dark .book-person { background: #231B17 !important; border-color: #3D2E24; color: #EDE4D7; }
+body[data-style="1"].book-dark .book-person.main-line { border-left-color: #D4AF37; background: #2B211A !important; }
+
+.hof-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 12px; margin-top: 10px; }
+.hof-card {
+  padding: 14px; border-radius: 12px; background: linear-gradient(145deg, rgba(139, 30, 30, 0.28), rgba(15, 23, 42, 0.75));
+  border: 1px solid rgba(212, 175, 55, 0.4); cursor: pointer; transition: transform 0.2s, border-color 0.2s;
+}
+.hof-card:hover { transform: translateY(-2px); border-color: #fcd34d; }
+.hof-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 800;
+  background: rgba(212, 175, 55, 0.22); color: #fcd34d; border: 1px solid rgba(212, 175, 55, 0.45); margin-bottom: 6px;
+}
 
 .book-scroll { width: 100%; height: 100%; overflow-y: auto; padding: 24px 16px 70px; }
 .book-container {

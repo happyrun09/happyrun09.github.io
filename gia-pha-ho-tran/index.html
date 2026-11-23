@@ -48,8 +48,11 @@
         <div id="moreMenu" class="more-menu">
           <button onclick="openIncenseModal();closeMoreMenu()">🙏 Thắp Hương & Lưu Bút</button>
           <button onclick="cycleFontSize()" id="fontBtn">A+ Cỡ chữ cao niên</button>
+          <button onclick="toggleBookDarkMode();closeMoreMenu()" id="darkBtnMenu">🌙 Chế độ Đọc Ban Đêm</button>
+          <button onclick="togglePrivacyMode();closeMoreMenu()" id="privBtnMenu">🛡️ Bảo mật ngày sinh Đời 23+</button>
           <button onclick="toggleFullscreen();closeMoreMenu()">⛶ Trình Chiếu Toàn Màn Hình</button>
           <button onclick="openGuideModal();closeMoreMenu()">❓ Hướng Dẫn 30 Giây</button>
+          <button onclick="openChangelogModal();closeMoreMenu()">📋 Nhật Ký & Kiểm Chứng Sử Liệu</button>
           <button onclick="openAdminModal();closeMoreMenu()">🛡️ Quản Trị Admin <span id="pendingBadgeMenu" class="badge-count" style="display:none;">0</span></button>
           <button onclick="openOpenSourceModal();closeMoreMenu()">⚡ Mã Nguồn Mở GitHub</button>
         </div>
@@ -73,8 +76,15 @@
       <div id="style2Canvas" style="width:100%;height:100%;"></div>
       <div class="canvas-controls">
         <button id="s2OrientBtn" class="ctrl-pill" onclick="s2ToggleOrientation()">⇄ Chuyển Cây Ngang</button>
-        <button class="ctrl-pill" onclick="s2ExpandAll()">⊕ Mở Toàn Bộ Nhánh</button>
-        <button class="ctrl-pill" onclick="s2Reset()">⟲ Căn Giữa Phả Đồ</button>
+        <button class="ctrl-pill" onclick="s2ExpandAll()">⊕ Mở Toàn Bộ</button>
+        <button class="ctrl-pill" onclick="s2Reset()">⟲ Căn Giữa</button>
+        <select id="s2BranchFilter" class="ctrl-pill" onchange="s2ApplyFilter()" aria-label="Lọc theo nhánh">
+          <option value="ALL">🌿 Tất cả nhánh (Đời 1–25+)</option>
+          <option value="MAIN">⭐ Trục Chính Thống Lãng Nam</option>
+          <option value="ROYAL">👑 Nhánh Vua Trần & Hoàng Tộc</option>
+          <option value="HUNGDAO">⚔️ Nhánh Trần Liễu – Hưng Đạo Vương</option>
+          <option value="CHIHOA">🏡 Chi Cụ Chí Hòa (Đời 20–25+)</option>
+        </select>
       </div>
     </section>
 
