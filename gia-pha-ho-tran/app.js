@@ -233,6 +233,7 @@
 
     el.innerHTML = `<div class="book-container">
       <div class="book-toolbar">
+        <button class="book-tool-btn" style="background:#9e1b1b;color:#fef3c7;border-color:#9e1b1b;" onclick="openTamThuModal()">💌 Tâm Thư Đời 23 (24/11/2026)</button>
         <button id="ttsBtn" class="book-tool-btn" onclick="toggleReadAloud()">🔊 Nghe Đọc Phả Ký</button>
         <button class="book-tool-btn" onclick="window.print()">🖨️ In Sách Gia Phả (A4)</button>
         <button class="book-tool-btn" onclick="openContributeModal()">✍️ Chi/Phái Đóng Góp Thông Tin</button>
@@ -249,12 +250,15 @@
       </div>
 
       <div class="book-cover">
-        <div class="book-seal-big">TỘC PHẢ TRUYỀN ĐỜI • BẢN KHỞI NGUYÊN MỞ RỘNG</div>
+        <div class="book-seal-big">TỘC PHẢ TRUYỀN ĐỜI • KHỞI LẬP GIA PHẢ SỐ: NGÀY VĂN HÓA VIỆT NAM 24/11/2026</div>
         <h1 class="book-title">${esc(meta.title)}</h1>
         <p class="book-sub">${esc(meta.subtitle)}</p>
         <div class="book-couplet">
           <span>“${esc(meta.couplet.top)}”</span>
           <span>“${esc(meta.couplet.bottom)}”</span>
+        </div>
+        <div style="margin-top:12px;font-size:0.84rem;color:#6e1414;font-style:italic;">
+          Số hóa từ Gia Phả Giấy bởi hậu duệ Đời thứ 23: <strong>Trần Văn Thuần</strong> • <a href="javascript:void(0)" onclick="openTamThuModal()" style="color:#9e1b1b;font-weight:700;">Đọc Tâm Thư →</a>
         </div>
       </div>
 
@@ -1041,19 +1045,29 @@
     showToast(`Đang tải xuống ${filename}`);
   };
 
-  // ----------------- TÌM KIẾM & MODAL CHI TIẾT -----------------
+  // ----------------- TÌM KIẾM KHÔNG DẤU & MODAL CHI TIẾT -----------------
+  function normVi(str) {
+    return String(str || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "D")
+      .toLowerCase();
+  }
+
   const searchInput = document.getElementById("globalSearch");
   const searchResults = document.getElementById("searchResults");
 
   searchInput.addEventListener("input", () => {
-    const q = searchInput.value.trim().toLowerCase();
-    if (!q) { searchResults.classList.remove("open"); return; }
-    const hits = allMembers.filter(m =>
-      m.name.toLowerCase().includes(q) ||
-      (m.role && m.role.toLowerCase().includes(q)) ||
-      (m.location && m.location.toLowerCase().includes(q)) ||
-      (m.spouses && m.spouses.some(s => s.name.toLowerCase().includes(q)))
-    ).slice(0, 12);
+    const tokens = normVi(searchInput.value.trim()).split(/\s+/).filter(Boolean);
+    if (!tokens.length) { searchResults.classList.remove("open"); return; }
+    const hits = allMembers.filter(m => {
+      const hay = normVi([
+        m.name, m.role, m.location, m.branch,
+        ...(m.spouses ? m.spouses.map(s => s.name) : [])
+      ].filter(Boolean).join(" "));
+      return tokens.every(t => hay.includes(t));
+    }).slice(0, 12);
 
     searchResults.innerHTML = hits.length
       ? hits.map(m => `<div class="search-item" onclick="selectSearchHit('${esc(m.id)}')">
@@ -1062,6 +1076,13 @@
         </div>`).join("")
       : `<div style="padding:10px;font-size:12.5px;opacity:0.7;">Không tìm thấy kết quả phù hợp.</div>`;
     searchResults.classList.add("open");
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      document.getElementById("globalModal").classList.remove("open");
+      searchResults.classList.remove("open");
+    }
   });
 
   document.addEventListener("click", (e) => {
@@ -1206,6 +1227,44 @@
     localStorage.setItem("tran_gia_pha_guestbook_v1", JSON.stringify(notes));
     showToast("Đã ghi lời tri ân vào Sổ Lưu Bút!");
     openIncenseModal();
+  };
+
+  window.openTamThuModal = function () {
+    const tt = window.PHAM_PHO_META.tamThu;
+    document.getElementById("modalContent").innerHTML = `
+      <span class="modal-tag">NGÀY VĂN HÓA VIỆT NAM • 24/11/2026</span>
+      <h2 class="modal-title">${esc(tt.title)}</h2>
+      <p style="font-size:12.5px;color:#fcd34d;margin-bottom:8px;">${esc(tt.occasion)}</p>
+      <div class="tamthu-paper">
+        <p style="font-weight:700;color:#7c1212;">${esc(tt.salutation)}</p>
+        ${tt.paragraphs.map(p => `<p>${esc(p)}</p>`).join("")}
+        <div style="text-align:right;margin-top:16px;font-style:italic;color:#6e1414;">
+          <div>${esc(tt.signature)}</div>
+          <div style="font-weight:800;font-style:normal;margin-top:4px;font-size:15px;">${esc(tt.author)}</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="openContributeModal()">✍️ Bổ Sung Hồ Sơ Chi/Phái Ngay</button>
+        <button class="btn-secondary" onclick="readTamThuAloud()">🔊 Nghe Đọc Tâm Thư</button>
+        <button class="btn-secondary" onclick="openIncenseModal()">🙏 Thắp Hương & Lưu Bút</button>
+      </div>
+    `;
+    document.getElementById("globalModal").classList.add("open");
+  };
+
+  window.readTamThuAloud = function () {
+    if (!("speechSynthesis" in window)) {
+      showToast("Trình duyệt chưa hỗ trợ đọc giọng nói tự động.");
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const tt = window.PHAM_PHO_META.tamThu;
+    const text = `${tt.title}. ${tt.occasion}. ${tt.salutation} ${tt.paragraphs.join(" ")} ${tt.signature}. ${tt.author}.`;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "vi-VN";
+    utter.rate = 0.95;
+    window.speechSynthesis.speak(utter);
+    showToast("🔊 Đang đọc Tâm Thư của hậu duệ Trần Văn Thuần...");
   };
 
   window.openGuideModal = function () {

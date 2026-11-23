@@ -30,7 +30,21 @@ window.PHAM_PHO_META = {
     ]
   },
   origin: "Gốc họ Trần, tương truyền từ tỉnh Phúc Kiến, Trung Quốc (gần đảo Đài Loan) đến Việt Nam từ đời nhà Lý. Đức Thượng Tổ họ Trần là cụ Trần Kinh (Trần Khinh) húy là Trần Linh từ Đông Triều về làng Tức Mặc thuộc trấn Sơn Nam Hạ làm nghề chài lưới từ năm 1009.",
-  turningPoint: "Từ Đời 7 sang Đời 8: Cụ Quốc Hiển sinh ra hai người con là Quang Huy và Vô Vi, lúc này đổi sang họ Đặng (sau này con cháu lại phục hồi về họ Trần / hoặc mang tên lót đặc trưng)."
+  turningPoint: "Từ Đời 7 sang Đời 8: Cụ Quốc Hiển sinh ra hai người con là Quang Huy và Vô Vi, lúc này đổi sang họ Đặng (sau này con cháu lại phục hồi về họ Trần / hoặc mang tên lót đặc trưng).",
+  tamThu: {
+    title: "TÂM THƯ CỦA HẬU DUỆ ĐỜI THỨ 23 — TRẦN VĂN THUẦN",
+    occasion: "Khởi lập Gia Phả Số nhân Ngày Văn Hóa Việt Nam — 24 tháng 11 năm 2026",
+    salutation: "Kính cáo trước anh linh Đức Thượng Tổ Trần Kinh, liệt vị Tiền Nhân khai khẩn đất Lãng Nam, Cụ Tổ Bình Hoàn, Cụ Chí Hòa cùng toàn thể các bậc Cao Niên, Chú Bác, Cô Dì, Anh Chị Em và con cháu các Phái, các Chi, các Nhánh họ Trần gần xa!",
+    paragraphs: [
+      "Lời tiền nhân trong cuốn Phả Chi họ Trần làng Lãng Nam vẫn còn vang vọng mãi trong tâm khảm mỗi người con đất Việt: “Cây có gốc, nước có nguồn. Làm người ai cũng phải biết về tổ tiên, ông bà, cha mẹ mình rồi mới có mình. Của cải, xét cho cùng là thứ ngoại thân… Nhược điểm của trí nhớ là quên. Nguồn gốc của mình để lại qua tộc phả, gia phả là thứ vĩnh viễn còn lại để con cháu không trở thành người mất gốc.”",
+      "Thấm nhuần đạo hiếu làm gốc rễ, câu đối ngàn đời “Hiếu kính dâng lên tông tổ / Điều lành tụ lại ở cháu, con”, hôm nay — đúng vào Ngày Văn Hóa Việt Nam 24/11/2026 — con là Trần Văn Thuần, hậu duệ Đời thứ 23 (con ông Trần Văn Hưng, cháu nội cụ Trần Đức Vượng, chắt cụ Chí Hòa – Trần Văn Hòa), với tất cả tấm lòng thành kính và tri ân sâu sắc công đức sinh thành, khai phá của Tổ Tiên, xin kính cẩn chuyển hóa cuốn Gia Phả Giấy truyền đời thành bản Gia Phả Số.",
+      "Trải qua bao mùa mưa nắng, binh lửa và sự đổi dời của thời cuộc, nhiều trang phả xưa đã bị thất lạc; con cháu các chi, các phái ngày nay lập nghiệp khắp mọi miền từ quê hương Đồng Thái – Ninh Cường (Ninh Bình) đến Thủ đô Hà Nội, Bảo Lộc (Lâm Đồng) và nhiều phương trời xa. Nếu chỉ giữ trên trang giấy cũ, e rằng một mai lớp trẻ khó bề tra cứu, khó biết hết cội nguồn, họ hàng dễ dần xa cách.",
+      "Cuốn Gia Phả Số khởi lập hôm nay mới chỉ là những nét bút đầu tiên trên nền tảng số, chắc chắn còn nhiều khoảng trống cần được bồi đắp. Kính mong các bậc Trưởng bối, các Chú Bác, Cô Dì cùng toàn thể bà con các Phái, các Chi, các Nhánh hãy coi đây là ngôi nhà chung của dòng tộc: cùng nhau mở xem, kiểm chứng, bổ sung tên húy, ngày sinh, ngày giỗ, di ảnh, nơi an táng và ghi danh thế hệ con cháu mai sau qua nút “✍️ Bổ Sung Hồ Sơ”.",
+      "Một nét chữ gửi về hôm nay là một nhịp cầu nối liền quá khứ với tương lai, để mạch nguồn họ Trần Lãng Nam từ năm 1009 mãi mãi trường tồn, đoàn kết, hiếu nghĩa và rạng danh Tiên Tổ."
+    ],
+    signature: "Ngày Văn Hóa Việt Nam, 24 tháng 11 năm 2026",
+    author: "Hậu duệ Đời thứ 23 — Trần Văn Thuần kính cẩn bái thư"
+  }
 };
 
 window.OPEN_SOURCE_REFS = [
@@ -212,8 +226,9 @@ window.MEMBERS = [
     note: "Sinh 10/05/1979. Vợ: Vũ Thị Thúy (1987) — Bảo Lộc, Lâm Đồng." },
   { id: "d23_van_thuan", name: "Trần Văn Thuần", gen: 23, parentId: "d22_van_hung_vuong", gender: "M", isMainLine: true, phase: 3, branch: "Chi Con Thứ Ba (Đức Vượng)",
     birth: "05/10/1981", location: "Tam Hưng, Hà Nội",
+    role: "Hậu duệ Đời 23 — Người khởi xướng Gia Phả Số (24/11/2026)",
     spouses: [{ name: "Tô Thị Mến", birth: "03/03/1983" }],
-    note: "Sinh 05/10/1981. Vợ: Tô Thị Mến (03/03/1983) — Tam Hưng, Hà Nội." },
+    note: "Sinh 05/10/1981. Vợ: Tô Thị Mến (03/03/1983) — Tam Hưng, Hà Nội. Là người chuyển gia phả giấy sang Gia Phả Số vào Ngày Văn Hóa Việt Nam 24/11/2026." },
   { id: "d23_van_the", name: "Trần Văn Thế", gen: 23, parentId: "d22_van_hung_vuong", gender: "M", isMainLine: false, phase: 3, branch: "Chi Con Thứ Ba (Đức Vượng)",
     birth: "12/01/1983", location: "Phú Lãm, Hà Nội",
     spouses: [{ name: "Mai Thanh Nga", birth: "1983" }],
@@ -315,5 +330,5 @@ window.TIMELINE_EVENTS = [
   { year: "Đời 7 → 8", title: "Bước ngoặt đổi họ Đặng", desc: "Cụ Quốc Hiển sinh Quang Huy và Vô Vi, giai đoạn này đổi sang họ Đặng; sau này con cháu phục hồi về họ Trần." },
   { year: "29/9/1629", title: "Bài thơ Tổ Bình Hoàn khai khẩn Lãng Nam", desc: "Cụ Tổ Bình Hoàn sáng tác bài thơ lục bát ghi dấu công lao khai phá vùng đất biển bồi lau sậy thành thôn Cường, Lãng Nam." },
   { year: "Thế kỷ XX", title: "Chi Cụ Chí Hòa (Trần Văn Hòa) — Lãng Nam", desc: "Đời 20–21: Ba nhánh lớn của các ông Trần Đức Long, Trần Văn Thịnh và Trần Đức Vượng (mất 21/7/1983 ÂL) phát triển hưng thịnh." },
-  { year: "1957 – 2026", title: "Thế hệ hiện đại vươn xa khắp mọi miền", desc: "Đời 22–24: Con cháu sinh sống và lập nghiệp tại Đồng Thái (Ninh Bình), Tam Hưng, Phú Lãm, Trúc Sơn (Hà Nội) và Bảo Lộc (Lâm Đồng)." }
+  { year: "24/11/2026", title: "Ngày Văn Hóa Việt Nam: Khởi lập Gia Phả Số Họ Trần", desc: "Hậu duệ Đời thứ 23 Trần Văn Thuần chuyển hóa cuốn gia phả giấy thành Gia Phả Số mở rộng, mời gọi các chi, phái, nhánh cùng bổ sung và lưu truyền muôn đời." }
 ];
