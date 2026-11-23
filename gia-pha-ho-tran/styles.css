@@ -1,0 +1,331 @@
+/* ==========================================================================
+   GIA PHẢ HỌ TRẦN LÃNG NAM — 5 PHONG CÁCH GIAO DIỆN ĐỘC BẢN
+   ========================================================================== */
+:root {
+  --top-bar-h: 64px;
+  --font-serif: 'Playfair Display', 'Noto Serif', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; font-family: var(--font-sans); transition: background-color 0.35s ease, color 0.35s ease; }
+
+/* ----------------- TOP NAVIGATION & 5-STYLE SWITCHER ----------------- */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--top-bar-h); z-index: 100;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 0 18px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.brand-seal {
+  width: 38px; height: 38px; border-radius: 8px; display: grid; place-items: center;
+  font-family: var(--font-serif); font-weight: 800; font-size: 17px; flex-shrink: 0;
+  border: 1.5px solid currentColor;
+}
+.brand-text { display: flex; flex-direction: column; min-width: 0; }
+.brand-title { font-family: var(--font-serif); font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand-sub { font-size: 11px; opacity: 0.75; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.style-switcher {
+  display: flex; align-items: center; gap: 6px; padding: 4px; border-radius: 12px;
+  background: rgba(0,0,0,0.22); border: 1px solid rgba(255,255,255,0.12);
+  overflow-x: auto; max-width: 52vw; scrollbar-width: none;
+}
+.style-switcher::-webkit-scrollbar { display: none; }
+.style-btn {
+  display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 9px;
+  border: none; background: transparent; color: inherit; font-family: inherit;
+  font-size: 12.5px; font-weight: 600; cursor: pointer; white-space: nowrap;
+  opacity: 0.72; transition: all 0.2s ease;
+}
+.style-btn:hover { opacity: 1; background: rgba(255,255,255,0.08); }
+.style-btn.active { opacity: 1; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
+
+.top-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.search-wrap { position: relative; }
+.search-input {
+  width: 190px; padding: 7px 12px 7px 32px; border-radius: 10px; font-size: 12.5px;
+  border: 1px solid rgba(255,255,255,0.18); background: rgba(0,0,0,0.22); color: inherit;
+  outline: none; transition: width 0.25s ease, border-color 0.2s;
+}
+.search-input:focus { width: 240px; }
+.search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0.65; font-size: 13px; pointer-events: none; }
+.search-results {
+  position: absolute; top: calc(100% + 6px); right: 0; width: 310px; max-height: 360px; overflow-y: auto;
+  border-radius: 12px; padding: 6px; display: none; z-index: 200;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+}
+.search-results.open { display: block; }
+.search-item {
+  padding: 8px 10px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px;
+}
+.search-item:hover { background: rgba(255,255,255,0.1); }
+.search-item-name { font-weight: 600; font-size: 13px; }
+.search-item-gen { font-size: 11px; opacity: 0.75; white-space: nowrap; }
+
+.icon-btn {
+  padding: 7px 11px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06); color: inherit; font-size: 12px; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center; gap: 5px; white-space: nowrap;
+  transition: all 0.2s;
+}
+.icon-btn:hover { background: rgba(255,255,255,0.16); }
+
+/* ----------------- MAIN STAGE ----------------- */
+.stage {
+  position: fixed; top: var(--top-bar-h); left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+}
+.style-view { width: 100%; height: 100%; position: relative; display: none; }
+.style-view.active { display: block; }
+
+/* Floating Canvas Controls */
+.canvas-controls {
+  position: absolute; bottom: 18px; left: 18px; z-index: 20;
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+}
+.ctrl-pill {
+  padding: 8px 13px; border-radius: 10px; font-size: 12px; font-weight: 600;
+  cursor: pointer; border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(10px); transition: all 0.2s;
+}
+.style-badge-info {
+  position: absolute; top: 14px; left: 18px; z-index: 15;
+  padding: 8px 14px; border-radius: 10px; font-size: 12px;
+  backdrop-filter: blur(10px); max-width: 420px; pointer-events: none;
+}
+.style-badge-info strong { display: block; font-size: 13px; margin-bottom: 2px; }
+
+/* ==========================================================================
+   PHONG CÁCH 1: SƠN SON THIẾP VÀNG (IMPERIAL LACQUER & GOLD)
+   ========================================================================== */
+body[data-style="1"] {
+  background: radial-gradient(circle at 50% 25%, #3d0c0c 0%, #1d0404 75%, #110202 100%);
+  color: #f8e7c2;
+}
+body[data-style="1"] .topbar { background: rgba(34, 6, 6, 0.88); border-bottom-color: rgba(212, 175, 55, 0.35); }
+body[data-style="1"] .brand-seal { background: #7a1414; color: #f6d365; border-color: #d4af37; }
+body[data-style="1"] .style-btn.active { background: linear-gradient(135deg, #d4af37, #a67c00); color: #1d0404; }
+body[data-style="1"] .search-results { background: #260707; border: 1px solid #d4af37; }
+body[data-style="1"] .ctrl-pill, body[data-style="1"] .style-badge-info {
+  background: rgba(42, 8, 8, 0.82); border-color: rgba(212, 175, 55, 0.4); color: #f8e7c2;
+}
+.s1-svg { width: 100%; height: 100%; cursor: grab; }
+.s1-svg:active { cursor: grabbing; }
+.s1-link { fill: none; stroke: rgba(212, 175, 55, 0.35); stroke-width: 1.8px; }
+.s1-link.main-line { stroke: #f6d365; stroke-width: 2.8px; filter: drop-shadow(0 0 4px rgba(246, 211, 101, 0.45)); }
+.s1-node-card { cursor: pointer; transition: transform 0.2s; }
+.s1-node-rect { rx: 8; ry: 8; fill: #2c0909; stroke: rgba(212, 175, 55, 0.55); stroke-width: 1.4px; }
+.s1-node-card.main-line .s1-node-rect { fill: #4a0e0e; stroke: #f6d365; stroke-width: 2.2px; }
+.s1-node-card:hover .s1-node-rect { fill: #631313; stroke: #ffe58f; }
+.s1-node-name { fill: #fff3d6; font-family: var(--font-serif); font-size: 12.5px; font-weight: 700; }
+.s1-node-gen { fill: #d4af37; font-size: 10px; font-weight: 600; }
+.s1-node-badge { fill: #9e1b1b; stroke: #d4af37; stroke-width: 1px; }
+
+/* ==========================================================================
+   PHONG CÁCH 2: NGỌC BÍCH HOÀNG TRIỀU (DONATSO/FAMILY-CHART)
+   ========================================================================== */
+body[data-style="2"] {
+  background: radial-gradient(circle at 30% 20%, #0f2926 0%, #071413 80%);
+  color: #e6f4f1;
+}
+body[data-style="2"] .topbar { background: rgba(7, 22, 20, 0.9); border-bottom-color: rgba(74, 222, 128, 0.22); }
+body[data-style="2"] .brand-seal { background: #134e4a; color: #5eead4; border-color: #2dd4bf; }
+body[data-style="2"] .style-btn.active { background: linear-gradient(135deg, #14b8a6, #0d9488); color: #042f2e; }
+body[data-style="2"] .search-results { background: #0b2220; border: 1px solid #2dd4bf; }
+body[data-style="2"] .ctrl-pill, body[data-style="2"] .style-badge-info {
+  background: rgba(10, 31, 29, 0.85); border-color: rgba(45, 212, 191, 0.35); color: #e6f4f1;
+}
+#FamilyChartContainer { width: 100%; height: 100%; }
+#FamilyChartContainer .f3 { background: transparent !important; width: 100%; height: 100%; }
+.f3-jade-card {
+  width: 210px; min-height: 76px; padding: 10px 12px; border-radius: 10px;
+  background: rgba(15, 41, 38, 0.94); border: 1.5px solid #2dd4bf;
+  color: #ecfdf5; box-shadow: 0 8px 22px rgba(0,0,0,0.4);
+  display: flex; flex-direction: column; justify-content: center; gap: 3px;
+  font-family: var(--font-sans); cursor: pointer;
+}
+.f3-jade-card.female { border-color: #f472b6; background: rgba(48, 20, 38, 0.92); }
+.f3-jade-card.main-focus { border-width: 2.5px; border-color: #fbbf24; box-shadow: 0 0 18px rgba(251, 191, 36, 0.35); }
+.f3-jade-name { font-family: var(--font-serif); font-weight: 700; font-size: 13px; color: #fff; }
+.f3-jade-gen { font-size: 10.5px; font-weight: 700; color: #5eead4; text-transform: uppercase; letter-spacing: 0.4px; }
+.f3-jade-card.female .f3-jade-gen { color: #f9a8d4; }
+.f3-jade-dates { font-size: 11px; opacity: 0.82; }
+
+/* ==========================================================================
+   PHONG CÁCH 3: TINH TÚ NGÂN HÀ (COSMIC RADIAL & FORCE CONSTELLATION)
+   ========================================================================== */
+body[data-style="3"] {
+  background: radial-gradient(ellipse at center, #0c1438 0%, #050817 65%, #02030a 100%);
+  color: #e2e8f0;
+}
+body[data-style="3"] .topbar { background: rgba(4, 7, 22, 0.86); border-bottom-color: rgba(96, 165, 250, 0.25); }
+body[data-style="3"] .brand-seal { background: #1e1b4b; color: #93c5fd; border-color: #60a5fa; }
+body[data-style="3"] .style-btn.active { background: linear-gradient(135deg, #6366f1, #3b82f6); color: #fff; }
+body[data-style="3"] .search-results { background: #0b1129; border: 1px solid #60a5fa; }
+body[data-style="3"] .ctrl-pill, body[data-style="3"] .style-badge-info {
+  background: rgba(11, 17, 41, 0.85); border-color: rgba(96, 165, 250, 0.35); color: #e2e8f0;
+}
+#s3Starfield { position: absolute; inset: 0; pointer-events: none; opacity: 0.65; }
+.s3-svg { width: 100%; height: 100%; position: relative; z-index: 2; cursor: grab; }
+.s3-orbit { fill: none; stroke: rgba(148, 163, 184, 0.12); stroke-dasharray: 3 5; }
+.s3-link { fill: none; stroke: rgba(96, 165, 250, 0.28); stroke-width: 1.3px; }
+.s3-link.main-line { stroke: #fbbf24; stroke-width: 2.2px; filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.6)); }
+.s3-star { cursor: pointer; }
+.s3-star circle { transition: r 0.2s; }
+.s3-star:hover circle { filter: drop-shadow(0 0 10px #fff); }
+.s3-label { fill: #e2e8f0; font-size: 10.5px; font-weight: 500; pointer-events: none; text-shadow: 0 1px 4px #000; }
+
+/* ==========================================================================
+   PHONG CÁCH 4: THƯ TỊCH CỔ & SÁCH GIA PHẢ (DIGITAL GENEALOGY BOOK)
+   ========================================================================== */
+body[data-style="4"] {
+  background: #f5efe2; color: #241c15;
+}
+body[data-style="4"] .topbar { background: rgba(245, 239, 226, 0.94); border-bottom-color: rgba(158, 27, 27, 0.2); color: #241c15; }
+body[data-style="4"] .brand-seal { background: #9e1b1b; color: #fdf6e3; border-color: #7c1212; }
+body[data-style="4"] .style-switcher { background: rgba(120, 90, 60, 0.12); border-color: rgba(120, 90, 60, 0.22); }
+body[data-style="4"] .style-btn.active { background: #9e1b1b; color: #fff8eb; }
+body[data-style="4"] .search-input { background: rgba(255,255,255,0.7); border-color: rgba(120, 90, 60, 0.3); color: #241c15; }
+body[data-style="4"] .search-results { background: #fffdf7; border: 1px solid #c5a880; color: #241c15; }
+body[data-style="4"] .icon-btn { background: rgba(158, 27, 27, 0.08); border-color: rgba(158, 27, 27, 0.25); color: #7c1212; }
+
+.book-scroll { width: 100%; height: 100%; overflow-y: auto; padding: 28px 18px 60px; }
+.book-container {
+  max-width: 960px; margin: 0 auto; background: #fffdf7;
+  border: 1px solid #dfd3bc; border-radius: 6px; padding: 42px 48px;
+  box-shadow: 0 12px 40px rgba(60, 40, 20, 0.08);
+}
+.book-cover { text-align: center; border-bottom: 2px double #9e1b1b; padding-bottom: 28px; margin-bottom: 32px; }
+.book-seal-big {
+  display: inline-block; padding: 6px 16px; border: 1.5px solid #9e1b1b; color: #9e1b1b;
+  font-family: var(--font-serif); font-weight: 700; font-size: 13px; letter-spacing: 2px; margin-bottom: 14px;
+}
+.book-title { font-family: var(--font-serif); font-size: 32px; color: #7c1212; margin-bottom: 8px; }
+.book-sub { font-size: 14px; color: #5c4d3c; max-width: 680px; margin: 0 auto 18px; }
+.book-couplet {
+  display: inline-flex; flex-direction: column; gap: 4px; padding: 14px 28px;
+  background: #fbf4e4; border-left: 3px solid #9e1b1b; border-right: 3px solid #9e1b1b;
+  font-family: var(--font-serif); font-style: italic; font-size: 17px; color: #7c1212;
+}
+.book-section { margin-bottom: 32px; }
+.book-h2 {
+  font-family: var(--font-serif); font-size: 20px; color: #9e1b1b;
+  border-bottom: 1px solid #e6dac3; padding-bottom: 8px; margin-bottom: 14px;
+}
+.book-p { font-size: 15px; line-height: 1.75; margin-bottom: 12px; text-align: justify; color: #332920; }
+.book-poem {
+  background: #faf3e3; border: 1px solid #e5d4b3; border-radius: 8px; padding: 20px 26px;
+  text-align: center; font-family: var(--font-serif); font-size: 15.5px; line-height: 1.9; color: #4a2511;
+}
+.book-gen-group { margin-bottom: 12px; border: 1px solid #e8decb; border-radius: 8px; overflow: hidden; }
+.book-gen-head {
+  background: #f6eedc; padding: 10px 16px; font-weight: 700; font-size: 14px; color: #6e1414;
+  cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+}
+.book-gen-body { padding: 10px 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.book-person {
+  padding: 10px 12px; border: 1px solid #efe6d5; border-radius: 6px; background: #fff; cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.book-person:hover { border-color: #9e1b1b; transform: translateY(-1px); }
+.book-person.main-line { border-left: 3.5px solid #9e1b1b; background: #fffaf0; }
+
+/* ==========================================================================
+   PHONG CÁCH 5: KỶ NGUYÊN SỐ BENTO & TIMELINE (2026 GLASSMORPHISM)
+   ========================================================================== */
+body[data-style="5"] {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  color: #f8fafc;
+}
+body[data-style="5"] .topbar { background: rgba(15, 23, 42, 0.85); border-bottom-color: rgba(148, 163, 184, 0.2); }
+body[data-style="5"] .brand-seal { background: linear-gradient(135deg, #38bdf8, #818cf8); color: #0f172a; border: none; }
+body[data-style="5"] .style-btn.active { background: linear-gradient(135deg, #38bdf8, #6366f1); color: #0f172a; }
+body[data-style="5"] .search-results { background: #1e293b; border: 1px solid #38bdf8; }
+
+.bento-scroll { width: 100%; height: 100%; overflow-y: auto; padding: 24px 20px 60px; }
+.bento-wrap { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.bento-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+.bento-card {
+  background: rgba(30, 41, 59, 0.58); border: 1px solid rgba(148, 163, 184, 0.18);
+  backdrop-filter: blur(16px); border-radius: 16px; padding: 18px 20px;
+}
+.kpi-val { font-size: 30px; font-weight: 800; background: linear-gradient(135deg, #38bdf8, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.kpi-lbl { font-size: 12.5px; opacity: 0.78; margin-top: 4px; }
+.bento-grid-2 { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 18px; }
+@media (max-width: 900px) { .bento-grid-2 { grid-template-columns: 1fr; } }
+
+.rel-calc { display: flex; flex-direction: column; gap: 12px; }
+.rel-selects { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rel-select {
+  width: 100%; padding: 9px 12px; border-radius: 10px; background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.3); color: #f8fafc; font-size: 13px;
+}
+.rel-output {
+  padding: 14px; border-radius: 12px; background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3); font-size: 13.5px; line-height: 1.6;
+}
+.timeline-list { display: flex; flex-direction: column; gap: 12px; position: relative; padding-left: 18px; border-left: 2px solid rgba(56, 189, 248, 0.35); }
+.tl-item { position: relative; padding-left: 10px; }
+.tl-item::before {
+  content: ""; position: absolute; left: -24px; top: 5px; width: 10px; height: 10px;
+  border-radius: 50%; background: #38bdf8; box-shadow: 0 0 10px #38bdf8;
+}
+.tl-year { font-family: var(--font-mono); font-size: 12px; color: #38bdf8; font-weight: 700; }
+.tl-title { font-weight: 700; font-size: 14px; margin: 2px 0; }
+.tl-desc { font-size: 12.5px; opacity: 0.8; line-height: 1.5; }
+
+.branch-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.branch-pill {
+  padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer;
+  background: rgba(148, 163, 184, 0.14); border: 1px solid rgba(148, 163, 184, 0.25); color: inherit;
+}
+.branch-pill.active { background: #38bdf8; color: #0f172a; border-color: #38bdf8; }
+.bento-members { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.bento-member-item {
+  padding: 12px; border-radius: 12px; background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.16); cursor: pointer; transition: all 0.2s;
+}
+.bento-member-item:hover { border-color: #38bdf8; transform: translateY(-2px); }
+
+/* ----------------- MODALS & DETAIL DRAWER ----------------- */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px);
+  z-index: 300; display: none; align-items: center; justify-content: center; padding: 18px;
+}
+.modal-backdrop.open { display: flex; }
+.modal-card {
+  width: 100%; max-width: 560px; max-height: 86vh; overflow-y: auto;
+  border-radius: 16px; padding: 24px; background: #141824; color: #f1f5f9;
+  border: 1px solid rgba(255,255,255,0.18); box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+  position: relative;
+}
+.modal-close {
+  position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.08);
+  color: #fff; font-size: 16px; cursor: pointer;
+}
+.modal-tag {
+  display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700;
+  background: rgba(212, 175, 55, 0.2); color: #fcd34d; border: 1px solid rgba(212, 175, 55, 0.4); margin-bottom: 10px;
+}
+.modal-title { font-family: var(--font-serif); font-size: 24px; margin-bottom: 6px; }
+.modal-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+.meta-box { padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+.meta-lbl { font-size: 11px; opacity: 0.68; margin-bottom: 2px; }
+.meta-val { font-size: 13.5px; font-weight: 600; }
+.lineage-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.lineage-chip {
+  padding: 5px 10px; border-radius: 8px; font-size: 12px; background: rgba(255,255,255,0.08);
+  cursor: pointer; border: 1px solid rgba(255,255,255,0.14);
+}
+.lineage-chip:hover { background: rgba(255,255,255,0.18); }
+
+@media (max-width: 768px) {
+  .brand-sub { display: none; }
+  .search-input { width: 130px; }
+  .search-input:focus { width: 170px; }
+  .book-container { padding: 24px 18px; }
+}

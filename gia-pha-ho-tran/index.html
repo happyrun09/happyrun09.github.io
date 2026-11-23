@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gia Phả Họ Trần — Lãng Nam (5 Phong Cách Giao Diện)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/family-chart@0.9.0/dist/styles/family-chart.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-style="1">
+
+  <!-- THANH ĐIỀU HƯỚNG & CHUYỂN ĐỔI 5 PHONG CÁCH -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-seal">陳</div>
+      <div class="brand-text">
+        <span class="brand-title">PHẢ CHI HỌ TRẦN — LÃNG NAM</span>
+        <span class="brand-sub">Đời 1 (1009) → Đời 24 (2026) • Đồng Thái, Ninh Cường</span>
+      </div>
+    </div>
+
+    <nav class="style-switcher" aria-label="Chọn phong cách giao diện">
+      <button class="style-btn active" data-style="1" onclick="switchStyle(1)">🏮 1. Sơn Son Thiếp Vàng</button>
+      <button class="style-btn" data-style="2" onclick="switchStyle(2)">🐉 2. Ngọc Bích Family-Chart</button>
+      <button class="style-btn" data-style="3" onclick="switchStyle(3)">✨ 3. Tinh Tú Ngân Hà</button>
+      <button class="style-btn" data-style="4" onclick="switchStyle(4)">📜 4. Thư Tịch Phả Ký</button>
+      <button class="style-btn" data-style="5" onclick="switchStyle(5)">💎 5. Kỷ Nguyên Số Bento</button>
+    </nav>
+
+    <div class="top-actions">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input id="globalSearch" class="search-input" type="text" placeholder="Tìm tên, đời, địa danh..." autocomplete="off" />
+        <div id="searchResults" class="search-results"></div>
+      </div>
+      <button class="icon-btn" onclick="openMemorialModal()" title="Lịch ngày giỗ âm lịch">🕯️ Ngày Giỗ</button>
+      <button class="icon-btn" onclick="openOpenSourceModal()" title="Mã nguồn mở GitHub">⚡ GitHub OSS</button>
+    </div>
+  </header>
+
+  <!-- SÂN KHẤU CHÍNH 5 PHONG CÁCH -->
+  <main class="stage">
+    <!-- PHONG CÁCH 1: SƠN SON THIẾP VÀNG -->
+    <section class="style-view active" data-style="1">
+      <div class="style-badge-info">
+        <strong>Phong cách 1: Cổ Phả Sơn Son Thiếp Vàng (D3.js Tree)</strong>
+        Đường nét vàng ròng đánh dấu Trục Chính Thống từ Đức Thượng Tổ Trần Kinh (Đời 1) xuống Đời 24. Kéo thả, lăn chuột để thu phóng, bấm vào bài vị để xem Bia Ký.
+      </div>
+      <div id="style1Canvas" style="width:100%;height:100%;"></div>
+      <div class="canvas-controls">
+        <button id="s1OrientBtn" class="ctrl-pill" onclick="s1ToggleOrientation()">⇄ Chuyển Cây Ngang</button>
+        <button class="ctrl-pill" onclick="s1ExpandAll()">⊕ Mở Toàn Bộ Nhánh</button>
+        <button class="ctrl-pill" onclick="s1Reset()">⟲ Căn Giữa Phả Đồ</button>
+      </div>
+    </section>
+
+    <!-- PHONG CÁCH 2: NGỌC BÍCH HOÀNG TRIỀU (DONATSO/FAMILY-CHART) -->
+    <section class="style-view" data-style="2">
+      <div class="style-badge-info">
+        <strong>Phong cách 2: Ngọc Bích Hoàng Triều (GitHub: donatso/family-chart)</strong>
+        Hiển thị song song cả Vợ/Chồng (Bà cả, Bà hai, Phối ngẫu). Đang lấy tâm điểm: <span id="s2FocusName" style="color:#5eead4;font-weight:700;">Cụ Chí Hòa (Đời 20)</span>. Bấm vào bất kỳ thẻ nào để đổi tâm điểm!
+      </div>
+      <div id="FamilyChartContainer" class="f3"></div>
+      <div class="canvas-controls">
+        <button class="ctrl-pill" onclick="s2FocusMember('d1_tran_kinh')">Tâm: Đời 1 Trần Kinh</button>
+        <button class="ctrl-pill" onclick="s2FocusMember('d20_chi_hoa')">Tâm: Đời 20 Cụ Chí Hòa</button>
+        <button class="ctrl-pill" onclick="s2FocusMember('d21_duc_vuong')">Tâm: Đời 21 Ông Đức Vượng</button>
+        <button class="ctrl-pill" onclick="s2FocusMember('d22_van_hung_vuong')">Tâm: Đời 22 Ông Văn Hưng</button>
+      </div>
+    </section>
+
+    <!-- PHONG CÁCH 3: TINH TÚ NGÂN HÀ -->
+    <section class="style-view" data-style="3">
+      <canvas id="s3Starfield"></canvas>
+      <div class="style-badge-info">
+        <strong>Phong cách 3: Tinh Tú Ngân Hà (D3 Radial Orbit & Force Graph)</strong>
+        24 vòng quỹ đạo đồng tâm tượng trưng cho 24 thế hệ họ Trần tỏa sáng. Kéo thả ngôi sao hoặc chuyển sang Mạng Lưới Trọng Lực.
+      </div>
+      <div id="style3Canvas" style="width:100%;height:100%;"></div>
+      <div class="canvas-controls">
+        <button id="s3ModeBtn" class="ctrl-pill" onclick="s3ToggleMode()">✦ Chuyển Mạng Lưới Trọng Lực</button>
+      </div>
+    </section>
+
+    <!-- PHONG CÁCH 4: THƯ TỊCH CỔ & SÁCH GIA PHẢ -->
+    <section class="style-view" data-style="4">
+      <div id="style4Book" class="book-scroll"></div>
+    </section>
+
+    <!-- PHONG CÁCH 5: KỶ NGUYÊN SỐ BENTO & TIMELINE -->
+    <section class="style-view" data-style="5">
+      <div id="style5Bento" class="bento-scroll"></div>
+    </section>
+  </main>
+
+  <!-- MODAL CHI TIẾT / NGÀY GIỖ / MÃ NGUỒN MỞ -->
+  <div id="globalModal" class="modal-backdrop" onclick="closeModal(event)">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal(event)">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- THƯ VIỆN MÃ NGUỒN MỞ D3.JS & DONATSO/FAMILY-CHART -->
+  <script src="https://unpkg.com/d3@7"></script>
+  <script type="module">
+    import * as f3 from "https://unpkg.com/family-chart@0.9.0/dist/family-chart.esm.js";
+    window.f3 = f3;
+  </script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
