@@ -49,29 +49,24 @@ window.PHAM_PHO_META = {
 
 window.OPEN_SOURCE_REFS = [
   {
-    name: "donatso/family-chart",
-    url: "https://github.com/donatso/family-chart",
-    role: "Thư viện phả hệ D3.js hiển thị song song Vợ/Chồng, Cha/Mẹ, Con/Cháu (dùng trực tiếp tại Phong cách 2)."
+    name: "JasonFontenele/Gia-Pha-Dien-Tu & Minh-Tam-Solution/AncestorTree",
+    url: "https://github.com/JasonFontenele/Gia-Pha-Dien-Tu",
+    role: "Cảm hứng kiến trúc Sách Gia Phả Điện Tử, nhắc lịch giỗ âm lịch và luồng đóng góp chi/phái để Admin kiểm duyệt (Phong cách 1 & 5)."
   },
   {
     name: "d3/d3 (v7)",
     url: "https://github.com/d3/d3",
-    role: "Nhân đồ họa SVG tương tác cho Cây Phả Đồ Cổ Điển (Phong cách 1) & Vòng Tròn Tinh Tú / Mạng Lưới Lực (Phong cách 3)."
+    role: "Nhân đồ họa SVG tương tác cho Cây Phả Đồ Sơn Son Thiếp Vàng (Phong cách 2) & Tinh Tú Đông A 24 quỹ đạo (Phong cách 4)."
   },
   {
-    name: "JasonFontenele/Gia-Pha-Dien-Tu",
-    url: "https://github.com/JasonFontenele/Gia-Pha-Dien-Tu",
-    role: "Cảm hứng kiến trúc Sách Gia Phả tự động biên soạn theo thế hệ & tra cứu dòng họ Việt Nam (Phong cách 4)."
+    name: "donatso/family-chart",
+    url: "https://github.com/donatso/family-chart",
+    role: "Thư viện phả hệ D3.js hiển thị song song Vợ/Chồng, Cha/Mẹ, Con/Cháu (dùng trực tiếp tại Phong cách 3)."
   },
   {
-    name: "Minh-Tam-Solution/AncestorTree",
-    url: "https://github.com/Minh-Tam-Solution/AncestorTree",
-    role: "Cảm hứng hệ thống nhắc ngày giỗ âm lịch & quản lý chi nhánh dòng họ (Phong cách 4 & 5)."
-  },
-  {
-    name: "BenPortner/js_family_tree & rubykachu/tang-family",
+    name: "homielab/giapha-os & rubykachu/tang-family",
     url: "https://github.com/BenPortner/js_family_tree",
-    role: "Kỹ thuật thu gọn/mở rộng nhánh phả hệ thuần Client-side chạy tĩnh siêu tốc trên GitHub Pages."
+    role: "Chuẩn xuất/nhập dữ liệu đa định dạng (JSON, CSV Excel, GEDCOM 7.0) chạy thuần Client-side siêu tốc."
   }
 ];
 

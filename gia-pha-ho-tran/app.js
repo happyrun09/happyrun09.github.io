@@ -126,6 +126,7 @@
     document.documentElement.style.setProperty("--font-scale", fontScales[fontIdx]);
     const btn = document.getElementById("fontBtn");
     if (btn) btn.textContent = fontLabels[fontIdx];
+    requestAnimationFrame(syncTopbarHeight);
   }
   window.cycleFontSize = function () {
     fontIdx = (fontIdx + 1) % fontScales.length;
@@ -599,7 +600,7 @@
     el.innerHTML = `<div class="bento-wrap">
       <div class="bento-kpis">
         <div class="bento-card"><div class="kpi-val">${allMembers.length}</div><div class="kpi-lbl">Thành viên được ghi danh trong phả đồ</div></div>
-        <div class="bento-card"><div class="kpi-val">${Math.max(...allMembers.map(m => m.gen))} Đời</div><div class="kpi-lbl">Từ Đức Thượng Tổ Trần Kinh (1009) đến 2026</div></div>
+        <div class="bento-card"><div class="kpi-val">${Math.max(...allMembers.map(m => m.gen))} Đời</div><div class="kpi-lbl">Từ Đức Thượng Tổ (1009) đến 2026</div></div>
         <div class="bento-card"><div class="kpi-val">${getSubmissions().length} Hồ Sơ</div><div class="kpi-lbl">Đóng góp mới từ các chi/phái chờ Admin tổng hợp</div></div>
         <div class="bento-card"><div class="kpi-val">3 Tỉnh/TP</div><div class="kpi-lbl">Ninh Bình • Hà Nội • Bảo Lộc (Lâm Đồng)</div></div>
       </div>
@@ -700,9 +701,21 @@
     const lca = pathA.find(x => setB.has(x.id));
     const mA = membersById[idA], mB = membersById[idB];
     const diff = Math.abs(mA.gen - mB.gen);
+    const elder = mA.gen <= mB.gen ? mA : mB;
+    const younger = mA.gen <= mB.gen ? mB : mA;
+    let roleHint = "";
+    if (mA.id === mB.id) roleHint = "Cùng một vị trong gia phả";
+    else if (diff === 0) roleHint = "Anh / Chị / Em đồng tông (cùng thế hệ)";
+    else if (diff === 1) roleHint = `${elder.name} thuộc hàng Cha / Bác / Chú / Cô của ${younger.name}`;
+    else if (diff === 2) roleHint = `${elder.name} thuộc hàng Ông / Bà của ${younger.name}`;
+    else if (diff === 3) roleHint = `${elder.name} thuộc hàng Cụ (Cố) của ${younger.name} (Chắt)`;
+    else if (diff === 4) roleHint = `${elder.name} thuộc hàng Kỵ (Sơ) của ${younger.name} (Chút)`;
+    else roleHint = `${elder.name} là Tiên Tổ (cách ${diff} đời) của hậu duệ ${younger.name}`;
+
     document.getElementById("relOutput").innerHTML = `
       <div><strong>Tổ tiên chung gần nhất:</strong> ${lca ? `${esc(lca.name)} (Đời ${lca.gen})` : "Cùng dòng tộc họ Trần"}</div>
       <div><strong>Khoảng cách thế hệ:</strong> ${diff === 0 ? "Cùng thế hệ (Đồng bối)" : `Cách nhau ${diff} đời`}</div>
+      <div style="color:#fcd34d;margin-top:2px;"><strong>Vai vế / Xưng hô:</strong> ${esc(roleHint)}</div>
       ${lca ? `<div style="font-size:12px;opacity:0.85;margin-top:4px;">• ${esc(mA.name)} (Đời ${mA.gen}) cách Tổ chung ${pathA.indexOf(lca)} đời.<br>• ${esc(mB.name)} (Đời ${mB.gen}) cách Tổ chung ${pathB.findIndex(x => x.id === lca.id)} đời.</div>` : ""}
     `;
   };
@@ -1358,15 +1371,16 @@
   window.addEventListener("resize", syncTopbarHeight);
 
   // Khởi tạo hệ thống + hỗ trợ deep-link #style=X&member=ID
+  const initialHash = window.location.hash;
+  const styleMatch = initialHash.match(/style=(\d)/);
+  const memberMatch = initialHash.match(/member=([^&]+)/);
   applyFontScale();
   syncTopbarHeight();
   rebuildIndexes();
   updatePendingBadge();
-  const styleMatch = window.location.hash.match(/style=(\d)/);
   const initialStyle = styleMatch ? Number(styleMatch[1]) : 1;
   switchStyle(initialStyle >= 1 && initialStyle <= 5 ? initialStyle : 1);
-  const memberMatch = window.location.hash.match(/member=([^&]+)/);
   if (memberMatch && membersById[memberMatch[1]]) {
-    setTimeout(() => openMemberModal(memberMatch[1]), 200);
+    setTimeout(() => openMemberModal(memberMatch[1]), 150);
   }
 })();

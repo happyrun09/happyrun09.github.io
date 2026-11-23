@@ -454,5 +454,6 @@ body[data-style="5"] .search-results { background: #1e293b; border: 1px solid #3
   .topbar, .book-toolbar, .book-jump-bar, .book-add-inline, .modal-backdrop, .toast-box { display: none !important; }
   .stage, .book-scroll { position: static !important; overflow: visible !important; height: auto !important; padding: 0 !important; }
   .book-container { box-shadow: none !important; border: none !important; max-width: 100% !important; padding: 0 !important; }
+  .book-gen-body { display: grid !important; }
   body { background: #fff !important; color: #000 !important; overflow: visible !important; }
 }
