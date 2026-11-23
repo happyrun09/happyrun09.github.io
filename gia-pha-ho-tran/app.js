@@ -1350,8 +1350,16 @@
     }
   };
 
+  // Đồng bộ chiều cao Topbar động trên mọi kích thước màn hình (Desktop / Tablet / Mobile)
+  function syncTopbarHeight() {
+    const tb = document.querySelector(".topbar");
+    if (tb) document.documentElement.style.setProperty("--top-bar-h", `${tb.offsetHeight}px`);
+  }
+  window.addEventListener("resize", syncTopbarHeight);
+
   // Khởi tạo hệ thống + hỗ trợ deep-link #style=X&member=ID
   applyFontScale();
+  syncTopbarHeight();
   rebuildIndexes();
   updatePendingBadge();
   const styleMatch = window.location.hash.match(/style=(\d)/);
