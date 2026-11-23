@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gia Phả Số Họ Trần — Lãng Nam (Đời 1 – Đời 24)</title>
+  <title>Gia Phả Số Họ Trần — Lãng Nam (Đời 1 – Đời 24) | lephucnhat.vn</title>
+  <meta name="description" content="Phả Chi Họ Trần Lãng Nam (Thôn Đồng Thái, Ninh Cường, Ninh Bình) — Từ Đức Thượng Tổ Trần Kinh (1009) đến Đời 24 (2026) với 5 phong cách giao diện & hệ thống đóng góp cho các chi, phái." />
+  <meta property="og:title" content="Gia Phả Số Họ Trần — Lãng Nam (5 Phong Cách Giao Diện)" />
+  <meta property="og:description" content="Tra cứu 24 đời họ Trần, lịch ngày giỗ âm lịch, đọc phả ký bằng giọng nói và gửi bổ sung thông tin chi/phái trực tuyến." />
+  <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -40,6 +44,8 @@
       <button class="icon-btn cta-contribute" onclick="openContributeModal()" title="Các chi, phái điền thêm hoặc sửa thông tin">✍️ Bổ Sung Hồ Sơ</button>
       <button class="icon-btn" onclick="openAdminModal()" title="Admin tổng hợp, duyệt hồ sơ & xuất dữ liệu">🛡️ Admin <span id="pendingBadge" class="badge-count" style="display:none;">0</span></button>
       <button class="icon-btn" onclick="openMemorialModal()" title="Lịch ngày giỗ âm lịch">🕯️ Ngày Giỗ</button>
+      <button class="icon-btn" onclick="openIncenseModal()" title="Thắp hương tưởng nhớ & Sổ lưu bút con cháu">🙏 Lưu Bút</button>
+      <button class="icon-btn" onclick="openGuideModal()" title="Hướng dẫn sử dụng cho mọi lứa tuổi">❓</button>
       <button class="icon-btn" onclick="toggleFullscreen()" title="Chế độ trình chiếu toàn màn hình cho diễn giả">⛶</button>
       <button class="icon-btn" onclick="openOpenSourceModal()" title="Mã nguồn mở GitHub">⚡</button>
     </div>
@@ -78,6 +84,7 @@
         <button class="ctrl-pill" onclick="s3FocusMember('d20_chi_hoa')">Tâm: Đời 20 Cụ Chí Hòa</button>
         <button class="ctrl-pill" onclick="s3FocusMember('d21_duc_vuong')">Tâm: Đời 21 Ông Đức Vượng</button>
         <button class="ctrl-pill" onclick="s3FocusMember('d22_van_hung_vuong')">Tâm: Đời 22 Ông Văn Hưng</button>
+        <button class="ctrl-pill" style="background:rgba(20,184,166,0.28);border-color:#2dd4bf;" onclick="s3OpenCurrentDetail()">📄 Xem Bia Ký Người Đang Chọn</button>
       </div>
     </section>
 
@@ -107,11 +114,12 @@
       <div id="modalContent"></div>
     </div>
   </div>
+  <div id="toastBox" class="toast-box" role="status" aria-live="polite"></div>
 
   <!-- THƯ VIỆN MÃ NGUỒN MỞ D3.JS & DONATSO/FAMILY-CHART -->
   <script src="https://unpkg.com/d3@7"></script>
   <script type="module">
-    import * as f3 from "https://unpkg.com/family-chart@0.9.0/dist/family-chart.esm.js";
+    import * as f3 from "https://cdn.jsdelivr.net/npm/family-chart@0.9.0/+esm";
     window.f3 = f3;
   </script>
   <script src="data.js"></script>

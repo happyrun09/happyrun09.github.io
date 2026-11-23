@@ -1,4 +1,4 @@
-// Gia Phả Số Họ Trần Lãng Nam — Phiên Bản Toàn Diện Cho Mọi Lứa Tuổi & Cộng Đồng Chi Phái
+// Gia Phả Số Họ Trần Lãng Nam — Phiên Bản Hoàn Thiện Toàn Diện (lephucnhat.vn)
 (function () {
   const LS_SUBMISSIONS = "tran_gia_pha_submissions_v1";
   const LS_APPROVED = "tran_gia_pha_approved_v1";
@@ -9,6 +9,26 @@
   let allMembers = [];
   let currentStyle = 1;
   let renderedStyles = {};
+  let s3CurrentRawId = "d20_chi_hoa";
+  let toastTimer = null;
+
+  function esc(str) {
+    return String(str ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  window.showToast = function (msg) {
+    const box = document.getElementById("toastBox");
+    if (!box) return;
+    box.textContent = msg;
+    box.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => box.classList.remove("show"), 3600);
+  };
 
   function getSubmissions() {
     try { return JSON.parse(localStorage.getItem(LS_SUBMISSIONS) || "[]"); } catch { return []; }
@@ -26,26 +46,29 @@
 
   function rebuildIndexes() {
     const approved = getApproved();
-    const pending = getSubmissions().filter(s => s.action === "add");
+    const pending = getSubmissions();
     const map = new Map();
     window.MEMBERS.forEach(m => map.set(m.id, { ...m }));
 
-    // Áp dụng các bản đã duyệt
-    approved.forEach(item => {
+    const applyRecord = (item, isPending) => {
+      if (!item || !item.member) return;
       if (item.action === "edit" && item.targetId && map.has(item.targetId)) {
         const cur = map.get(item.targetId);
-        map.set(item.targetId, { ...cur, ...item.member, id: cur.id, userAdded: true });
-      } else if (item.action === "add" && item.member) {
-        map.set(item.member.id, { ...item.member, userAdded: true });
+        map.set(item.targetId, {
+          ...cur,
+          ...item.member,
+          id: cur.id,
+          parentId: item.member.parentId !== undefined ? item.member.parentId : cur.parentId,
+          userAdded: true,
+          isPending
+        });
+      } else if (item.action === "add") {
+        map.set(item.member.id, { ...item.member, userAdded: true, isPending });
       }
-    });
+    };
 
-    // Hiển thị xem trước các hồ sơ mới thêm đang chờ Admin duyệt
-    pending.forEach(item => {
-      if (item.member && !map.has(item.member.id)) {
-        map.set(item.member.id, { ...item.member, userAdded: true, isPending: true });
-      }
-    });
+    approved.forEach(item => applyRecord(item, false));
+    pending.forEach(item => applyRecord(item, true));
 
     allMembers = Array.from(map.values());
     membersById = {};
@@ -54,10 +77,11 @@
       membersById[m.id] = m;
       childrenById[m.id] = [];
     });
+    const rootId = (allMembers.find(m => !m.parentId) || allMembers[0]).id;
     allMembers.forEach(m => {
-      if (m.parentId && childrenById[m.parentId]) {
-        childrenById[m.parentId].push(m);
-      }
+      if (m.id === rootId) return;
+      const pid = m.parentId && childrenById[m.parentId] ? m.parentId : (childrenById["d20_chi_hoa"] ? "d20_chi_hoa" : rootId);
+      if (childrenById[pid]) childrenById[pid].push(m);
     });
   }
 
@@ -97,6 +121,7 @@
     fontIdx = (fontIdx + 1) % fontScales.length;
     localStorage.setItem(LS_FONTSCALE, String(fontIdx));
     applyFontScale();
+    showToast(`Đã chỉnh cỡ chữ: ${fontLabels[fontIdx]}`);
   };
   window.toggleFullscreen = function () {
     if (!document.fullscreenElement) {
@@ -133,7 +158,7 @@
   let isSpeaking = false;
   window.toggleReadAloud = function () {
     if (!("speechSynthesis" in window)) {
-      alert("Trình duyệt của bạn chưa hỗ trợ đọc giọng nói tự động.");
+      showToast("Trình duyệt chưa hỗ trợ đọc giọng nói tự động.");
       return;
     }
     if (isSpeaking) {
@@ -159,6 +184,20 @@
     window.speechSynthesis.speak(utter);
   };
 
+  window.jumpToGen = function (gNum) {
+    const target = document.getElementById(`gen-group-${gNum}`);
+    if (!target) return;
+    const body = target.querySelector(".book-gen-body");
+    if (body) body.style.display = "grid";
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  window.toggleAllBookGens = function (open) {
+    document.querySelectorAll(".book-gen-body").forEach(b => {
+      b.style.display = open ? "grid" : "none";
+    });
+  };
+
   function initStyle1Book() {
     const el = document.getElementById("style1Book");
     const meta = window.PHAM_PHO_META;
@@ -172,15 +211,15 @@
       const list = gens[gNum];
       const cards = list.map(m => {
         const spText = m.spouses && m.spouses.length
-          ? `<div style="font-size:0.82rem;color:#6e1414;margin-top:4px;">Phối ngẫu: ${m.spouses.map(s => s.name + (s.death ? ` (Mất: ${s.death})` : "")).join("; ")}</div>` : "";
+          ? `<div style="font-size:0.82rem;color:#6e1414;margin-top:4px;">Phối ngẫu: ${m.spouses.map(s => esc(s.name) + (s.death ? ` (Mất: ${esc(s.death)})` : "")).join("; ")}</div>` : "";
         const badge = m.userAdded ? `<span style="font-size:10px;background:#059669;color:#fff;padding:1px 6px;border-radius:99px;margin-left:6px;">${m.isPending ? "Chờ duyệt" : "Mới bổ sung"}</span>` : "";
-        return `<div class="book-person ${m.isMainLine ? "main-line" : ""} ${m.userAdded ? "user-added" : ""}" onclick="openMemberModal('${m.id}')">
-          <div style="font-weight:700;font-size:0.95rem;color:#241c15;">${m.name}${badge}</div>
-          <div style="font-size:0.8rem;color:#6b5b4b;">${m.branch || "Chi Lãng Nam"}${m.birth ? " • Sinh: " + m.birth : ""}${m.death ? " • Mất: " + m.death : ""}</div>
+        return `<div class="book-person ${m.isMainLine ? "main-line" : ""} ${m.userAdded ? "user-added" : ""}" onclick="openMemberModal('${esc(m.id)}')">
+          <div style="font-weight:700;font-size:0.95rem;color:#241c15;">${esc(m.name)}${badge}</div>
+          <div style="font-size:0.8rem;color:#6b5b4b;">${esc(m.branch || "Chi Lãng Nam")}${m.birth ? " • Sinh: " + esc(m.birth) : ""}${m.death ? " • Mất: " + esc(m.death) : ""}</div>
           ${spText}
         </div>`;
       }).join("");
-      return `<div class="book-gen-group">
+      return `<div class="book-gen-group" id="gen-group-${gNum}">
         <div class="book-gen-head" onclick="if(event.target.tagName!=='BUTTON'){const b=this.nextElementSibling;b.style.display=b.style.display==='none'?'grid':'none';}">
           <span>Đời thứ ${gNum} (${list.length} vị)</span>
           <div style="display:flex;align-items:center;gap:8px;">
@@ -200,29 +239,38 @@
         <button class="book-tool-btn" onclick="switchStyle(2)">🏮 Xem Cây Phả Đồ</button>
       </div>
 
+      <div class="book-jump-bar">
+        <span style="font-size:12px;font-weight:700;color:#6e1414;">Đi nhanh tới:</span>
+        <button class="book-jump-pill" onclick="jumpToGen(1)">Giai đoạn 1: Thủy Tổ (Đời 1–7)</button>
+        <button class="book-jump-pill" onclick="jumpToGen(8)">Giai đoạn 2: Trực Hệ (Đời 8–19)</button>
+        <button class="book-jump-pill" onclick="jumpToGen(20)">Giai đoạn 3: Chi Cụ Chí Hòa (Đời 20–24)</button>
+        <button class="book-jump-pill" onclick="toggleAllBookGens(true)">Mở tất cả</button>
+        <button class="book-jump-pill" onclick="toggleAllBookGens(false)">Thu gọn</button>
+      </div>
+
       <div class="book-cover">
         <div class="book-seal-big">TỘC PHẢ TRUYỀN ĐỜI • BẢN KHỞI NGUYÊN MỞ RỘNG</div>
-        <h1 class="book-title">${meta.title}</h1>
-        <p class="book-sub">${meta.subtitle}</p>
+        <h1 class="book-title">${esc(meta.title)}</h1>
+        <p class="book-sub">${esc(meta.subtitle)}</p>
         <div class="book-couplet">
-          <span>“${meta.couplet.top}”</span>
-          <span>“${meta.couplet.bottom}”</span>
+          <span>“${esc(meta.couplet.top)}”</span>
+          <span>“${esc(meta.couplet.bottom)}”</span>
         </div>
       </div>
 
       <div class="book-section">
         <h2 class="book-h2">Phần 1: Lời Nói Đầu & Đạo Hiếu</h2>
-        ${meta.foreword.map(p => `<p class="book-p">${p}</p>`).join("")}
+        ${meta.foreword.map(p => `<p class="book-p">${esc(p)}</p>`).join("")}
         <div class="book-poem">
-          <div style="font-weight:700;margin-bottom:8px;color:#9e1b1b;">Bài thơ khai khẩn của ${meta.poem.author} (${meta.poem.date})</div>
-          ${meta.poem.lines.map(l => `<div>${l}</div>`).join("")}
+          <div style="font-weight:700;margin-bottom:8px;color:#9e1b1b;">Bài thơ khai khẩn của ${esc(meta.poem.author)} (${esc(meta.poem.date)})</div>
+          ${meta.poem.lines.map(l => `<div>${esc(l)}</div>`).join("")}
         </div>
       </div>
 
       <div class="book-section">
         <h2 class="book-h2">Phần 2: Nguồn Gốc & Bước Ngoặt Lịch Sử</h2>
-        <p class="book-p">${meta.origin}</p>
-        <p class="book-p"><strong>Bước ngoặt đổi họ (Đời 7 → Đời 8):</strong> ${meta.turningPoint}</p>
+        <p class="book-p">${esc(meta.origin)}</p>
+        <p class="book-p"><strong>Bước ngoặt đổi họ (Đời 7 → Đời 8):</strong> ${esc(meta.turningPoint)}</p>
       </div>
 
       <div class="book-section">
@@ -341,7 +389,7 @@
     let f3Lib = window.f3;
     if (!f3Lib) {
       try {
-        f3Lib = await import("https://unpkg.com/family-chart@0.9.0/dist/family-chart.esm.js");
+        f3Lib = await import("https://cdn.jsdelivr.net/npm/family-chart@0.9.0/+esm");
         window.f3 = f3Lib;
       } catch { f3Lib = null; }
     }
@@ -351,7 +399,6 @@
       return;
     }
 
-    // Dựng dữ liệu động từ allMembers (bao gồm cả thành viên mới bổ sung)
     const nodes = {};
     const ensure = (id, data, rels = {}) => {
       nodes[id] = { id, data, rels: { parents: rels.parents || [], spouses: rels.spouses || [], children: rels.children || [] } };
@@ -402,6 +449,7 @@
       .setOnCardClick((e, d) => {
         f3ChartInstance.updateMainId(d.data.id);
         f3ChartInstance.updateTree({});
+        s3CurrentRawId = d.data.data.rawId || d.data.id;
         document.getElementById("s3FocusName").textContent = `${d.data.data["full name"]} (${d.data.data.gen})`;
       });
 
@@ -409,22 +457,27 @@
       f3Card.setCardHtml(d => {
         const isFem = d.data.data.gender === "F";
         return `<div class="f3-jade-card ${isFem ? "female" : ""} ${d.data.main ? "main-focus" : ""}">
-          <div class="f3-jade-gen">${d.data.data.gen || ""}</div>
-          <div class="f3-jade-name">${d.data.data["full name"] || ""}</div>
-          <div class="f3-jade-dates">${d.data.data.dates || ""}</div>
+          <div class="f3-jade-gen">${esc(d.data.data.gen || "")}</div>
+          <div class="f3-jade-name">${esc(d.data.data["full name"] || "")}</div>
+          <div class="f3-jade-dates">${esc(d.data.data.dates || "")}</div>
         </div>`;
       });
     }
+    s3CurrentRawId = "d20_chi_hoa";
     f3ChartInstance.updateMainId("d20_chi_hoa");
     f3ChartInstance.updateTree({ initial: true });
   }
 
   window.s3FocusMember = function (id) {
     if (!f3ChartInstance) return;
+    s3CurrentRawId = id;
     f3ChartInstance.updateMainId(id);
     f3ChartInstance.updateTree({});
     const m = membersById[id];
     if (m) document.getElementById("s3FocusName").textContent = `${m.name} (Đời ${m.gen})`;
+  };
+  window.s3OpenCurrentDetail = function () {
+    openMemberModal(s3CurrentRawId || "d20_chi_hoa");
   };
 
   // ----------------- PHONG CÁCH 4: TINH TÚ NGÂN HÀ -----------------
@@ -513,7 +566,7 @@
   function initStyle5Bento() {
     const el = document.getElementById("style5Bento");
     const branches = ["ALL", ...new Set(allMembers.map(m => m.branch || "Chi Bổ Sung"))];
-    const options = allMembers.map(m => `<option value="${m.id}">Đời ${m.gen} — ${m.name}</option>`).join("");
+    const options = allMembers.map(m => `<option value="${esc(m.id)}">Đời ${m.gen} — ${esc(m.name)}</option>`).join("");
 
     el.innerHTML = `<div class="bento-wrap">
       <div class="bento-kpis">
@@ -539,9 +592,9 @@
           <h3 style="margin-bottom:14px;font-size:16px;">⏳ Dòng Thời Gian Lịch Sử (1009 – 2026)</h3>
           <div class="timeline-list">
             ${window.TIMELINE_EVENTS.map(ev => `<div class="tl-item">
-              <div class="tl-year">${ev.year}</div>
-              <div class="tl-title">${ev.title}</div>
-              <div class="tl-desc">${ev.desc}</div>
+              <div class="tl-year">${esc(ev.year)}</div>
+              <div class="tl-title">${esc(ev.title)}</div>
+              <div class="tl-desc">${esc(ev.desc)}</div>
             </div>`).join("")}
           </div>
         </div>
@@ -553,7 +606,7 @@
           <button class="btn-primary" onclick="openContributeModal()">+ Đóng góp thành viên mới</button>
         </div>
         <div class="branch-pills" id="s5Pills">
-          ${branches.map(b => `<button class="branch-pill ${b === "ALL" ? "active" : ""}" onclick="filterS5Branch('${b}', this)">${b === "ALL" ? "Tất cả" : b}</button>`).join("")}
+          ${branches.map(b => `<button class="branch-pill ${b === "ALL" ? "active" : ""}" onclick="filterS5Branch('${esc(b)}', this)">${b === "ALL" ? "Tất cả" : esc(b)}</button>`).join("")}
         </div>
         <div class="bento-members" id="s5Members"></div>
       </div>
@@ -575,10 +628,10 @@
   function renderS5Members() {
     const list = s5BranchFilter === "ALL" ? allMembers : allMembers.filter(m => (m.branch || "Chi Bổ Sung") === s5BranchFilter);
     document.getElementById("s5Members").innerHTML = list.map(m => `
-      <div class="bento-member-item" onclick="openMemberModal('${m.id}')">
-        <div style="font-size:11px;color:${m.userAdded ? "#34d399" : "#38bdf8"};font-weight:700;">Đời ${m.gen} • ${m.branch || "Chi Bổ Sung"}</div>
-        <div style="font-weight:700;font-size:14.5px;margin:3px 0;">${m.name}</div>
-        <div style="font-size:12px;opacity:0.75;">${m.location || m.role || (m.death ? "Mất: " + m.death : "Thành viên họ Trần")}</div>
+      <div class="bento-member-item" onclick="openMemberModal('${esc(m.id)}')">
+        <div style="font-size:11px;color:${m.userAdded ? "#34d399" : "#38bdf8"};font-weight:700;">Đời ${m.gen} • ${esc(m.branch || "Chi Bổ Sung")}</div>
+        <div style="font-weight:700;font-size:14.5px;margin:3px 0;">${esc(m.name)}</div>
+        <div style="font-size:12px;opacity:0.75;">${esc(m.location || m.role || (m.death ? "Mất: " + m.death : "Thành viên họ Trần"))}</div>
       </div>
     `).join("");
   }
@@ -598,9 +651,9 @@
     const mA = membersById[idA], mB = membersById[idB];
     const diff = Math.abs(mA.gen - mB.gen);
     document.getElementById("relOutput").innerHTML = `
-      <div><strong>Tổ tiên chung gần nhất:</strong> ${lca ? `${lca.name} (Đời ${lca.gen})` : "Cùng dòng tộc họ Trần"}</div>
+      <div><strong>Tổ tiên chung gần nhất:</strong> ${lca ? `${esc(lca.name)} (Đời ${lca.gen})` : "Cùng dòng tộc họ Trần"}</div>
       <div><strong>Khoảng cách thế hệ:</strong> ${diff === 0 ? "Cùng thế hệ (Đồng bối)" : `Cách nhau ${diff} đời`}</div>
-      ${lca ? `<div style="font-size:12px;opacity:0.85;margin-top:4px;">• ${mA.name} (Đời ${mA.gen}) cách Tổ chung ${pathA.indexOf(lca)} đời.<br>• ${mB.name} (Đời ${mB.gen}) cách Tổ chung ${pathB.findIndex(x => x.id === lca.id)} đời.</div>` : ""}
+      ${lca ? `<div style="font-size:12px;opacity:0.85;margin-top:4px;">• ${esc(mA.name)} (Đời ${mA.gen}) cách Tổ chung ${pathA.indexOf(lca)} đời.<br>• ${esc(mB.name)} (Đời ${mB.gen}) cách Tổ chung ${pathB.findIndex(x => x.id === lca.id)} đời.</div>` : ""}
     `;
   };
 
@@ -609,20 +662,21 @@
     const isEdit = Boolean(opts.editId);
     const target = isEdit ? membersById[opts.editId] : null;
     const defaultGen = target ? target.gen : (opts.gen || 23);
-    const parentOptions = allMembers
+    const parentOptions = [...allMembers]
       .sort((a, b) => a.gen - b.gen)
-      .map(m => `<option value="${m.id}" ${(target && target.parentId === m.id) || opts.parentId === m.id ? "selected" : ""}>Đời ${m.gen} — ${m.name}</option>`)
+      .map(m => `<option value="${esc(m.id)}" ${(target && target.parentId === m.id) || opts.parentId === m.id ? "selected" : ""}>Đời ${m.gen} — ${esc(m.name)}</option>`)
       .join("");
+    const spouseStr = target?.spouses?.length ? target.spouses.map(s => s.name).join("; ") : "";
 
     document.getElementById("modalContent").innerHTML = `
       <span class="modal-tag">PHIẾU BỔ SUNG GIA PHẢ HỌ TRẦN</span>
-      <h2 class="modal-title">${isEdit ? `Bổ sung / Sửa: ${target.name}` : "Điền Thêm Thông Tin Chi / Phái"}</h2>
+      <h2 class="modal-title">${isEdit ? `Bổ sung / Sửa: ${esc(target.name)}` : "Điền Thêm Thông Tin Chi / Phái"}</h2>
       <p style="font-size:12.5px;opacity:0.82;line-height:1.5;">
         Đây là bản phả khởi nguyên. Bà con các chi, phái có thể điền thông tin còn thiếu tại đây để xem trước ngay và gửi về Admin tổng hợp lưu hồ sơ dòng họ.
       </p>
       <form id="contribForm" class="form-grid" onsubmit="submitContribution(event)">
         <input type="hidden" id="cfAction" value="${isEdit ? "edit" : "add"}" />
-        <input type="hidden" id="cfTargetId" value="${target ? target.id : ""}" />
+        <input type="hidden" id="cfTargetId" value="${target ? esc(target.id) : ""}" />
         <div>
           <label class="form-label">Đời thứ *</label>
           <input id="cfGen" class="form-input" type="number" min="1" max="35" value="${defaultGen}" required />
@@ -630,13 +684,13 @@
         <div>
           <label class="form-label">Cha / Mẹ trực tiếp trong phả</label>
           <select id="cfParent" class="form-select">
-            <option value="">-- Chọn (nếu có trong phả) --</option>
+            <option value="">-- Chọn (mặc định gắn Chi Chí Hòa nếu để trống) --</option>
             ${parentOptions}
           </select>
         </div>
         <div>
           <label class="form-label">Họ và tên *</label>
-          <input id="cfName" class="form-input" type="text" value="${target ? target.name : ""}" placeholder="VD: Trần Văn An" required />
+          <input id="cfName" class="form-input" type="text" value="${target ? esc(target.name) : ""}" placeholder="VD: Trần Văn An" required />
         </div>
         <div>
           <label class="form-label">Giới tính</label>
@@ -647,23 +701,29 @@
         </div>
         <div>
           <label class="form-label">Ngày / Năm sinh</label>
-          <input id="cfBirth" class="form-input" type="text" value="${target?.birth || ""}" placeholder="VD: 1985 hoặc 12/05/1985" />
+          <input id="cfBirth" class="form-input" type="text" value="${esc(target?.birth || "")}" placeholder="VD: 1985 hoặc 12/05/1985" />
         </div>
         <div>
           <label class="form-label">Ngày mất / Ngày giỗ (ÂL/DL)</label>
-          <input id="cfDeath" class="form-input" type="text" value="${target?.death || ""}" placeholder="VD: 15/08 ÂL (nếu đã mất)" />
+          <input id="cfDeath" class="form-input" type="text" value="${esc(target?.death || "")}" placeholder="VD: 15/08 ÂL (nếu đã mất)" />
         </div>
         <div>
-          <label class="form-label">Vợ / Chồng (Phối ngẫu)</label>
-          <input id="cfSpouse" class="form-input" type="text" value="${target?.spouses?.[0]?.name || ""}" placeholder="VD: Nguyễn Thị Bình (1987)" />
+          <label class="form-label">Vợ / Chồng (cách nhau bằng dấu ; nếu nhiều)</label>
+          <input id="cfSpouse" class="form-input" type="text" value="${esc(spouseStr)}" placeholder="VD: Nguyễn Thị Bình" />
         </div>
         <div>
           <label class="form-label">Chi / Nhánh & Nơi ở hiện nay</label>
-          <input id="cfLocation" class="form-input" type="text" value="${target?.location || ""}" placeholder="VD: Đồng Thái, Ninh Bình / Hà Nội" />
+          <input id="cfLocation" class="form-input" type="text" value="${esc(target?.location || "")}" placeholder="VD: Đồng Thái, Ninh Bình / Hà Nội" />
+        </div>
+        <div class="form-full">
+          <label class="form-label">Ảnh chân dung / Di ảnh (tùy chọn — tự động nén nhẹ)</label>
+          <input id="cfPhotoFile" class="form-input" type="file" accept="image/*" onchange="handlePhotoUpload(event)" />
+          <input type="hidden" id="cfPhotoData" value="${esc(target?.photo || "")}" />
+          <div id="cfPhotoPreview" style="margin-top:6px;">${target?.photo ? `<img src="${esc(target.photo)}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:1px solid #fcd34d;" />` : ""}</div>
         </div>
         <div class="form-full">
           <label class="form-label">Tiểu sử / Ghi chú bổ sung</label>
-          <textarea id="cfNote" class="form-textarea" placeholder="Ghi thêm con cháu, nơi an táng, chức danh hoặc lời nhắn cho Admin...">${target?.note || ""}</textarea>
+          <textarea id="cfNote" class="form-textarea" placeholder="Ghi thêm con cháu, nơi an táng, chức danh hoặc lời nhắn cho Admin...">${esc(target?.note || "")}</textarea>
         </div>
         <div class="form-full">
           <label class="form-label">Người gửi & SĐT/Zalo liên hệ (để Admin xác minh)</label>
@@ -684,17 +744,26 @@
     const action = document.getElementById("cfAction").value;
     const targetId = document.getElementById("cfTargetId").value;
     const gen = Number(document.getElementById("cfGen").value) || 23;
-    const parentId = document.getElementById("cfParent").value || null;
+    const parentId = document.getElementById("cfParent").value || (action === "add" ? "d20_chi_hoa" : null);
     const name = document.getElementById("cfName").value.trim();
     const gender = document.getElementById("cfGender").value;
     const birth = document.getElementById("cfBirth").value.trim();
     const death = document.getElementById("cfDeath").value.trim();
-    const spouse = document.getElementById("cfSpouse").value.trim();
+    const spouseRaw = document.getElementById("cfSpouse").value.trim();
     const location = document.getElementById("cfLocation").value.trim();
+    const photo = document.getElementById("cfPhotoData")?.value || "";
     const note = document.getElementById("cfNote").value.trim();
     const sender = document.getElementById("cfSender").value.trim() || "Thành viên dòng họ";
 
-    const id = action === "edit" && targetId ? targetId : `d${gen}_u_${Date.now().toString(36)}`;
+    const existing = action === "edit" && targetId ? membersById[targetId] : null;
+    const spouses = spouseRaw
+      ? spouseRaw.split(";").map((s, i) => {
+          const prev = existing?.spouses?.[i];
+          return { ...(prev || {}), name: s.trim() };
+        }).filter(s => s.name)
+      : [];
+
+    const id = existing ? existing.id : `d${gen}_u_${Date.now().toString(36)}`;
     return {
       subId: `sub_${Date.now()}`,
       createdAt: new Date().toLocaleString("vi-VN"),
@@ -710,12 +779,35 @@
         birth,
         death,
         location,
-        branch: location ? `Chi bổ sung (${location})` : "Chi Bổ Sung",
-        spouses: spouse ? [{ name: spouse }] : [],
+        photo,
+        branch: existing?.branch || (location ? `Chi bổ sung (${location})` : "Chi Bổ Sung"),
+        spouses,
         note
       }
     };
   }
+
+  window.handlePhotoUpload = function (e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const size = 120;
+        canvas.width = size; canvas.height = size;
+        const ctx = canvas.getContext("2d");
+        const min = Math.min(img.width, img.height);
+        ctx.drawImage(img, (img.width - min) / 2, (img.height - min) / 2, min, min, 0, 0, size, size);
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.78);
+        document.getElementById("cfPhotoData").value = dataUrl;
+        document.getElementById("cfPhotoPreview").innerHTML = `<img src="${dataUrl}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:1px solid #fcd34d;" /> <span style="font-size:11.5px;color:#34d399;">✓ Đã nén ảnh</span>`;
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  };
 
   window.submitContribution = function (e) {
     e.preventDefault();
@@ -724,7 +816,8 @@
     const subs = getSubmissions();
     subs.unshift(payload);
     saveSubmissions(subs);
-    document.getElementById("contribStatus").innerHTML = "✅ Đã lưu hồ sơ vào Kho Chờ Duyệt & hiển thị trên cây gia phả! Bạn có thể bấm <b>Sao chép gửi Zalo Admin</b> hoặc <b>Gửi GitHub Issue</b> để Admin tổng hợp.";
+    document.getElementById("contribStatus").innerHTML = "✅ Đã lưu hồ sơ vào Kho Chờ Duyệt & hiển thị ngay trên cây gia phả! Bạn có thể bấm <b>Sao chép gửi Zalo Admin</b> hoặc <b>Gửi GitHub Issue</b>.";
+    showToast(`Đã lưu hồ sơ: ${payload.member.name}`);
     refreshAllViews();
   };
 
@@ -738,7 +831,7 @@
       m.parentId && membersById[m.parentId] ? `- Cha/Mẹ: ${membersById[m.parentId].name} (Đời ${membersById[m.parentId].gen})` : "",
       m.birth ? `- Sinh: ${m.birth}` : "",
       m.death ? `- Mất/Giỗ: ${m.death}` : "",
-      m.spouses?.length ? `- Phối ngẫu: ${m.spouses[0].name}` : "",
+      m.spouses?.length ? `- Phối ngẫu: ${m.spouses.map(s => s.name).join("; ")}` : "",
       m.location ? `- Nơi ở/An táng: ${m.location}` : "",
       m.note ? `- Ghi chú: ${m.note}` : "",
       `- Người gửi: ${p.sender}`
@@ -747,31 +840,31 @@
 
   window.copyContribForZalo = function () {
     const p = collectFormPayload();
-    if (!p.member.name) { alert("Vui lòng nhập Họ và tên trước khi sao chép."); return; }
-    const txt = formatPayloadText(p);
-    navigator.clipboard?.writeText(txt).then(() => {
-      document.getElementById("contribStatus").textContent = "📋 Đã sao chép nội dung! Hãy dán (Ctrl+V / Giữ chọn Dán) vào nhóm Zalo hoặc tin nhắn cho Admin.";
+    if (!p.member.name) { showToast("Vui lòng nhập Họ và tên trước khi sao chép."); return; }
+    navigator.clipboard?.writeText(formatPayloadText(p)).then(() => {
+      document.getElementById("contribStatus").textContent = "📋 Đã sao chép nội dung! Hãy dán vào nhóm Zalo hoặc tin nhắn cho Admin.";
+      showToast("Đã sao chép tin nhắn gửi Zalo Admin!");
     });
   };
 
   window.sendContribToGithubIssue = function () {
     const p = collectFormPayload();
-    if (!p.member.name) { alert("Vui lòng nhập Họ và tên trước khi gửi."); return; }
+    if (!p.member.name) { showToast("Vui lòng nhập Họ và tên trước khi gửi."); return; }
     const title = encodeURIComponent(`[Gia Phả Họ Trần] ${p.action === "edit" ? "Sửa" : "Thêm"}: ${p.member.name} (Đời ${p.member.gen})`);
     const body = encodeURIComponent(formatPayloadText(p) + "\n\n```json\n" + JSON.stringify(p.member, null, 2) + "\n```");
-    window.open(`https://github.com/happyrun09/happyrun09.github.io/issues/new?title=${title}&body=${body}`, "_blank", "noopener");
+    window.open(`https://github.com/lephucnhat/lephucnhat.github.io/issues/new?title=${title}&body=${body}`, "_blank", "noopener");
   };
 
-  // ----------------- BẢNG QUẢN TRỊ ADMIN & XUẤT DỮ LIỆU -----------------
+  // ----------------- BẢNG QUẢN TRỊ ADMIN & NHẬP/XUẤT DỮ LIỆU -----------------
   window.openAdminModal = function () {
     const subs = getSubmissions();
     const listHtml = subs.length
       ? subs.map((s, idx) => `<div class="meta-box" style="margin-bottom:8px;">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
             <div>
-              <strong>${s.member.name}</strong> <span style="font-size:11px;color:#fcd34d;">(Đời ${s.member.gen} • ${s.action === "edit" ? "Sửa" : "Thêm mới"})</span>
-              <div style="font-size:12px;opacity:0.8;margin-top:2px;">Người gửi: ${s.sender} • ${s.createdAt}</div>
-              ${s.member.note ? `<div style="font-size:12px;opacity:0.85;margin-top:4px;">Ghi chú: ${s.member.note}</div>` : ""}
+              <strong>${esc(s.member.name)}</strong> <span style="font-size:11px;color:#fcd34d;">(Đời ${s.member.gen} • ${s.action === "edit" ? "Sửa" : "Thêm mới"})</span>
+              <div style="font-size:12px;opacity:0.8;margin-top:2px;">Người gửi: ${esc(s.sender)} • ${esc(s.createdAt)}</div>
+              ${s.member.note ? `<div style="font-size:12px;opacity:0.85;margin-top:4px;">Ghi chú: ${esc(s.member.note)}</div>` : ""}
             </div>
             <div style="display:flex;gap:6px;flex-shrink:0;">
               <button class="btn-primary" style="padding:5px 10px;font-size:11.5px;" onclick="approveSubmission(${idx})">✓ Duyệt</button>
@@ -785,23 +878,56 @@
       <span class="modal-tag">ADMIN HUB • TỔNG HỢP & LƯU HỒ SƠ</span>
       <h2 class="modal-title">Quản Trị Gia Phả Số (${allMembers.length} vị)</h2>
       <p style="font-size:12.5px;opacity:0.82;margin-bottom:12px;">
-        Duyệt hồ sơ từ các chi/phái gửi về và xuất dữ liệu chuẩn hóa (JSON, CSV Excel, GEDCOM) để lưu trữ vĩnh viễn hoặc cập nhật vào mã nguồn GitHub.
+        Duyệt hồ sơ từ các chi/phái gửi về và xuất/nhập dữ liệu chuẩn hóa (JSON, CSV Excel, GEDCOM) để lưu trữ vĩnh viễn.
       </p>
       <div style="margin-bottom:16px;">
         <div style="font-weight:700;font-size:13.5px;margin-bottom:8px;">📥 Hồ sơ chờ Admin duyệt (${subs.length})</div>
         ${listHtml}
       </div>
       <div style="border-top:1px solid rgba(255,255,255,0.14);padding-top:14px;">
-        <div style="font-weight:700;font-size:13.5px;margin-bottom:8px;">📤 Xuất & Sao lưu dữ liệu (Dành cho Admin / Lập trình viên)</div>
+        <div style="font-weight:700;font-size:13.5px;margin-bottom:8px;">📤 Xuất & Nhập dữ liệu (Dành cho Admin / Lập trình viên)</div>
         <div class="btn-row">
           <button class="btn-secondary" onclick="exportData('json')">⬇ Tải JSON (.json)</button>
           <button class="btn-secondary" onclick="exportData('csv')">⬇ Tải Excel (.csv)</button>
           <button class="btn-secondary" onclick="exportData('ged')">⬇ Tải GEDCOM (.ged)</button>
+          <label class="btn-secondary" style="cursor:pointer;">📥 Nhập/Gộp JSON <input type="file" accept=".json" style="display:none;" onchange="importDataJson(event)" /></label>
           <button class="btn-danger" onclick="resetLocalChanges()">↺ Khôi phục bản gốc</button>
         </div>
       </div>
     `;
     document.getElementById("globalModal").classList.add("open");
+  };
+
+  window.importDataJson = function (e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const arr = JSON.parse(reader.result);
+        if (!Array.isArray(arr)) throw new Error("File JSON phải là mảng thành viên.");
+        const baseIds = new Set(window.MEMBERS.map(m => m.id));
+        const approved = getApproved();
+        let added = 0;
+        arr.forEach(m => {
+          if (m && m.id && m.name && m.gen) {
+            approved.push({
+              action: baseIds.has(m.id) ? "edit" : "add",
+              targetId: baseIds.has(m.id) ? m.id : null,
+              member: m
+            });
+            added++;
+          }
+        });
+        saveApproved(approved);
+        refreshAllViews();
+        openAdminModal();
+        showToast(`Đã nhập & gộp ${added} hồ sơ từ file JSON!`);
+      } catch (err) {
+        showToast("Lỗi đọc file JSON: " + err.message);
+      }
+    };
+    reader.readAsText(file, "utf-8");
   };
 
   window.approveSubmission = function (idx) {
@@ -814,14 +940,16 @@
     saveSubmissions(subs);
     refreshAllViews();
     openAdminModal();
+    showToast(`Đã duyệt hồ sơ: ${item.member.name}`);
   };
 
   window.rejectSubmission = function (idx) {
     const subs = getSubmissions();
-    subs.splice(idx, 1);
+    const removed = subs.splice(idx, 1)[0];
     saveSubmissions(subs);
     refreshAllViews();
     openAdminModal();
+    if (removed) showToast(`Đã xóa hồ sơ chờ: ${removed.member.name}`);
   };
 
   window.resetLocalChanges = function () {
@@ -831,6 +959,7 @@
     updatePendingBadge();
     refreshAllViews();
     openAdminModal();
+    showToast("Đã khôi phục dữ liệu gia phả gốc.");
   };
 
   window.exportData = function (fmt) {
@@ -861,6 +990,7 @@
     a.href = URL.createObjectURL(blob);
     a.download = filename;
     a.click();
+    showToast(`Đang tải xuống ${filename}`);
   };
 
   // ----------------- TÌM KIẾM & MODAL CHI TIẾT -----------------
@@ -878,8 +1008,8 @@
     ).slice(0, 12);
 
     searchResults.innerHTML = hits.length
-      ? hits.map(m => `<div class="search-item" onclick="selectSearchHit('${m.id}')">
-          <span class="search-item-name">${m.name}</span>
+      ? hits.map(m => `<div class="search-item" onclick="selectSearchHit('${esc(m.id)}')">
+          <span class="search-item-name">${esc(m.name)}</span>
           <span class="search-item-gen">Đời ${m.gen}</span>
         </div>`).join("")
       : `<div style="padding:10px;font-size:12.5px;opacity:0.7;">Không tìm thấy kết quả phù hợp.</div>`;
@@ -896,41 +1026,51 @@
     if (currentStyle === 3) s3FocusMember(id);
   };
 
+  window.shareMember = function (id) {
+    const m = membersById[id];
+    const url = `${window.location.origin}${window.location.pathname}#style=${currentStyle}&member=${id}`;
+    navigator.clipboard?.writeText(url).then(() => {
+      showToast(`Đã sao chép đường dẫn của ${m ? m.name : "thành viên"}!`);
+    });
+  };
+
   window.openMemberModal = function (id) {
     const m = membersById[id];
     if (!m) return;
     const parent = m.parentId ? membersById[m.parentId] : null;
     const kids = childrenById[m.id] || [];
     const spousesHtml = m.spouses && m.spouses.length
-      ? m.spouses.map(s => `<div>• <strong>${s.name}</strong>${s.birth ? ` (Sinh: ${s.birth})` : ""}${s.death ? ` — Mất: ${s.death}` : ""}${s.note ? ` (${s.note})` : ""}</div>`).join("")
+      ? m.spouses.map(s => `<div>• <strong>${esc(s.name)}</strong>${s.birth ? ` (Sinh: ${esc(s.birth)})` : ""}${s.death ? ` — Mất: ${esc(s.death)}` : ""}${s.note ? ` (${esc(s.note)})` : ""}</div>`).join("")
       : "Chưa ghi nhận trong phả";
 
     document.getElementById("modalContent").innerHTML = `
-      <span class="modal-tag">ĐỜI THỨ ${m.gen} • ${m.branch || "Chi Lãng Nam"}</span>
-      <h2 class="modal-title">${m.name}</h2>
-      <p style="font-size:13.5px;opacity:0.85;margin-bottom:12px;">${m.role || (m.isMainLine ? "Trực hệ truyền thừa chi Lãng Nam" : "Thành viên Phả Chi Họ Trần")}</p>
+      ${m.photo ? `<img class="member-avatar" src="${esc(m.photo)}" alt="${esc(m.name)}" />` : ""}
+      <span class="modal-tag">ĐỜI THỨ ${m.gen} • ${esc(m.branch || "Chi Lãng Nam")}</span>
+      <h2 class="modal-title">${esc(m.name)}</h2>
+      <p style="font-size:13.5px;opacity:0.85;margin-bottom:12px;">${esc(m.role || (m.isMainLine ? "Trực hệ truyền thừa chi Lãng Nam" : "Thành viên Phả Chi Họ Trần"))}</p>
       <div class="modal-meta">
-        <div class="meta-box"><div class="meta-lbl">Năm sinh / Năm mất</div><div class="meta-val">${m.birth ? "Sinh: " + m.birth : "—"} ${m.death ? "• Mất: " + m.death : ""} ${m.age ? "(" + m.age + ")" : ""}</div></div>
-        <div class="meta-box"><div class="meta-lbl">Địa bàn / An táng</div><div class="meta-val">${m.location || "Làng Lãng Nam (Đồng Thái, Ninh Cường)"}</div></div>
+        <div class="meta-box"><div class="meta-lbl">Năm sinh / Năm mất</div><div class="meta-val">${m.birth ? "Sinh: " + esc(m.birth) : "—"} ${m.death ? "• Mất: " + esc(m.death) : ""} ${m.age ? "(" + esc(m.age) + ")" : ""}</div></div>
+        <div class="meta-box"><div class="meta-lbl">Địa bàn / An táng</div><div class="meta-val">${esc(m.location || "Làng Lãng Nam (Đồng Thái, Ninh Cường)")}</div></div>
       </div>
       <div class="meta-box" style="margin-bottom:12px;">
         <div class="meta-lbl">Phối ngẫu (Vợ / Chồng)</div>
         <div style="font-size:13px;line-height:1.6;margin-top:4px;">${spousesHtml}</div>
       </div>
-      ${m.note ? `<div class="meta-box" style="margin-bottom:12px;"><div class="meta-lbl">Ghi chú phả ký</div><div style="font-size:13px;line-height:1.6;margin-top:4px;">${m.note}</div></div>` : ""}
+      ${m.note ? `<div class="meta-box" style="margin-bottom:12px;"><div class="meta-lbl">Ghi chú phả ký</div><div style="font-size:13px;line-height:1.6;margin-top:4px;">${esc(m.note)}</div></div>` : ""}
       <div style="margin-top:12px;">
         <div class="meta-lbl">Thân phụ / Thân mẫu:</div>
         <div class="lineage-chips">
-          ${parent ? `<span class="lineage-chip" onclick="openMemberModal('${parent.id}')">↑ ${parent.name} (Đời ${parent.gen})</span>` : `<span class="lineage-chip">Thủy Tổ Đời 1</span>`}
+          ${parent ? `<span class="lineage-chip" onclick="openMemberModal('${esc(parent.id)}')">↑ ${esc(parent.name)} (Đời ${parent.gen})</span>` : `<span class="lineage-chip">Thủy Tổ Đời 1</span>`}
         </div>
       </div>
       ${kids.length ? `<div style="margin-top:12px;">
         <div class="meta-lbl">Con cái (${kids.length}):</div>
-        <div class="lineage-chips">${kids.map(k => `<span class="lineage-chip" onclick="openMemberModal('${k.id}')">↓ ${k.name}</span>`).join("")}</div>
+        <div class="lineage-chips">${kids.map(k => `<span class="lineage-chip" onclick="openMemberModal('${esc(k.id)}')">↓ ${esc(k.name)}</span>`).join("")}</div>
       </div>` : ""}
       <div class="btn-row" style="border-top:1px solid rgba(255,255,255,0.12);padding-top:14px;">
-        <button class="btn-primary" onclick="openContributeModal({editId:'${m.id}'})">✏️ Bổ sung / Sửa thông tin cụ này</button>
-        <button class="btn-secondary" onclick="openContributeModal({parentId:'${m.id}', gen:${m.gen + 1}})">+ Thêm con (Đời ${m.gen + 1})</button>
+        <button class="btn-primary" onclick="openContributeModal({editId:'${esc(m.id)}'})">✏️ Bổ sung / Sửa thông tin cụ này</button>
+        <button class="btn-secondary" onclick="openContributeModal({parentId:'${esc(m.id)}', gen:${m.gen + 1}})">+ Thêm con (Đời ${m.gen + 1})</button>
+        <button class="btn-secondary" onclick="shareMember('${esc(m.id)}')">🔗 Chia sẻ</button>
       </div>
     `;
     document.getElementById("globalModal").classList.add("open");
@@ -938,24 +1078,98 @@
 
   window.openMemorialModal = function () {
     const items = [];
+    const parseMonth = (str) => {
+      const m = String(str).match(/(\d{1,2})\s*\/\s*(\d{1,2})/);
+      return m ? Number(m[2]) * 100 + Number(m[1]) : 9999;
+    };
     allMembers.forEach(m => {
-      if (m.death) items.push({ name: m.name, gen: `Đời ${m.gen}`, date: m.death, extra: m.age || "" });
+      if (m.death) items.push({ name: m.name, gen: `Đời ${m.gen}`, date: m.death, extra: m.age || "", sortKey: parseMonth(m.death) });
       if (m.spouses) {
         m.spouses.forEach(s => {
-          if (s.death) items.push({ name: s.name, gen: `Phối ngẫu Đời ${m.gen}`, date: s.death, extra: s.note || "" });
+          if (s.death) items.push({ name: s.name, gen: `Phối ngẫu Đời ${m.gen}`, date: s.death, extra: s.note || "", sortKey: parseMonth(s.death) });
         });
       }
     });
+    items.sort((a, b) => a.sortKey - b.sortKey);
     document.getElementById("modalContent").innerHTML = `
-      <span class="modal-tag">LỊCH GIỖ TỔ TIÊN HỌ TRẦN</span>
+      <span class="modal-tag">LỊCH GIỖ TỔ TIÊN HỌ TRẦN (SẮP XẾP THEO THÁNG)</span>
       <h2 class="modal-title">Ngày Giỗ & Kỷ Niệm Âm Lịch</h2>
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px;">
         ${items.map(it => `<div class="meta-box" style="display:flex;justify-content:space-between;align-items:center;">
-          <div><strong>${it.name}</strong><div style="font-size:11.5px;opacity:0.75;">${it.gen} ${it.extra ? "• " + it.extra : ""}</div></div>
-          <span style="color:#fcd34d;font-weight:700;font-size:13px;">${it.date}</span>
+          <div><strong>${esc(it.name)}</strong><div style="font-size:11.5px;opacity:0.75;">${esc(it.gen)} ${it.extra ? "• " + esc(it.extra) : ""}</div></div>
+          <span style="color:#fcd34d;font-weight:700;font-size:13px;">${esc(it.date)}</span>
         </div>`).join("")}
       </div>
-      <div class="btn-row"><button class="btn-primary" onclick="openContributeModal()">+ Bổ sung ngày giỗ còn thiếu</button></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="openContributeModal()">+ Bổ sung ngày giỗ còn thiếu</button>
+        <button class="btn-secondary" onclick="window.print()">🖨️ In Lịch Giỗ</button>
+      </div>
+    `;
+    document.getElementById("globalModal").classList.add("open");
+  };
+
+  window.openIncenseModal = function () {
+    const count = Number(localStorage.getItem("tran_gia_pha_incense_v1") || 108);
+    let notes = [];
+    try { notes = JSON.parse(localStorage.getItem("tran_gia_pha_guestbook_v1") || "[]"); } catch {}
+    document.getElementById("modalContent").innerHTML = `
+      <span class="modal-tag">TỪ ĐƯỜNG SỐ HỌ TRẦN LÃNG NAM</span>
+      <h2 class="modal-title">Thắp Hương Tưởng Nhớ & Sổ Lưu Bút</h2>
+      <div class="incense-altar">
+        <div id="incenseSticks" class="incense-sticks">🕯️ 🥢 🕯️</div>
+        <div style="font-size:13.5px;margin:8px 0;">Đã có <strong id="incenseCount" style="color:#fcd34d;">${count}</strong> nén hương thành kính dâng lên Tiên Tổ</div>
+        <button class="btn-primary" onclick="lightIncense()">🙏 Thắp Hương Thành Kính</button>
+      </div>
+      <form onsubmit="addGuestbookEntry(event)" class="form-grid" style="margin-bottom:14px;">
+        <div><input id="gbName" class="form-input" placeholder="Họ tên con cháu *" required /></div>
+        <div><input id="gbBranch" class="form-input" placeholder="Chi / Nơi ở (VD: Ninh Bình)" /></div>
+        <div class="form-full"><textarea id="gbMsg" class="form-textarea" placeholder="Lời tri ân, cầu chúc bình an hoặc nhắn nhủ tới dòng họ... *" required></textarea></div>
+        <div class="form-full"><button type="submit" class="btn-secondary">✍️ Ghi Vào Sổ Lưu Bút</button></div>
+      </form>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${notes.length ? notes.map(n => `<div class="meta-box">
+          <div style="display:flex;justify-content:space-between;font-size:12px;"><strong style="color:#fcd34d;">${esc(n.name)}</strong><span style="opacity:0.7;">${esc(n.branch)} • ${esc(n.date)}</span></div>
+          <div style="font-size:13px;margin-top:4px;line-height:1.5;">${esc(n.msg)}</div>
+        </div>`).join("") : `<div class="meta-box" style="opacity:0.75;">Hãy là người đầu tiên ghi lời tri ân vào Sổ Lưu Bút dòng họ!</div>`}
+      </div>
+    `;
+    document.getElementById("globalModal").classList.add("open");
+  };
+
+  window.lightIncense = function () {
+    const next = Number(localStorage.getItem("tran_gia_pha_incense_v1") || 108) + 1;
+    localStorage.setItem("tran_gia_pha_incense_v1", String(next));
+    const el = document.getElementById("incenseCount");
+    const sticks = document.getElementById("incenseSticks");
+    if (el) el.textContent = next;
+    if (sticks) sticks.classList.add("lit");
+    showToast("🙏 Đã dâng hương thành kính lên Tổ Tiên Họ Trần!");
+  };
+
+  window.addGuestbookEntry = function (e) {
+    e.preventDefault();
+    const name = document.getElementById("gbName").value.trim();
+    const branch = document.getElementById("gbBranch").value.trim() || "Con cháu họ Trần";
+    const msg = document.getElementById("gbMsg").value.trim();
+    if (!name || !msg) return;
+    let notes = [];
+    try { notes = JSON.parse(localStorage.getItem("tran_gia_pha_guestbook_v1") || "[]"); } catch {}
+    notes.unshift({ name, branch, msg, date: new Date().toLocaleDateString("vi-VN") });
+    localStorage.setItem("tran_gia_pha_guestbook_v1", JSON.stringify(notes));
+    showToast("Đã ghi lời tri ân vào Sổ Lưu Bút!");
+    openIncenseModal();
+  };
+
+  window.openGuideModal = function () {
+    document.getElementById("modalContent").innerHTML = `
+      <span class="modal-tag">HƯỚNG DẪN SỬ DỤNG 30 GIÂY</span>
+      <h2 class="modal-title">Dành Cho Mọi Thế Hệ Trong Dòng Họ</h2>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
+        <div class="meta-box"><strong>👴 Ông Bà / Lão Niên:</strong> Bấm <b>"A+ Cỡ chữ"</b> ở góc trên để phóng to chữ. Bấm <b>"🔊 Nghe Đọc Phả Ký"</b> để máy tự đọc thành tiếng, hoặc <b>"🖨️ In Sách Gia Phả"</b> để in ra giấy A4.</div>
+        <div class="meta-box"><strong>👨‍👩‍👧‍👦 Các Chi / Phái Bổ Sung Thông Tin:</strong> Bấm nút cam <b>"✍️ Bổ Sung Hồ Sơ"</b> (hoặc bấm vào tên một cụ bất kỳ -> <b>Sửa / Thêm con</b>). Sau đó có thể lưu xem trước và bấm <b>"📋 Sao chép gửi Zalo Admin"</b>.</div>
+        <div class="meta-box"><strong>🎤 Diễn Giả / Họp Họ:</strong> Chuyển đổi 5 giao diện ở thanh trên cùng, bấm <b>"⛶"</b> để phóng to toàn màn hình khi thuyết trình trên TV / máy chiếu.</div>
+        <div class="meta-box"><strong>💻 Admin / Lập Trình Viên:</strong> Mở <b>"🛡️ Admin"</b> để duyệt hồ sơ mới, nhập/gộp JSON hoặc xuất dữ liệu chuẩn <b>JSON, Excel CSV, GEDCOM 7.0</b>.</div>
+      </div>
     `;
     document.getElementById("globalModal").classList.add("open");
   };
@@ -967,8 +1181,8 @@
       <p style="font-size:13px;opacity:0.85;margin-bottom:14px;">Website Gia Phả Số Họ Trần Lãng Nam kế thừa tinh hoa từ các dự án mã nguồn mở phả hệ trên GitHub & chuẩn UX từ lephucnhat.vn:</p>
       <div style="display:flex;flex-direction:column;gap:10px;">
         ${window.OPEN_SOURCE_REFS.map(r => `<div class="meta-box">
-          <a href="${r.url}" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:700;text-decoration:none;font-size:14px;">↗ ${r.name}</a>
-          <div style="font-size:12.5px;opacity:0.85;margin-top:4px;line-height:1.5;">${r.role}</div>
+          <a href="${esc(r.url)}" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:700;text-decoration:none;font-size:14px;">↗ ${esc(r.name)}</a>
+          <div style="font-size:12.5px;opacity:0.85;margin-top:4px;line-height:1.5;">${esc(r.role)}</div>
         </div>`).join("")}
       </div>
     `;
@@ -981,11 +1195,15 @@
     }
   };
 
-  // Khởi tạo hệ thống
+  // Khởi tạo hệ thống + hỗ trợ deep-link #style=X&member=ID
   applyFontScale();
   rebuildIndexes();
   updatePendingBadge();
-  const match = window.location.hash.match(/style=(\d)/);
-  const initialStyle = match ? Number(match[1]) : 1;
+  const styleMatch = window.location.hash.match(/style=(\d)/);
+  const initialStyle = styleMatch ? Number(styleMatch[1]) : 1;
   switchStyle(initialStyle >= 1 && initialStyle <= 5 ? initialStyle : 1);
+  const memberMatch = window.location.hash.match(/member=([^&]+)/);
+  if (memberMatch && membersById[memberMatch[1]]) {
+    setTimeout(() => openMemberModal(memberMatch[1]), 200);
+  }
 })();
