@@ -165,6 +165,23 @@ window.MEMBERS = [
     sources: ["Đại Việt sử ký toàn thư"],
     note: "Con ruột An Sinh Vương Trần Liễu (danh nghĩa con trưởng vua Trần Thái Tông), có công lớn trấn giữ và khai mở vùng Diễn Châu, Nghệ An." },
 
+  { id: "d6_tran_tung", name: "Tuệ Trung Thượng Sĩ (Trần Tung)", gen: 6, parentId: "d5_tran_lieu", gender: "M", isMainLine: false, phase: 1, branch: "Nhánh Trần Liễu",
+    birth: "1230", death: "1291", age: "Thọ 61 tuổi",
+    role: "Hưng Ninh Vương • Đại Thiền Sư Trúc Lâm",
+    sources: ["Đại Việt sử ký toàn thư", "Cổng TTĐT Hải Phòng"],
+    note: "Con trưởng An Sinh Vương Trần Liễu, anh ruột Hưng Đạo Đại Vương. Bậc kỳ tài văn võ, vị thầy tinh thần trực tiếp hướng đạo Thiền học cho Phật hoàng Trần Nhân Tông." },
+
+  { id: "d6_thien_cam", name: "Nguyên Thánh Thiên Cảm Hoàng hậu", gen: 6, parentId: "d5_tran_lieu", gender: "F", isMainLine: false, phase: 1, branch: "Nhánh Trần Liễu",
+    role: "Hoàng hậu vua Trần Thánh Tông",
+    spouses: [{ name: "Vua Trần Thánh Tông" }],
+    sources: ["Đại Việt sử ký toàn thư"],
+    note: "Con gái An Sinh Vương Trần Liễu, em gái Tuệ Trung Thượng Sĩ và Hưng Đạo Vương; thân mẫu vua Trần Nhân Tông." },
+
+  { id: "d6_khanh_du", name: "Trần Khánh Dư", gen: 6, parentId: "d5_tran_canh", gender: "M", isMainLine: false, phase: 1, branch: "Nhánh Vua Trần",
+    death: "1340", role: "Phó đô tướng quân Nhân Huệ Vương (Thiên tử nghĩa nam)",
+    sources: ["Đại Việt sử ký toàn thư", "Ủy ban Nhà nước về NVNONN"],
+    note: "Danh tướng kiệt xuất lập đại công tiêu diệt đoàn thuyền lương Trương Văn Hổ tại Vân Đồn (1288), góp phần quyết định vào đại thắng Bạch Đằng." },
+
   { id: "d6_thanh_tong", name: "Trần Thánh Tông", gen: 6, parentId: "d5_tran_canh", gender: "M", isMainLine: false, phase: 1, branch: "Nhánh Vua Trần",
     birth: "1240 (25/9 ÂL Canh Tý)", death: "1290 (3/7 ÂL Canh Dần)", age: "Thọ 51 tuổi",
     role: "Hoàng đế thứ 2 nhà Trần (Húy: Trần Hoảng)",
@@ -218,17 +235,47 @@ window.MEMBERS = [
     sources: ["Đại Việt sử ký toàn thư", "Thư viện Hoa Sen"],
     note: "Con Vua Trần Thánh Tông. Lãnh đạo quân dân Đại Việt đại thắng quân Nguyên–Mông lần 2 (1285) và lần 3 (1288), sau nhường ngôi đi tu tại Yên Tử, sáng lập Thiền phái Trúc Lâm." },
 
+  { id: "d7_binh_trong", name: "Trần Bình Trọng", gen: 7, parentId: "d6_thanh_tong", gender: "M", isMainLine: false, phase: 1, branch: "Nhánh Vua Trần",
+    birth: "1259", death: "1285 (26/2 ÂL Ất Dậu)", age: "Hy sinh năm 26 tuổi",
+    location: "Bãi Thiên Mạc (Đà Mạc)",
+    role: "Bảo Nghĩa Vương",
+    sources: ["Đại Việt sử ký toàn thư"],
+    note: "Danh tướng chặn giặc tại bãi Thiên Mạc (1285) bảo vệ Thượng hoàng và Vua rút lui an toàn. Khi bị bắt đã hiên ngang nói: “Ta thà làm ma nước Nam, chứ không thèm làm vương đất Bắc”." },
+
+  { id: "d7_an_tu", name: "Công chúa An Tư", gen: 7, parentId: "d6_thanh_tong", gender: "F", isMainLine: false, phase: 1, branch: "Nhánh Vua Trần",
+    role: "Công chúa triều Trần (hy sinh vì đại nghĩa 1285)",
+    sources: ["Đại Việt sử ký toàn thư"],
+    note: "Em út vua Trần Thánh Tông / cô ruột hoặc em gái vua Trần Nhân Tông (tùy bản chép); năm 1285 vâng mệnh gả sang doanh trại Thoát Hoan để kìm chân giặc, giúp đại quân phản công thắng lợi." },
+
+  { id: "d7_quoc_nghien", name: "Trần Quốc Nghiễn", gen: 7, parentId: "d6_quoc_tuan", gender: "M", isMainLine: false, phase: 1, branch: "Nhánh Trần Liễu",
+    role: "Hưng Vũ Vương",
+    sources: ["Đại Việt sử ký toàn thư"],
+    note: "Con trưởng Hưng Đạo Đại Vương Trần Quốc Tuấn, lập nhiều chiến công trong kháng chiến chống Nguyên–Mông." },
+
   // BỔ SUNG SỬ LIỆU: CÁC ĐỜI VUA NHÀ TRẦN TIẾP NỐI (ĐỜI 8 - ĐỜI 12 NHÁNH HOÀNG TRIỀU)
   { id: "d8_anh_tong", name: "Trần Anh Tông", gen: 8, parentId: "d7_nhan_tong", gender: "M", isMainLine: false, phase: 2, branch: "Nhánh Hoàng Triều (Sử liệu bổ sung)",
     birth: "25/10/1276", death: "21/04/1320", age: "Thọ 44 tuổi",
     role: "Hoàng đế thứ 4 nhà Trần (Húy: Trần Thuyên)",
     sources: ["Đại Việt sử ký toàn thư"],
     note: "Con vua Trần Nhân Tông. Trị vì 1293–1314, làm Thái Thượng hoàng 1314–1320." },
+  { id: "d8_huyen_tran", name: "Huyền Trân Công Chúa", gen: 8, parentId: "d7_nhan_tong", gender: "F", isMainLine: false, phase: 2, branch: "Nhánh Hoàng Triều (Sử liệu bổ sung)",
+    birth: "1287 (Đinh Hợi)", death: "09/01/1340 (Canh Thìn)",
+    location: "Chùa Hổ Sơn (Nam Định) & Đền thờ tại Huế",
+    role: "Công chúa nhà Trần (mở mang bờ cõi Châu Ô – Châu Lý 1306)",
+    spouses: [{ name: "Quốc vương Chế Mân (Chiêm Thành)" }],
+    sources: ["Đại Việt sử ký toàn thư", "Khâm định Việt sử Thông giám Cương mục"],
+    note: "Con gái vua Trần Nhân Tông. Năm 1306 kết hôn với vua Chế Mân đem về hai châu Ô, Lý (vùng Quảng Trị – Thừa Thiên Huế ngày nay). Cuối đời xuất gia tu hành." },
   { id: "d9_minh_tong", name: "Trần Minh Tông", gen: 9, parentId: "d8_anh_tong", gender: "M", isMainLine: false, phase: 2, branch: "Nhánh Hoàng Triều (Sử liệu bổ sung)",
     birth: "04/10/1300", death: "10/03/1357", age: "Thọ 57 tuổi",
     role: "Hoàng đế thứ 5 nhà Trần (Húy: Trần Mạnh)",
     sources: ["Đại Việt sử ký toàn thư"],
     note: "Con vua Trần Anh Tông. Trị vì 1314–1329, làm Thái Thượng hoàng suốt 27 năm (1329–1357)." },
+  { id: "d10_nguyen_dan", name: "Trần Nguyên Đán", gen: 10, parentId: "d9_minh_tong", gender: "M", isMainLine: false, phase: 2, branch: "Nhánh Hoàng Triều (Sử liệu bổ sung)",
+    birth: "1325 (Ất Sửu)", death: "1390 (Canh Ngọ)", age: "Thọ 65 tuổi",
+    location: "Côn Sơn (Chí Linh, Hải Dương)",
+    role: "Tư đồ Chương Túc quốc thượng hầu • Ông ngoại Nguyễn Trãi",
+    sources: ["Đại Việt sử ký toàn thư", "Báo Hải Phòng"],
+    note: "Tôn thất nhà Trần (cháu đời thứ 4/5 của Chiêu Minh Vương Trần Quang Khải). Đại thần uy vọng, nhà thơ và nhà thiên văn học tài năng, ông ngoại Anh hùng dân tộc Nguyễn Trãi." },
   { id: "d10_nghe_tong", name: "Trần Nghệ Tông", gen: 10, parentId: "d9_minh_tong", gender: "M", isMainLine: false, phase: 2, branch: "Nhánh Hoàng Triều (Sử liệu bổ sung)",
     birth: "20/12/1321", death: "06/01/1395", age: "Thọ 73 tuổi (Vua thọ nhất nhà Trần)",
     role: "Hoàng đế thứ 9 nhà Trần (Húy: Trần Phủ)",
@@ -242,8 +289,22 @@ window.MEMBERS = [
     birth: "1337", death: "1377", role: "Hoàng đế thứ 10 nhà Trần (Húy: Trần Kính)", sources: ["Đại Việt sử ký toàn thư"], note: "Con vua Trần Minh Tông." },
   { id: "d11_thuan_tong", name: "Trần Thuận Tông", gen: 11, parentId: "d10_nghe_tong", gender: "M", isMainLine: false, phase: 2, branch: "Nhánh Hoàng Triều (Sử liệu bổ sung)",
     birth: "1378", death: "1399", role: "Hoàng đế thứ 12 nhà Trần (Húy: Trần Ngung)", sources: ["Đại Việt sử ký toàn thư"], note: "Con vua Trần Nghệ Tông." },
+  { id: "d11_gian_dinh", name: "Giản Định Đế (Trần Ngỗi)", gen: 11, parentId: "d10_nghe_tong", gender: "M", isMainLine: false, phase: 2, branch: "Nhánh Hoàng Triều (Sử liệu bổ sung)",
+    birth: "1375", death: "1410", role: "Hoàng đế thứ nhất triều Hậu Trần (Niên hiệu Hưng Khánh 1407–1409)",
+    sources: ["Đại Việt sử ký toàn thư", "Bảo tàng Lịch sử Quốc gia"],
+    note: "Con vua Trần Nghệ Tông. Khởi nghĩa chống quân Minh, lập đại thắng trận Bô Cô (1408) đánh tan quân Mộc Thạnh." },
+  { id: "d11_khat_chan", name: "Trần Khát Chân", gen: 11, parentId: "d10_nguyen_dan", gender: "M", isMainLine: false, phase: 2, branch: "Nhánh Hoàng Triều (Sử liệu bổ sung)",
+    birth: "1370 (Canh Tuất)", death: "1399 (tháng 4 Kỷ Mão)", age: "29 tuổi",
+    location: "Vĩnh Lộc (Thanh Hóa) • Đền thờ tại Hà Nội & Thanh Hóa",
+    role: "Danh tướng cuối thời Trần (Hậu duệ Bảo Nghĩa Vương Trần Bình Trọng)",
+    sources: ["Đại Việt sử ký toàn thư", "Báo Nam Định"],
+    note: "Đỗ Thái học sinh năm 1388. Lập đại công dùng súng thần công bắn chết Chế Bồng Nga tại trận Hải Triều (1390), cứu nguy kinh thành Thăng Long." },
   { id: "d12_thieu_de", name: "Trần Thiếu Đế", gen: 12, parentId: "d11_thuan_tong", gender: "M", isMainLine: false, phase: 2, branch: "Nhánh Hoàng Triều (Sử liệu bổ sung)",
-    birth: "1396", role: "Hoàng đế cuối cùng triều Trần (1398–1400, Húy: Trần An)", sources: ["Đại Việt sử ký toàn thư"], note: "Con vua Trần Thuận Tông." },
+    birth: "1396", role: "Hoàng đế cuối cùng triều chính Trần (1398–1400, Húy: Trần An)", sources: ["Đại Việt sử ký toàn thư"], note: "Con vua Trần Thuận Tông." },
+  { id: "d12_trung_quang", name: "Trùng Quang Đế (Trần Quý Khoáng)", gen: 12, parentId: "d11_gian_dinh", gender: "M", isMainLine: false, phase: 2, branch: "Nhánh Hoàng Triều (Sử liệu bổ sung)",
+    death: "1414 (Giáp Ngọ)", role: "Hoàng đế thứ hai triều Hậu Trần (1409–1414)",
+    sources: ["Đại Việt sử ký toàn thư", "Cổng TTĐT Thừa Thiên Huế"],
+    note: "Cháu nội vua Trần Nghệ Tông (con Trang Định vương Trần Ngạc), lãnh đạo cuộc kháng chiến chống Minh oanh liệt suốt 5 năm trước khi tuẫn tiết năm 1414." },
 
   // GIAI ĐOẠN 2: TRỰC HỆ ĐỜI 8 - ĐỜI 19
   { id: "d8_vo_vi", name: "Tổ Vô Vi", gen: 8, parentId: "d7_quoc_hien", gender: "M", isMainLine: true, phase: 2, branch: "Trực Hệ (Đời 8–19)",
@@ -436,11 +497,30 @@ window.buildFamilyChartData = function () {
 
 // Dữ liệu Dòng thời gian lịch sử
 window.TIMELINE_EVENTS = [
-  { year: "1009", title: "Đức Thượng Tổ Trần Kinh lập nghiệp tại Tức Mặc", desc: "Từ Đông Triều về làng Tức Mặc (trấn Sơn Nam Hạ) làm nghề chài lưới, khởi nguồn dòng họ Trần tại Việt Nam." },
-  { year: "01-1226", title: "Triều đại Nhà Trần khởi lập", desc: "Đời 5: Vua Trần Thái Tông (Trần Cảnh) kết hôn với Lý Chiêu Hoàng, tiếp nhận nhường ngôi, mở ra triều đại Nhà Trần hiển hách." },
+  { year: "1009", title: "Đức Thượng Tổ lập nghiệp tại hương Tức Mặc", desc: "Từ Đông Triều về hương Tức Mặc (phủ Thiên Trường, Nam Định) làm nghề chài lưới, khởi nguồn dòng họ Trần tại Việt Nam." },
+  { year: "01-1226", title: "Triều đại Nhà Trần khởi lập", desc: "Đời 5: Vua Trần Thái Tông (Trần Cảnh) tiếp nhận nhường ngôi từ Lý Chiêu Hoàng, cùng Thái Thượng hoàng Trần Thừa và Thái sư Trần Thủ Độ dựng nên vương triều hiển hách." },
+  { year: "1258 – 1288", title: "Hào khí Đông A: Ba lần đại thắng Nguyên–Mông", desc: "Hội nghị Bình Than (1282), Hội nghị Diên Hồng (1284) đồng thanh hô “Đánh!” và đại thắng Đông Bộ Đầu (1258), Chương Dương – Hàm Tử (1285), Bạch Đằng Giang (1288)." },
+  { year: "1306", title: "Huyền Trân Công chúa mở cõi phương Nam", desc: "Đời 8: Huyền Trân Công chúa kết duyên cùng vua Chế Mân, đem về hai châu Ô, Lý (Quảng Trị – Thừa Thiên Huế)." },
   { year: "1381", title: "Cụ Trần Quốc Hiển cắt chữ & Lăng tẩm Cồn Cả", desc: "Đời 7: Cụ Quốc Hiển cắt chữ năm 1381, lăng tẩm an táng tại Cồn Cả, xã Cát Thành." },
-  { year: "Đời 7 → 8", title: "Bước ngoặt đổi họ Đặng", desc: "Cụ Quốc Hiển sinh Quang Huy và Vô Vi, giai đoạn này đổi sang họ Đặng; sau này con cháu phục hồi về họ Trần." },
+  { year: "1407 – 1414", title: "Triều Hậu Trần oanh liệt chống quân Minh", desc: "Giản Định Đế (đại thắng Bô Cô 1408) và Trùng Quang Đế giữ vững khí tiết hào khí Đông A." },
   { year: "29/9/1629", title: "Bài thơ Tổ Bình Hoàn khai khẩn Lãng Nam", desc: "Cụ Tổ Bình Hoàn sáng tác bài thơ lục bát ghi dấu công lao khai phá vùng đất biển bồi lau sậy thành thôn Cường, Lãng Nam." },
   { year: "Thế kỷ XX", title: "Chi Cụ Chí Hòa (Trần Văn Hòa) — Lãng Nam", desc: "Đời 20–21: Ba nhánh lớn của các ông Trần Đức Long, Trần Văn Thịnh và Trần Đức Vượng (mất 21/7/1983 ÂL) phát triển hưng thịnh." },
   { year: "24/11/2026", title: "Ngày Văn Hóa Việt Nam: Khởi lập Gia Phả Số Họ Trần", desc: "Hậu duệ Đời thứ 23 Trần Văn Thuần chuyển hóa cuốn gia phả giấy thành Gia Phả Số mở rộng, mời gọi các chi, phái, nhánh cùng bổ sung và lưu truyền muôn đời." }
 ];
+
+// Sổ Vàng Hoàng Triều Nhà Trần & Hào Khí Đông A
+window.GOLDEN_BOOK = {
+  quotes: [
+    { quote: "“Đầu thần chưa rơi xuống đất, xin bệ hạ đừng lo.”", author: "Thái sư Trần Thủ Độ (1258)", source: "Đại Việt sử ký toàn thư" },
+    { quote: "“Ta thà làm ma nước Nam, chứ không thèm làm vương đất Bắc.”", author: "Bảo Nghĩa Vương Trần Bình Trọng (1285)", source: "Đại Việt sử ký toàn thư" },
+    { quote: "“Nếu bệ hạ muốn hàng, xin hãy chém đầu thần trước đã!”", author: "Hưng Đạo Đại Vương Trần Quốc Tuấn (1285)", source: "Đại Việt sử ký toàn thư" },
+    { quote: "“Khoan thư sức dân để làm kế sâu rễ bền gốc, đó là thượng sách giữ nước.”", author: "Di chúc Hưng Đạo Đại Vương (1300)", source: "Đại Việt sử ký toàn thư" },
+    { quote: "“Cây có gốc, nước có nguồn… Hiếu kính dâng lên tông tổ / Điều lành tụ lại ở cháu, con.”", author: "Phả Chi Họ Trần Lãng Nam", source: "Tộc phả Đồng Thái, Ninh Cường" }
+  ],
+  heritages: [
+    { place: "Quần thể Đền Trần – Chùa Tháp Phổ Minh (Tức Mặc, Nam Định)", desc: "Đất thang mộc phát tích vương triều Trần, nơi thờ 14 vị Hoàng đế nhà Trần cùng các bậc công thần và Lễ hội Khai Ấn đầu xuân." },
+    { place: "Khu Di Tích Tam Đường – Long Hưng (Hưng Hà, Thái Bình)", desc: "Nơi an táng Thọ Lăng Tinh Cương (Thái Tổ Trần Thừa), lăng mộ Thái sư Trần Thủ Độ và các vị vua đầu triều Trần." },
+    { place: "Khu Di Tích Nhà Trần – Ngọa Vân – Yên Tử (Đông Triều, Quảng Ninh)", desc: "Cõi thiêng an nghỉ của các Hoàng đế Trần Thái Tông, Thánh Tông, Nhân Tông, Anh Tông, Minh Tông và chốn tu hành Thiền phái Trúc Lâm." },
+    { place: "Đền Kiếp Bạc (Chí Linh, Hải Dương) & Đền Cửa Ông (Quảng Ninh)", desc: "Thánh địa phụng thờ Quốc công Tiết chế Hưng Đạo Đại Vương Trần Quốc Tuấn và Hưng Nhượng Đại Vương Trần Quốc Tảng." }
+  ]
+};

@@ -29,9 +29,9 @@
     <nav class="style-switcher" aria-label="Chọn phong cách giao diện">
       <button class="style-btn active" data-style="1" onclick="switchStyle(1)">📜 1. Sách Gia Phả</button>
       <button class="style-btn" data-style="2" onclick="switchStyle(2)">🏮 2. Phả Đồ Cổ Điển</button>
-      <button class="style-btn" data-style="3" onclick="switchStyle(3)">🐉 3. Cây Gia Đình (Vợ-Chồng)</button>
-      <button class="style-btn" data-style="4" onclick="switchStyle(4)">✨ 4. Tinh Tú Huyết Thống</button>
-      <button class="style-btn" data-style="5" onclick="switchStyle(5)">💎 5. Tổng Quan & Tra Cứu</button>
+      <button class="style-btn" data-style="3" onclick="switchStyle(3)">🐉 3. Cây Gia Đình</button>
+      <button class="style-btn" data-style="4" onclick="switchStyle(4)">✨ 4. Tinh Tú Đông A</button>
+      <button class="style-btn" data-style="5" onclick="switchStyle(5)">🏆 5. Sổ Vàng & Tra Cứu</button>
     </nav>
 
     <div class="top-actions">
@@ -40,15 +40,20 @@
         <input id="globalSearch" class="search-input" type="text" placeholder="Tìm tên, đời..." autocomplete="off" />
         <div id="searchResults" class="search-results"></div>
       </div>
-      <button class="icon-btn" onclick="cycleFontSize()" id="fontBtn" title="Chỉnh cỡ chữ lớn cho người cao tuổi">A+ Cỡ chữ</button>
       <button class="icon-btn cta-tamthu" onclick="openTamThuModal()" title="Tâm thư của hậu duệ Trần Thuần (Đời 23) — 24/11/2026">💌 Tâm Thư</button>
-      <button class="icon-btn cta-contribute" onclick="openContributeModal()" title="Các chi, phái điền thêm hoặc sửa thông tin">✍️ Bổ Sung Hồ Sơ</button>
-      <button class="icon-btn" onclick="openAdminModal()" title="Admin tổng hợp, duyệt hồ sơ & xuất dữ liệu">🛡️ Admin <span id="pendingBadge" class="badge-count" style="display:none;">0</span></button>
+      <button class="icon-btn cta-contribute" onclick="openContributeModal()" title="Các chi, phái điền thêm hoặc sửa thông tin">✍️ Bổ Sung</button>
       <button class="icon-btn" onclick="openMemorialModal()" title="Lịch ngày giỗ âm lịch">🕯️ Ngày Giỗ</button>
-      <button class="icon-btn" onclick="openIncenseModal()" title="Thắp hương tưởng nhớ & Sổ lưu bút con cháu">🙏 Lưu Bút</button>
-      <button class="icon-btn" onclick="openGuideModal()" title="Hướng dẫn sử dụng cho mọi lứa tuổi">❓</button>
-      <button class="icon-btn" onclick="toggleFullscreen()" title="Chế độ trình chiếu toàn màn hình cho diễn giả">⛶</button>
-      <button class="icon-btn" onclick="openOpenSourceModal()" title="Mã nguồn mở GitHub">⚡</button>
+      <div class="menu-wrap">
+        <button class="icon-btn" onclick="toggleMoreMenu(event)" title="Tiện ích mở rộng & Admin">☰ Tiện Ích <span id="pendingBadge" class="badge-count" style="display:none;">0</span></button>
+        <div id="moreMenu" class="more-menu">
+          <button onclick="openIncenseModal();closeMoreMenu()">🙏 Thắp Hương & Lưu Bút</button>
+          <button onclick="cycleFontSize()" id="fontBtn">A+ Cỡ chữ cao niên</button>
+          <button onclick="toggleFullscreen();closeMoreMenu()">⛶ Trình Chiếu Toàn Màn Hình</button>
+          <button onclick="openGuideModal();closeMoreMenu()">❓ Hướng Dẫn 30 Giây</button>
+          <button onclick="openAdminModal();closeMoreMenu()">🛡️ Quản Trị Admin <span id="pendingBadgeMenu" class="badge-count" style="display:none;">0</span></button>
+          <button onclick="openOpenSourceModal();closeMoreMenu()">⚡ Mã Nguồn Mở GitHub</button>
+        </div>
+      </div>
     </div>
   </header>
 

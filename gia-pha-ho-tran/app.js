@@ -87,11 +87,21 @@
 
   function updatePendingBadge() {
     const count = getSubmissions().length;
-    const badge = document.getElementById("pendingBadge");
-    if (!badge) return;
-    badge.textContent = count;
-    badge.style.display = count > 0 ? "inline-block" : "none";
+    ["pendingBadge", "pendingBadgeMenu"].forEach(id => {
+      const badge = document.getElementById(id);
+      if (!badge) return;
+      badge.textContent = count;
+      badge.style.display = count > 0 ? "inline-block" : "none";
+    });
   }
+
+  window.toggleMoreMenu = function (e) {
+    e.stopPropagation();
+    document.getElementById("moreMenu")?.classList.toggle("open");
+  };
+  window.closeMoreMenu = function () {
+    document.getElementById("moreMenu")?.classList.remove("open");
+  };
 
   function buildHierarchy() {
     const buildNode = (m) => ({
@@ -592,6 +602,28 @@
         <div class="bento-card"><div class="kpi-val">${Math.max(...allMembers.map(m => m.gen))} Đời</div><div class="kpi-lbl">Từ Đức Thượng Tổ Trần Kinh (1009) đến 2026</div></div>
         <div class="bento-card"><div class="kpi-val">${getSubmissions().length} Hồ Sơ</div><div class="kpi-lbl">Đóng góp mới từ các chi/phái chờ Admin tổng hợp</div></div>
         <div class="bento-card"><div class="kpi-val">3 Tỉnh/TP</div><div class="kpi-lbl">Ninh Bình • Hà Nội • Bảo Lộc (Lâm Đồng)</div></div>
+      </div>
+
+      <div class="bento-grid-2">
+        <div class="bento-card" style="border-color:rgba(251,191,36,0.35);background:linear-gradient(145deg,rgba(120,53,15,0.28),rgba(30,41,59,0.65));">
+          <h3 style="margin-bottom:12px;font-size:16px;color:#fcd34d;">🏆 Sổ Vàng Hào Khí Đông A — Danh Ngôn Bất Hủ</h3>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            ${(window.GOLDEN_BOOK?.quotes || []).map(q => `<div class="meta-box" style="border-left:3px solid #fbbf24;">
+              <div style="font-family:var(--font-serif);font-style:italic;font-size:14px;color:#fef3c7;">${esc(q.quote)}</div>
+              <div style="font-size:11.5px;opacity:0.82;margin-top:4px;">— ${esc(q.author)} <span style="opacity:0.7;">(${esc(q.source)})</span></div>
+            </div>`).join("")}
+          </div>
+        </div>
+
+        <div class="bento-card">
+          <h3 style="margin-bottom:12px;font-size:16px;">🏛️ Quần Thể Di Sản & Đền Thờ Nhà Trần</h3>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            ${(window.GOLDEN_BOOK?.heritages || []).map(h => `<div class="meta-box">
+              <div style="font-weight:700;font-size:13.5px;color:#38bdf8;">${esc(h.place)}</div>
+              <div style="font-size:12.5px;opacity:0.82;margin-top:3px;line-height:1.5;">${esc(h.desc)}</div>
+            </div>`).join("")}
+          </div>
+        </div>
       </div>
 
       <div class="bento-grid-2">
@@ -1101,6 +1133,7 @@
 
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".search-wrap")) searchResults.classList.remove("open");
+    if (!e.target.closest(".menu-wrap")) closeMoreMenu();
   });
 
   window.selectSearchHit = function (id) {
