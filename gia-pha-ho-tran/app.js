@@ -264,6 +264,7 @@
       </div>
 
       <div class="book-cover">
+        <div><div class="hoanh-phi-placa">❖ ${esc(meta.hoanhPhi || "ĐÔNG A VẠN ĐẠI • ĐỨC LƯU QUANG")} ❖</div></div>
         <div class="book-seal-big">TỘC PHẢ TRUYỀN ĐỜI • KHỞI LẬP GIA PHẢ SỐ: NGÀY VĂN HÓA VIỆT NAM 24/11/2026</div>
         <h1 class="book-title">${esc(meta.title)}</h1>
         <p class="book-sub">${esc(meta.subtitle)}</p>
@@ -301,7 +302,17 @@
       </div>
 
       <div class="book-section">
-        <h2 class="book-h2">Phần 4: Thư Mục Nguồn Sử Liệu & Tài Liệu Đối Chiếu</h2>
+        <h2 class="book-h2">Phần 4: Tộc Ước – Gia Huấn – Hương Ước Họ Trần Lãng Nam</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;">
+          ${(meta.tocUoc || []).map(t => `<div class="book-person" style="cursor:default;border-left:3.5px solid #9e1b1b;background:#fffdf8;">
+            <div style="font-weight:700;color:#7c1212;font-size:0.92rem;">📜 ${esc(t.title)}</div>
+            <div style="font-size:0.84rem;color:#332920;line-height:1.55;margin-top:4px;">${esc(t.desc)}</div>
+          </div>`).join("")}
+        </div>
+      </div>
+
+      <div class="book-section">
+        <h2 class="book-h2">Phần 5: Thư Mục Nguồn Sử Liệu & Tài Liệu Đối Chiếu</h2>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;">
           ${(window.HISTORICAL_SOURCES || []).map(s => `<div class="book-person" style="cursor:default;background:#fffaf0;">
             <div style="font-weight:700;color:#7c1212;font-size:0.9rem;">📚 ${esc(s.name)}</div>
@@ -716,7 +727,10 @@
       <div><strong>Tổ tiên chung gần nhất:</strong> ${lca ? `${esc(lca.name)} (Đời ${lca.gen})` : "Cùng dòng tộc họ Trần"}</div>
       <div><strong>Khoảng cách thế hệ:</strong> ${diff === 0 ? "Cùng thế hệ (Đồng bối)" : `Cách nhau ${diff} đời`}</div>
       <div style="color:#fcd34d;margin-top:2px;"><strong>Vai vế / Xưng hô:</strong> ${esc(roleHint)}</div>
-      ${lca ? `<div style="font-size:12px;opacity:0.85;margin-top:4px;">• ${esc(mA.name)} (Đời ${mA.gen}) cách Tổ chung ${pathA.indexOf(lca)} đời.<br>• ${esc(mB.name)} (Đời ${mB.gen}) cách Tổ chung ${pathB.findIndex(x => x.id === lca.id)} đời.</div>` : ""}
+      ${lca ? `<div style="font-size:12px;opacity:0.85;margin-top:4px;">• ${esc(mA.name)} (Đời ${mA.gen}) cách Tổ chung ${pathA.indexOf(lca)} đời.<br>• ${esc(mB.name)} (Đời ${mB.gen}) cách Tổ chung ${pathB.findIndex(x => x.id === lca.id)} đời.</div>
+      <div style="font-size:11.5px;margin-top:6px;padding-top:6px;border-top:1px dashed rgba(56,189,248,0.3);color:#bae6fd;">
+        <strong>Sơ đồ kết nối (Pathfinder):</strong> ${pathA.slice(0, pathA.indexOf(lca) + 1).map(x => `${esc(x.name)} (Đ${x.gen})`).join(" → ")} ${pathB.findIndex(x => x.id === lca.id) > 0 ? " → " + pathB.slice(0, pathB.findIndex(x => x.id === lca.id)).reverse().map(x => `${esc(x.name)} (Đ${x.gen})`).join(" → ") : ""}
+      </div>` : ""}
     `;
   };
 
@@ -1172,11 +1186,25 @@
       ? m.spouses.map(s => `<div>• <strong>${esc(s.name)}</strong>${s.birth ? ` (Sinh: ${esc(s.birth)})` : ""}${s.death ? ` — Mất: ${esc(s.death)}` : ""}${s.note ? ` (${esc(s.note)})` : ""}</div>`).join("")
       : "Chưa ghi nhận trong phả";
 
+    // Chuỗi Mạch Nguồn Huyết Thống từ Đời 1 -> vị hiện tại (Pedigree Breadcrumb)
+    const lineageChain = [];
+    let curNode = m;
+    while (curNode) {
+      lineageChain.unshift(curNode);
+      curNode = curNode.parentId ? membersById[curNode.parentId] : null;
+    }
+    const chainHtml = lineageChain.map(node =>
+      `<span class="lineage-step" onclick="openMemberModal('${esc(node.id)}')">Đ${node.gen}: ${esc(node.gen === 1 ? "Đức Thượng Tổ" : node.name)}</span>`
+    ).join(`<span style="opacity:0.5;">→</span>`);
+
     document.getElementById("modalContent").innerHTML = `
       ${m.photo ? `<img class="member-avatar" src="${esc(m.photo)}" alt="${esc(m.name)}" />` : ""}
       <span class="modal-tag">ĐỜI THỨ ${m.gen} • ${esc(m.branch || "Chi Lãng Nam")}</span>
       <h2 class="modal-title">${esc(m.name)}</h2>
-      <p style="font-size:13.5px;opacity:0.85;margin-bottom:12px;">${esc(m.role || (m.isMainLine ? "Trực hệ truyền thừa chi Lãng Nam" : "Thành viên Phả Chi Họ Trần"))}</p>
+      <p style="font-size:13.5px;opacity:0.85;margin-bottom:10px;">${esc(m.role || (m.isMainLine ? "Trực hệ truyền thừa chi Lãng Nam" : "Thành viên Phả Chi Họ Trần"))}</p>
+      <div class="lineage-path-bar">
+        <strong style="color:#fcd34d;margin-right:4px;">🌿 Mạch truyền thừa:</strong> ${chainHtml}
+      </div>
       <div class="modal-meta">
         <div class="meta-box"><div class="meta-lbl">Năm sinh / Năm mất</div><div class="meta-val">${m.birth ? "Sinh: " + esc(m.birth) : "—"} ${m.death ? "• Mất: " + esc(m.death) : ""} ${m.age ? "(" + esc(m.age) + ")" : ""}</div></div>
         <div class="meta-box"><div class="meta-lbl">Địa bàn / An táng</div><div class="meta-val">${esc(m.location || "Làng Lãng Nam (Đồng Thái, Ninh Cường)")}</div></div>

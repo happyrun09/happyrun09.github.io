@@ -170,6 +170,22 @@ body[data-style="1"] .icon-btn { background: rgba(158, 27, 27, 0.08); border-col
 }
 .book-tool-btn:hover { background: #9e1b1b; color: #fff; border-color: #9e1b1b; }
 .book-cover { text-align: center; border-bottom: 2px double #9e1b1b; padding-bottom: 24px; margin-bottom: 28px; }
+.hoanh-phi-placa {
+  display: inline-block; padding: 8px 26px; margin-bottom: 14px; border-radius: 6px;
+  background: linear-gradient(135deg, #6e0d0d, #4a0606); color: #f6d365;
+  border: 2px solid #d4af37; box-shadow: 0 6px 18px rgba(110, 13, 13, 0.25);
+  font-family: var(--font-serif); font-weight: 800; font-size: 1.05rem; letter-spacing: 2px;
+}
+.lineage-path-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 10px 12px;
+  border-radius: 10px; background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.28);
+  margin-bottom: 12px; font-size: 12px; line-height: 1.5;
+}
+.lineage-step {
+  cursor: pointer; padding: 2px 7px; border-radius: 6px; background: rgba(255,255,255,0.07);
+  color: #fde68a; font-weight: 600; transition: background 0.15s;
+}
+.lineage-step:hover { background: rgba(251, 191, 36, 0.25); }
 .book-seal-big {
   display: inline-block; padding: 5px 16px; border: 1.5px solid #9e1b1b; color: #9e1b1b;
   font-family: var(--font-serif); font-weight: 700; font-size: 12.5px; letter-spacing: 1.5px; margin-bottom: 12px;

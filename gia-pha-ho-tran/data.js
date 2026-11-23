@@ -31,6 +31,14 @@ window.PHAM_PHO_META = {
   },
   origin: "Gốc họ Trần, tương truyền từ tỉnh Phúc Kiến, Trung Quốc (gần đảo Đài Loan) đến Việt Nam từ đời nhà Lý. Đức Thượng Tổ họ Trần là cụ Trần Kinh (Trần Khinh) húy là Trần Linh từ Đông Triều về làng Tức Mặc thuộc trấn Sơn Nam Hạ làm nghề chài lưới từ năm 1009.",
   turningPoint: "Từ Đời 7 sang Đời 8: Cụ Quốc Hiển sinh ra hai người con là Quang Huy và Vô Vi, lúc này đổi sang họ Đặng (sau này con cháu lại phục hồi về họ Trần / hoặc mang tên lót đặc trưng).",
+  hoanhPhi: "ĐÔNG A VẠN ĐẠI • ĐỨC LƯU QUANG",
+  tocUoc: [
+    { title: "1. Đạo Hiếu Làm Gốc (Tôn Tổ Kính Tông)", desc: "Trong các đạo cao quý ở đời, đạo hiếu là số 1. Con cháu thành kính thờ cúng tổ tiên, ghi nhớ ngày giỗ chạp, giữ gìn từ đường và lăng mộ tiền nhân." },
+    { title: "2. Đoàn Kết Cưu Mang (Huynh Đệ Hòa Mục)", desc: "Con cháu các chi, các phái gắn kết, giúp đỡ, cưu mang lẫn nhau cả về tinh thần lẫn vật chất; tuyệt đối tránh chia rẽ, huynh đệ tương tàn." },
+    { title: "3. Hiếu Học Lập Nghiệp (Rạng Danh Gia Phong)", desc: "Chăm chỉ học hành, rèn luyện đức tài, lập thân lập nghiệp chính đáng để làm vẻ vang cho dòng tộc họ Trần và quê hương." },
+    { title: "4. Giữ Gìn Tộc Phả (Truyền Thừa Vĩnh Viễn)", desc: "Mỗi thế hệ có trách nhiệm ghi chép, bổ sung đầy đủ tên húy, ngày sinh, ngày giỗ, phối ngẫu và con cháu vào Gia Phả Số để muôn đời sau không bao giờ mất gốc." },
+    { title: "5. Hương Ước Nghĩa Tình (Trách Nhiệm Quê Hương)", desc: "Phát huy lễ nghĩa, sống thượng tôn pháp luật, hòa hiếu với xóm giềng và đóng góp xây dựng quê hương đất nước." }
+  ],
   tamThu: {
     title: "TÂM THƯ CỦA HẬU DUỆ ĐỜI THỨ 23 — TRẦN VĂN THUẦN",
     occasion: "Khởi lập Gia Phả Số nhân Ngày Văn Hóa Việt Nam — 24 tháng 11 năm 2026",
