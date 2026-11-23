@@ -856,7 +856,54 @@
   };
 
   // ----------------- BẢNG QUẢN TRỊ ADMIN & NHẬP/XUẤT DỮ LIỆU -----------------
+  const ADMIN_KEY = "TRANTHUAN23";
+  const SS_ADMIN_AUTH = "tran_gia_pha_admin_unlocked_v1";
+
+  function isAdminUnlocked() {
+    return sessionStorage.getItem(SS_ADMIN_AUTH) === "1";
+  }
+
+  window.unlockAdmin = function (e) {
+    e.preventDefault();
+    const val = (document.getElementById("adminPassInput")?.value || "").trim();
+    if (val === ADMIN_KEY) {
+      sessionStorage.setItem(SS_ADMIN_AUTH, "1");
+      showToast("🔓 Đã mở khóa Quản Trị Admin!");
+      openAdminModal();
+    } else {
+      const err = document.getElementById("adminPassErr");
+      if (err) err.textContent = "❌ Mã khóa chưa đúng. Vui lòng kiểm tra lại!";
+    }
+  };
+
+  window.lockAdmin = function () {
+    sessionStorage.removeItem(SS_ADMIN_AUTH);
+    showToast("🔒 Đã khóa lại quyền Admin.");
+    openAdminModal();
+  };
+
   window.openAdminModal = function () {
+    if (!isAdminUnlocked()) {
+      document.getElementById("modalContent").innerHTML = `
+        <span class="modal-tag">BẢO VỆ QUẢN TRỊ VIÊN</span>
+        <h2 class="modal-title">🔒 Mở Khóa Admin Hub</h2>
+        <p style="font-size:13px;opacity:0.85;margin-bottom:14px;line-height:1.5;">
+          Khu vực này dành riêng cho Admin duyệt hồ sơ từ các chi/phái, nhập/xuất dữ liệu và khôi phục bản gốc. Bà con vẫn có thể đóng góp thông tin tự do qua nút <b>"✍️ Bổ Sung Hồ Sơ"</b>.
+        </p>
+        <form onsubmit="unlockAdmin(event)" style="display:flex;flex-direction:column;gap:10px;">
+          <label class="form-label">Nhập mã khóa Admin</label>
+          <input id="adminPassInput" class="form-input" type="password" placeholder="Nhập mã khóa..." autocomplete="off" autofocus required />
+          <div id="adminPassErr" style="font-size:12.5px;color:#f87171;min-height:18px;"></div>
+          <div class="btn-row" style="margin-top:4px;">
+            <button type="submit" class="btn-primary">🔓 Mở Khóa Quản Trị</button>
+            <button type="button" class="btn-secondary" onclick="const inp=document.getElementById('adminPassInput');inp.type=inp.type==='password'?'text':'password';">👁 Hiện / Ẩn mã</button>
+          </div>
+        </form>
+      `;
+      document.getElementById("globalModal").classList.add("open");
+      return;
+    }
+
     const subs = getSubmissions();
     const listHtml = subs.length
       ? subs.map((s, idx) => `<div class="meta-box" style="margin-bottom:8px;">
@@ -892,6 +939,7 @@
           <button class="btn-secondary" onclick="exportData('ged')">⬇ Tải GEDCOM (.ged)</button>
           <label class="btn-secondary" style="cursor:pointer;">📥 Nhập/Gộp JSON <input type="file" accept=".json" style="display:none;" onchange="importDataJson(event)" /></label>
           <button class="btn-danger" onclick="resetLocalChanges()">↺ Khôi phục bản gốc</button>
+          <button class="btn-secondary" onclick="lockAdmin()">🔒 Khóa lại Admin</button>
         </div>
       </div>
     `;
